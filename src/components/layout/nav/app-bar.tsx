@@ -10,8 +10,11 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Menu as MenuIcon } from 'lucide-react';
 import { AppBar } from '@mui/material';
+import { useContext } from 'react';
+import { AuthContext } from '../../../lib/providers/auth-provider.tsx';
 
 const AppBarMenu = () => {
+    const { isLoggedIn } = useContext(AuthContext);
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
         null,
     );
@@ -135,42 +138,40 @@ const AppBarMenu = () => {
                         {/*    </Button>*/}
                         {/*))}*/}
                     </Box>
-
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton
-                                onClick={handleOpenUserMenu}
-                                sx={{ p: 0 }}
+                    {isLoggedIn && (
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="Open settings">
+                                <IconButton
+                                    onClick={handleOpenUserMenu}
+                                    sx={{ p: 0 }}
+                                >
+                                    <Avatar alt="Admin" src="/admin.jpg" />
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
                             >
-                                <Avatar
-                                    alt="Remy Sharp"
-                                    src="/static/images/avatar/2.jpg"
-                                />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            <MenuItem>
-                                <Typography textAlign={'center'}>
-                                    Log out
-                                </Typography>
-                            </MenuItem>
-                        </Menu>
-                    </Box>
+                                <MenuItem>
+                                    <Typography textAlign={'center'}>
+                                        Log out
+                                    </Typography>
+                                </MenuItem>
+                            </Menu>
+                        </Box>
+                    )}
                 </Toolbar>
             </Container>
         </AppBar>

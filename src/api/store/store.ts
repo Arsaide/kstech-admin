@@ -26,7 +26,7 @@ export default class Store {
             );
 
             this.setUser(response.data.user);
-
+            localStorage.setItem('token ', response.data.token);
             return response;
         } catch (e: any) {
             throw e;
@@ -37,6 +37,15 @@ export default class Store {
         try {
             const token = localStorage.getItem('token');
             return await AuthService.checkUser(token);
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async logout() {
+        try {
+            localStorage.removeItem('token');
+            this.setUser({} as IUser);
         } catch (e: any) {
             throw e;
         }
