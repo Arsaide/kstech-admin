@@ -6,6 +6,9 @@ import { BrowserRouter } from 'react-router-dom';
 import Store from './api/store/store.ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { AuthProvider } from './lib/providers/auth-provider.tsx';
+import ToastMessage from './components/layout/common/ui/alerts/toast-message/ToastMessage.tsx';
+import 'react-toastify/dist/ReactToastify.css';
 
 const queryClient = new QueryClient();
 
@@ -22,10 +25,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
             <Context.Provider value={{ store }}>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
+                <AuthProvider>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </AuthProvider>
             </Context.Provider>
+            <ToastMessage />
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     </React.StrictMode>,

@@ -1,11 +1,11 @@
-import {ToastContainer} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 const ToastMessage = () => {
     return (
         <>
             <ToastContainer
                 position="bottom-right"
-                autoClose={4000}
+                autoClose={5000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
