@@ -21,11 +21,11 @@ export const Context = createContext<State>({
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            {/*<Context.Provider value={{ store }}>*/}
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-            {/*</Context.Provider>*/}
+            <Context.Provider value={{ store }}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </Context.Provider>
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     </React.StrictMode>,

@@ -1,13 +1,20 @@
-import { IUser } from "../../types/IUser.types.ts";
-import { createContext, Dispatch, FC, ReactNode, SetStateAction, useContext, useState } from "react";
-import { Context } from "../../main.tsx";
-import { observer } from "mobx-react-lite";
+import {
+    createContext,
+    Dispatch,
+    FC,
+    ReactNode,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
+import { Context } from '../../main.tsx';
+import { observer } from 'mobx-react-lite';
+import { useMutation } from '@tanstack/react-query';
 
 interface IAuthContext {
     isLoggedIn: boolean;
-    user: IUser | null;
     setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
-    // checkAuthAndFetchUser: () => Promise<void>;
 }
 
 interface IAuthProvider {
@@ -16,28 +23,40 @@ interface IAuthProvider {
 
 export const AuthContext = createContext<IAuthContext>({
     isLoggedIn: false,
-    user: null,
     setIsLoggedIn: () => null,
-    // checkAuthAndFetchUser: async () => {}
 });
 
 export const AuthProvider: FC<IAuthProvider> = observer(({ children }) => {
     const { store } = useContext(Context);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
-        const storedAuth = localStorage.getItem("isLoggedIn");
+        const storedAuth = localStorage.getItem('isLoggedIn');
         return storedAuth ? JSON.parse(storedAuth) : false;
     });
-    const [user, setUser] = useState<IUser | null>(null);
 
+    const { mutate, isPending, isError, isSuccess } = useMutation({
+        mutationKey: ['check user'],
+        mutationFn: async () => store.checkUser(),
+    });
+
+    useEffect(() => {
+        const fetchRequest = () => {
+            mutate();
+            if (isSuccess) {
+                setIsLoggedIn(true);
+            } else if (isError) {
+                setIsLoggedIn(false);
+            }
+        };
+        fetchRequest();
+    }, []);
 
     const value = {
         isLoggedIn,
         setIsLoggedIn,
-        user,
-        // checkAuthAndFetchUser,
-    }
+        isPending,
+    };
 
-    return(
-      <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-    )
-};
+    return (
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    );
+});
