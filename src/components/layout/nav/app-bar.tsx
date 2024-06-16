@@ -12,9 +12,11 @@ import { Menu as MenuIcon } from 'lucide-react';
 import { AppBar } from '@mui/material';
 import { useContext } from 'react';
 import { AuthContext } from '../../../lib/providers/auth-provider.tsx';
+import { Context } from '../../../main.tsx';
 
 const AppBarMenu = () => {
-    const { isLoggedIn } = useContext(AuthContext);
+    const { store } = useContext(Context);
+    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
         null,
     );
@@ -35,6 +37,10 @@ const AppBarMenu = () => {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const handleLogout = () => {
+        store.logout().then(() => setIsLoggedIn(false));
     };
 
     return (
@@ -164,8 +170,11 @@ const AppBarMenu = () => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                <MenuItem>
-                                    <Typography textAlign={'center'}>
+                                <MenuItem onClick={handleCloseUserMenu}>
+                                    <Typography
+                                        textAlign={'center'}
+                                        onClick={handleLogout}
+                                    >
                                         Log out
                                     </Typography>
                                 </MenuItem>

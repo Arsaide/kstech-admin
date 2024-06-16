@@ -3,7 +3,7 @@ import HomePage from './home-page/page.tsx';
 import AppBarMenu from '../components/layout/nav/app-bar.tsx';
 import { useContext } from 'react';
 import { AuthContext } from '../lib/providers/auth-provider.tsx';
-import NotAuthPage from './not-auth/page.tsx';
+import NotAuth from './not-auth/page.tsx';
 
 function App() {
     const { isLoggedIn } = useContext(AuthContext);
@@ -15,7 +15,7 @@ function App() {
                 {isLoggedIn ? (
                     <Route path={'/'} element={<HomePage />} />
                 ) : (
-                    <Route path={'/'} element={<NotAuthPage />} />
+                    <Route path={'/'} element={<NotAuth />} />
                 )}
             </Routes>
         </div>

@@ -6,11 +6,11 @@ import {
     SetStateAction,
     useContext,
     useEffect,
-    useState,
 } from 'react';
 import { Context } from '../../main.tsx';
 import { observer } from 'mobx-react-lite';
 import { useMutation } from '@tanstack/react-query';
+import useSetLocalStorage from '../../hooks/useSetLocalStorage/useSetLocalStorage.tsx';
 
 interface IAuthContext {
     isLoggedIn: boolean;
@@ -28,7 +28,10 @@ export const AuthContext = createContext<IAuthContext>({
 
 export const AuthProvider: FC<IAuthProvider> = observer(({ children }) => {
     const { store } = useContext(Context);
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [isLoggedIn, setIsLoggedIn] = useSetLocalStorage<boolean>(
+        'isLoggedIn',
+        false,
+    );
 
     const token = localStorage.getItem('token');
 
@@ -39,17 +42,15 @@ export const AuthProvider: FC<IAuthProvider> = observer(({ children }) => {
         },
         onSuccess: () => {
             setIsLoggedIn(true);
-            localStorage.setItem('isLoggedIn', JSON.stringify(true));
         },
         onError: () => {
             setIsLoggedIn(false);
-            localStorage.setItem('isLoggedIn', JSON.stringify(false));
         },
     });
 
     useEffect(() => {
         mutate();
-    }, [token]);
+    }, [token, isLoggedIn]);
 
     const value = {
         isLoggedIn,
