@@ -13,6 +13,6 @@ export default class AuthService {
     static async checkUser(
         token: string | null,
     ): Promise<AxiosResponse<AuthResponseModel>> {
-        return $api.post<AuthResponseModel>('/auth/checkuser', { token });
+        return $api.get<AuthResponseModel>(`/auth/checkuser?token=${token}`);
     }
 }

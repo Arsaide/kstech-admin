@@ -26,16 +26,15 @@ export default class Store {
             );
 
             this.setUser(response.data.user);
-            localStorage.setItem('token ', response.data.token);
+            localStorage.setItem('token', response.data.token);
             return response;
         } catch (e: any) {
             throw e;
         }
     }
 
-    async checkUser() {
+    async checkUser(token: string | null) {
         try {
-            const token = localStorage.getItem('token');
             return await AuthService.checkUser(token);
         } catch (e: any) {
             throw e;

@@ -28,27 +28,28 @@ export const AuthContext = createContext<IAuthContext>({
 
 export const AuthProvider: FC<IAuthProvider> = observer(({ children }) => {
     const { store } = useContext(Context);
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
-        const storedAuth = localStorage.getItem('isLoggedIn');
-        return storedAuth ? JSON.parse(storedAuth) : false;
-    });
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-    const { mutate, isPending, isError, isSuccess } = useMutation({
+    const token = localStorage.getItem('token');
+
+    const { mutate, isPending } = useMutation({
         mutationKey: ['check user'],
-        mutationFn: async () => store.checkUser(),
+        mutationFn: async () => {
+            await store.checkUser(token);
+        },
+        onSuccess: () => {
+            setIsLoggedIn(true);
+            localStorage.setItem('isLoggedIn', JSON.stringify(true));
+        },
+        onError: () => {
+            setIsLoggedIn(false);
+            localStorage.setItem('isLoggedIn', JSON.stringify(false));
+        },
     });
 
     useEffect(() => {
-        const fetchRequest = () => {
-            mutate();
-            if (isSuccess) {
-                setIsLoggedIn(true);
-            } else if (isError) {
-                setIsLoggedIn(false);
-            }
-        };
-        fetchRequest();
-    }, []);
+        mutate();
+    }, [token]);
 
     const value = {
         isLoggedIn,
