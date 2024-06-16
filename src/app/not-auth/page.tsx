@@ -1,4 +1,4 @@
-import NotAuthPage from '../../components/pages/not-auth-page/not-auth-page.tsx';
+import NotAuthPage from '../../components/pages/not-auth-page/NotAuthPage.tsx';
 
 const NotAuth = () => {
     return (

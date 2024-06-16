@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Store from './api/store/store.ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { AuthProvider } from './lib/providers/auth-provider.tsx';
+import { AuthProvider } from './lib/providers/AuthProvider.tsx';
 import ToastMessage from './components/layout/common/ui/alerts/toast-message/ToastMessage.tsx';
 import 'react-toastify/dist/ReactToastify.css';
 

@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './home-page/page.tsx';
-import AppBarMenu from '../components/layout/nav/app-bar.tsx';
+import AppBarMenu from '../components/layout/nav/AppBar.tsx';
 import { useContext } from 'react';
-import { AuthContext } from '../lib/providers/auth-provider.tsx';
+import { AuthContext } from '../lib/providers/AuthProvider.tsx';
 import NotAuth from './not-auth/page.tsx';
 
 function App() {

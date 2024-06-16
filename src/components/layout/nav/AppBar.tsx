@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Menu as MenuIcon } from 'lucide-react';
 import { AppBar } from '@mui/material';
 import { useContext } from 'react';
-import { AuthContext } from '../../../lib/providers/auth-provider.tsx';
+import { AuthContext } from '../../../lib/providers/AuthProvider.tsx';
 import { Context } from '../../../main.tsx';
 
 const AppBarMenu = () => {
