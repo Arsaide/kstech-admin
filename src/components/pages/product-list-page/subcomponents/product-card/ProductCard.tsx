@@ -23,7 +23,7 @@ const ProductCard: FC<ProductCardProps> = ({
             : description;
 
     return (
-        <div key={id} className={'card'}>
+        <div className={'card'}>
             <div className={'cardCnt'}>
                 <div className={'cardImgCnt'}>
                     <img

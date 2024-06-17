@@ -1,10 +1,12 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { useContext, useEffect } from 'react';
+import { ChangeEvent, useContext, useEffect } from 'react';
 import { Context } from '../../../main.tsx';
 import { AuthContext } from '../../../lib/providers/AuthProvider.tsx';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from './subcomponents/product-card/ProductCard.tsx';
 import './ProductList.css';
+import { Pagination } from '@mui/material';
+import Box from '@mui/material/Box';
 
 const ProductList = () => {
     const { store } = useContext(Context);
@@ -17,14 +19,21 @@ const ProductList = () => {
         setSearchParams({ page: currentPage.toString() });
     }, [currentPage, setSearchParams]);
 
-    const { isLoading, isError, error, data, isFetching, isPlaceholderData } =
-        useQuery({
-            queryKey: ['products', currentPage],
-            queryFn: () => store.getProductsList(currentPage),
-            select: data => data.data,
-            enabled: isLoggedIn,
-            placeholderData: keepPreviousData,
-        });
+    const handleChangePagination = (
+        _event: ChangeEvent<unknown>,
+        page: number,
+    ) => {
+        setSearchParams({ page: page.toString() });
+        localStorage.setItem('ProductListPage', page.toString());
+    };
+
+    const { isLoading, isError, error, data } = useQuery({
+        queryKey: ['products', currentPage],
+        queryFn: () => store.getProductsList(currentPage),
+        select: data => data.data,
+        enabled: isLoggedIn,
+        placeholderData: keepPreviousData,
+    });
 
     return (
         <div>
@@ -37,6 +46,7 @@ const ProductList = () => {
                     {data &&
                         data.products.map(item => (
                             <ProductCard
+                                key={item.id}
                                 id={item.id}
                                 name={item.name}
                                 description={item.description}
@@ -46,28 +56,14 @@ const ProductList = () => {
                         ))}
                 </div>
             )}
-            <span>Current Page: {currentPage}</span>
-            <button
-                onClick={() => {
-                    const newPage = Math.max(currentPage - 1, 1);
-                    setSearchParams({ page: newPage.toString() });
-                }}
-                disabled={currentPage === 1}
-            >
-                Previous Page
-            </button>{' '}
-            <button
-                onClick={() => {
-                    if (!isPlaceholderData && data) {
-                        const newPage = currentPage + 1;
-                        setSearchParams({ page: newPage.toString() });
-                    }
-                }}
-                disabled={isPlaceholderData || !data}
-            >
-                Next Page
-            </button>
-            {isFetching ? <span> Loading...</span> : null}{' '}
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+                <Pagination
+                    count={data ? data.totalPages : 1}
+                    onChange={handleChangePagination}
+                    variant="outlined"
+                    shape="rounded"
+                />
+            </Box>
         </div>
     );
 };

@@ -32,7 +32,7 @@ const SideBar: FC<SideBarProps> = ({ children }) => {
                     }}
                     open
                 >
-                    {DrawerElements}
+                    <DrawerElements />
                 </Drawer>
             </Box>
             <Box
