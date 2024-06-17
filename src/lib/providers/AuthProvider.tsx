@@ -14,6 +14,7 @@ import useSetLocalStorage from '../../hooks/useSetLocalStorage/useSetLocalStorag
 
 interface IAuthContext {
     isLoggedIn: boolean;
+    isPending: boolean;
     setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -23,6 +24,7 @@ interface IAuthProvider {
 
 export const AuthContext = createContext<IAuthContext>({
     isLoggedIn: false,
+    isPending: false,
     setIsLoggedIn: () => null,
 });
 

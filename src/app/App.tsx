@@ -4,20 +4,27 @@ import AppBarMenu from '../components/layout/nav/AppBar.tsx';
 import { useContext } from 'react';
 import { AuthContext } from '../lib/providers/AuthProvider.tsx';
 import NotAuth from './not-auth/page.tsx';
+import PendingPage from './pending-page/page.tsx';
 
 function App() {
-    const { isLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, isPending } = useContext(AuthContext);
 
     return (
         <div className={'App'}>
-            <AppBarMenu />
-            <Routes>
-                {isLoggedIn ? (
-                    <Route path={'/'} element={<HomePage />} />
-                ) : (
-                    <Route path={'/'} element={<NotAuth />} />
-                )}
-            </Routes>
+            {isPending ? (
+                <PendingPage />
+            ) : (
+                <>
+                    <AppBarMenu />
+                    <Routes>
+                        {isLoggedIn ? (
+                            <Route path={'/'} element={<HomePage />} />
+                        ) : (
+                            <Route path={'/'} element={<NotAuth />} />
+                        )}
+                    </Routes>
+                </>
+            )}
         </div>
     );
 }
