@@ -105,8 +105,8 @@ select {
   flex-direction: column;
 }
 
-.main {
-  flex: 1 1 auto;
+main {
+  margin-top: 64px;
 }
 
 /*[class*="container"] {*/
