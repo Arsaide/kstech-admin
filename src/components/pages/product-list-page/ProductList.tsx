@@ -5,7 +5,7 @@ import { AuthContext } from '../../../lib/providers/AuthProvider.tsx';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from './subcomponents/product-card/ProductCard.tsx';
 import './ProductList.css';
-import { Pagination } from '@mui/material';
+import { Alert, Pagination } from '@mui/material';
 import Box from '@mui/material/Box';
 import { ProductListStyles } from './ProductList.styles.ts';
 import ProductsListSkeleton from './subcomponents/products-list-skeleton/ProductsListSkeleton.tsx';
@@ -42,7 +42,9 @@ const ProductList = () => {
             {isLoading ? (
                 <ProductsListSkeleton />
             ) : isError ? (
-                <div>Error: {error.message}</div>
+                <Alert variant="filled" severity="error">
+                    Error: {error.message}
+                </Alert>
             ) : (
                 <div className={'cardsList'}>
                     {data &&
