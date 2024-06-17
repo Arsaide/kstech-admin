@@ -6,11 +6,19 @@
   --black-08: #5A5A5A;
   --black-05: #949494;
   --black-02: #D6D6D6;
+  --black-06: #e1e1e1;
   --black-005: #F5F5F5;
 
   --white: #FFFFFF;
 
   --blue: #3E77AA;
+
+  --red: #FF2F00;
+
+  --green: #359D3F;
+
+  --errorv1: #F04438;
+  --errorv2: #FDA29B;
 
   --fz-text14: 14px;
   --fz-text16: 16px;
