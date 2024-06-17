@@ -54,7 +54,7 @@ dd {
 }
 
 body {
-  color: var(--white);
+  color: var(--black);
   min-height: 100vh;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
