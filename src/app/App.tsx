@@ -5,7 +5,8 @@ import { AuthContext } from '../lib/providers/AuthProvider.tsx';
 import NotAuth from './not-auth/page.tsx';
 import PendingPage from './pending-page/page.tsx';
 import AppBarMenu from '../components/layout/nav/AppBar.tsx';
-import SideBar from '../components/layout/nav/side-bar/SideBar.tsx';
+import SideBarMenu from '../components/layout/nav/side-bar/SideBar.tsx';
+import ProductList from './product-list/page.tsx';
 
 function App() {
     const { isLoggedIn, isPending } = useContext(AuthContext);
@@ -16,16 +17,22 @@ function App() {
                 <PendingPage />
             ) : (
                 <>
-                    <AppBarMenu />
-                    <SideBar>
-                        <Routes>
-                            {isLoggedIn ? (
+                    {isLoggedIn && <AppBarMenu />}
+                    {isLoggedIn ? (
+                        <SideBarMenu>
+                            <Routes>
                                 <Route path={'/'} element={<HomePage />} />
-                            ) : (
-                                <Route path={'/'} element={<NotAuth />} />
-                            )}
+                                <Route
+                                    path={'/product-list'}
+                                    element={<ProductList />}
+                                />
+                            </Routes>
+                        </SideBarMenu>
+                    ) : (
+                        <Routes>
+                            <Route path={'/'} element={<NotAuth />} />
                         </Routes>
-                    </SideBar>
+                    )}
                 </>
             )}
         </div>
