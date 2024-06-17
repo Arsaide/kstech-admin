@@ -1,5 +1,6 @@
 import { Box, CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { MainColorsEnum } from '../../lib/enums/colors-enum.ts';
 
 const PendingPage = () => {
     return (
@@ -18,8 +19,13 @@ const PendingPage = () => {
                         thickness={2}
                         color={'success'}
                     />
-                    <Typography sx={{ color: '#333', textAlign: 'center' }}>
-                        Подождите пока загрузится сайт
+                    <Typography
+                        sx={{
+                            color: MainColorsEnum.BLACK,
+                            textAlign: 'center',
+                        }}
+                    >
+                        Зачекайте відповіді від серверу...
                     </Typography>
                 </Box>
             </Box>

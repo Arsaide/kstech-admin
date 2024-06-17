@@ -3,3 +3,9 @@
     flex-wrap: wrap;
     gap: 10px;
 }
+
+.MuiSkeleton-root {
+    -moz-transform: none;
+    -ms-transform: none;
+    transform: none !important;
+}

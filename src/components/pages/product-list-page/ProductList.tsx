@@ -7,6 +7,8 @@ import ProductCard from './subcomponents/product-card/ProductCard.tsx';
 import './ProductList.css';
 import { Pagination } from '@mui/material';
 import Box from '@mui/material/Box';
+import { ProductListStyles } from './ProductList.styles.ts';
+import ProductsListSkeleton from './subcomponents/products-list-skeleton/ProductsListSkeleton.tsx';
 
 const ProductList = () => {
     const { store } = useContext(Context);
@@ -38,7 +40,7 @@ const ProductList = () => {
     return (
         <div>
             {isLoading ? (
-                <div>Loading...</div>
+                <ProductsListSkeleton />
             ) : isError ? (
                 <div>Error: {error.message}</div>
             ) : (
@@ -56,7 +58,7 @@ const ProductList = () => {
                         ))}
                 </div>
             )}
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+            <Box sx={ProductListStyles.pagination}>
                 <Pagination
                     count={data ? data.totalPages : 1}
                     onChange={handleChangePagination}
