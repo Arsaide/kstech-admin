@@ -1,5 +1,11 @@
-const ProductList = () => {
-    return <div></div>;
+import ProductList from '../../components/pages/product-list-page/ProductList.tsx';
+
+const ProductListPage = () => {
+    return (
+        <>
+            <ProductList />
+        </>
+    );
 };
 
-export default ProductList;
+export default ProductListPage;
