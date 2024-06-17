@@ -29,9 +29,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     <BrowserRouter>
                         <App />
                     </BrowserRouter>
+                    <ToastMessage />
                 </AuthProvider>
             </Context.Provider>
-            <ToastMessage />
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     </React.StrictMode>,

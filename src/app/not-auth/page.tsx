@@ -1,11 +1,11 @@
-import NotAuthPage from '../../components/pages/not-auth-page/NotAuthPage.tsx';
+import NotAuth from '../../components/pages/not-auth-page/NotAuthPage.tsx';
 
-const NotAuth = () => {
+const NotAuthPage = () => {
     return (
         <>
-            <NotAuthPage />
+            <NotAuth />
         </>
     );
 };
 
-export default NotAuth;
+export default NotAuthPage;

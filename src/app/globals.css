@@ -12,6 +12,7 @@
   --white: #FFFFFF;
 
   --blue: #3E77AA;
+  --blue-mui: #1976d2;
 
   --red: #FF2F00;
 
@@ -56,7 +57,7 @@ figcaption,
 blockquote,
 dl,
 dd {
-  font-size: 16px;
+  font-size: var(--fz-text16);
   margin: 0;
   font-weight: 400;
 }
@@ -65,7 +66,6 @@ body {
   color: var(--black);
   min-height: 100vh;
   text-rendering: optimizeSpeed;
-  line-height: 1.5;
 }
 
 ul,

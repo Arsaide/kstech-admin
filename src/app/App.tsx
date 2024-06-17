@@ -6,7 +6,7 @@ import NotAuth from './not-auth/page.tsx';
 import PendingPage from './pending-page/page.tsx';
 import AppBarMenu from '../components/layout/nav/AppBar.tsx';
 import SideBarMenu from '../components/layout/nav/side-bar/SideBar.tsx';
-import ProductList from './product-list/page.tsx';
+import ProductListPage from './product-list/page.tsx';
 
 function App() {
     const { isLoggedIn, isPending } = useContext(AuthContext);
@@ -24,13 +24,13 @@ function App() {
                                 <Route path={'/'} element={<HomePage />} />
                                 <Route
                                     path={'/product-list'}
-                                    element={<ProductList />}
+                                    element={<ProductListPage />}
                                 />
                             </Routes>
                         </SideBarMenu>
                     ) : (
                         <Routes>
-                            <Route path={'/'} element={<NotAuth />} />
+                            <Route path={'*'} element={<NotAuth />} />
                         </Routes>
                     )}
                 </>
