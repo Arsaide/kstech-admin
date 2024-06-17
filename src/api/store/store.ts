@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { toast } from 'react-toastify';
 import AuthService from '../services/AuthService.ts';
 import { IUser } from '../../types/IUser.types.ts';
+import ProductsService from '../services/ProductsService.ts';
 
 export default class Store {
     constructor() {
@@ -45,6 +46,14 @@ export default class Store {
         try {
             localStorage.removeItem('token');
             this.setUser({} as IUser);
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async getProductsList(page: number) {
+        try {
+            return await ProductsService.getProductsList(page);
         } catch (e: any) {
             throw e;
         }
