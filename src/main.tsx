@@ -6,23 +6,22 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ToastMessage from './components/layout/common/ui/alerts/toast-message/ToastMessage.tsx';
 import 'react-toastify/dist/ReactToastify.css';
 import { Context, store } from './api/context.ts';
-import {
-    BrowserRouter,
-} from 'react-router-dom';
-
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './utils/providers/AuthProvider.tsx';
 
 const queryClient = new QueryClient();
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
-
 root.render(
     <QueryClientProvider client={queryClient}>
         <Context.Provider value={{ store }}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-            <ToastMessage />
+            <AuthProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+                <ToastMessage />
+            </AuthProvider>
         </Context.Provider>
         <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>,
