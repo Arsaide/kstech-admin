@@ -1,6 +1,6 @@
 import { Box, CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { MainColorsEnum } from '../../lib/enums/colors-enum.ts';
+import { MainColorsEnum } from '../../utils/enums/colors-enum.ts';
 
 const PendingPage = () => {
     return (

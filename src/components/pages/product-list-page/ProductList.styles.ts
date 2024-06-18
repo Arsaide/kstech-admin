@@ -1,4 +1,4 @@
-import { MainColorsEnum } from '../../../lib/enums/colors-enum.ts';
+import { MainColorsEnum } from '../../../utils/enums/colors-enum.ts';
 
 export const ProductListStyles = {
     circularProgress: {

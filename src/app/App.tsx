@@ -1,60 +1,21 @@
-import { Route, Routes } from 'react-router-dom';
-import HomePage from './home/page.tsx';
+import { RouterProvider } from 'react-router-dom';
 import { useContext } from 'react';
-import { AuthContext } from '../lib/providers/AuthProvider.tsx';
-import NotAuth from './not-auth/page.tsx';
+import { AuthContext } from '../utils/providers/AuthProvider.tsx';
 import PendingPage from './pending/page.tsx';
 import AppBarMenu from '../components/layout/nav/AppBar.tsx';
-import SideBarMenu from '../components/layout/nav/side-bar/SideBar.tsx';
-import ProductListPage from './product-list/page.tsx';
-import CreateProductPage from './create-product/page.tsx';
-import AnalyticsPage from './analytics/page.tsx';
-import ClientsPage from './clients/page.tsx';
-import ProductId from './product-list/product-id/ProductId.tsx';
+import { authRouter, notAuthRouter } from '../utils/routes/routes.tsx';
 
 function App() {
     const { isLoggedIn, isPending } = useContext(AuthContext);
 
+    if (isPending) {
+        return <PendingPage />;
+    }
+
     return (
-        <div className={'App'}>
-            {isPending ? (
-                <PendingPage />
-            ) : (
-                <>
-                    {isLoggedIn && <AppBarMenu />}
-                    {isLoggedIn ? (
-                        <SideBarMenu>
-                            <Routes>
-                                <Route path={'/'} element={<HomePage />} />
-                                <Route
-                                    path={'/products-list'}
-                                    element={<ProductListPage />}
-                                />
-                                <Route
-                                    path={'/products-list/:id/'}
-                                    element={<ProductId />}
-                                />
-                                <Route
-                                    path={'/create-product'}
-                                    element={<CreateProductPage />}
-                                />
-                                <Route
-                                    path={'/analytics'}
-                                    element={<AnalyticsPage />}
-                                />
-                                <Route
-                                    path={'/clients'}
-                                    element={<ClientsPage />}
-                                />
-                            </Routes>
-                        </SideBarMenu>
-                    ) : (
-                        <Routes>
-                            <Route path={'*'} element={<NotAuth />} />
-                        </Routes>
-                    )}
-                </>
-            )}
+        <div className="App">
+            {isLoggedIn && <AppBarMenu />}
+            <RouterProvider router={isLoggedIn ? authRouter : notAuthRouter} />
         </div>
     );
 }

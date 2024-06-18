@@ -9,7 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { AppBar } from '@mui/material';
 import { useContext } from 'react';
-import { AuthContext } from '../../../lib/providers/AuthProvider.tsx';
+import { AuthContext } from '../../../utils/providers/AuthProvider.tsx';
 import { Context } from '../../../main.tsx';
 import useAnchorElUser from '../../../hooks/use-anchor-el-user/useAnchorElUser.ts';
 

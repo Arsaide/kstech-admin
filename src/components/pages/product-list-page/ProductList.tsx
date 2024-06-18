@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { ChangeEvent, useContext, useEffect } from 'react';
 import { Context } from '../../../main.tsx';
-import { AuthContext } from '../../../lib/providers/AuthProvider.tsx';
+import { AuthContext } from '../../../utils/providers/AuthProvider.tsx';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from './subcomponents/product-card/ProductCard.tsx';
 import './ProductList.css';
