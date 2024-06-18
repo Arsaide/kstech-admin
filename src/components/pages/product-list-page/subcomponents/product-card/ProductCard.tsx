@@ -39,7 +39,10 @@ const ProductCard: FC<ProductCardProps> = ({
                         <div className={'cardPrice'}>{price} грн</div>
                     </div>
                     <Button variant="contained" sx={{ width: 'max-content' }}>
-                        <NavLink to={`/products/${id}`} className={'cardBtn'}>
+                        <NavLink
+                            to={`/products-list/${id}`}
+                            className={'cardBtn'}
+                        >
                             <Settings size={20} />
                             Редагувати
                         </NavLink>

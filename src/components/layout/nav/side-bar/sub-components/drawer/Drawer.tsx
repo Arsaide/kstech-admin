@@ -45,7 +45,7 @@ const DrawerElements = () => {
                     onClick={handleClick}
                 >
                     <NavLink
-                        to={`/product-list?page=${page}`}
+                        to={`/products-list?page=${page}`}
                         style={{ width: '100%' }}
                     >
                         <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>

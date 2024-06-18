@@ -66,6 +66,7 @@ const ProductList = () => {
                     onChange={handleChangePagination}
                     variant="outlined"
                     shape="rounded"
+                    color="primary"
                 />
             </Box>
         </div>
