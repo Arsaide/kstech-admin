@@ -34,7 +34,6 @@ const ProductList = () => {
         queryFn: () => store.getProductsList(currentPage),
         select: data => data.data,
         enabled: isLoggedIn,
-        placeholderData: keepPreviousData,
     });
 
     return (
