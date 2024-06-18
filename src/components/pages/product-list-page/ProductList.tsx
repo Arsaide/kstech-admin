@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { ChangeEvent, Key, useContext, useEffect} from 'react';
-
+import { ChangeEvent, useContext, useEffect} from 'react';
 import './ProductList.css';
 import {Alert, Pagination} from '@mui/material';
 import Box from '@mui/material/Box';
@@ -12,6 +11,7 @@ import ProductsListSkeleton from "./subcomponents/products-list-skeleton/Product
 import ProductCard from "./subcomponents/product-card/ProductCard";
 import {ProductListStyles} from "./ProductList.styles";
 import {OneProductResponseModel} from "../../../api/models/ProductResponseModel";
+import {toast} from "react-toastify";
 
 const ProductList = () => {
     const {store} = useContext(Context);

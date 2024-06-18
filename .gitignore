@@ -21,3 +21,16 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/.idea/kstech-admin.iml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/.idea/misc.xml
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/jsLinters/eslint.xml
+/.idea/prettier.xml
+/.idea/codeStyles/Project.xml
+/.idea/shelf/Uncommitted_changes_before_Update_at_6_18_2024_11_02_PM_[Changes]/shelved.patch
+/.idea/workspace.xml
+/.idea/shelf/Uncommitted_changes_before_Update_at_6_18_2024_11_02_PM_[Changes]/shelved.patch
