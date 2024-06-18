@@ -7,7 +7,6 @@ import CreateProductPage from '../../app/create-product/page.tsx';
 import AnalyticsPage from '../../app/analytics/page.tsx';
 import ClientsPage from '../../app/clients/page.tsx';
 import NotAuth from '../../app/not-auth/page.tsx';
-import ProductList from '../../components/pages/product-list-page/ProductList.tsx';
 
 export const authRouter = createBrowserRouter([
     {
@@ -22,7 +21,10 @@ export const authRouter = createBrowserRouter([
             {
                 path: 'products-list',
                 element: <ProductListPage />,
-                errorElement: <ProductList />,
+            },
+            {
+                path: 'products-list/*',
+                element: <ProductListPage />,
             },
             {
                 path: 'products-list/:id',
