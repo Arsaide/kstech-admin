@@ -1,4 +1,4 @@
-import { RouterProvider } from 'react-router-dom';
+import { Outlet, RouterProvider } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../utils/providers/AuthProvider.tsx';
 import PendingPage from './pending/page.tsx';
@@ -15,7 +15,11 @@ function App() {
     return (
         <div className="App">
             {isLoggedIn && <AppBarMenu />}
-            <RouterProvider router={isLoggedIn ? authRouter : notAuthRouter} />
+            <RouterProvider
+                router={isLoggedIn ? authRouter : notAuthRouter}
+                future={{ v7_startTransition: true }}
+            />
+            <Outlet />
         </div>
     );
 }

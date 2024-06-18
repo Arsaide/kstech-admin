@@ -1,11 +1,11 @@
 import Container from '@mui/material/Container';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
-import { Context } from '../../../main.tsx';
 import { LoginData } from '../../../types/LoginData.types.ts';
 import { useMutation } from '@tanstack/react-query';
 import AuthForm from './auth-form/AuthForm.tsx';
 import { AuthContext } from '../../../utils/providers/AuthProvider.tsx';
+import { Context } from '../../../api/context.ts';
 
 const NotAuthPage = () => {
     const { store } = useContext(Context);

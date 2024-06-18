@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import SideBarMenu from '../../components/layout/nav/side-bar/SideBar.tsx';
 import HomePage from '../../app/home/page.tsx';
 import ProductListPage from '../../app/product-list/page.tsx';
-import ProductId from '../../app/product-list/product-id/ProductId.tsx';
+import ProductIdPage from '../../app/product-list/product-id/ProductIdPage.tsx';
 import CreateProductPage from '../../app/create-product/page.tsx';
 import AnalyticsPage from '../../app/analytics/page.tsx';
 import ClientsPage from '../../app/clients/page.tsx';
@@ -12,6 +12,7 @@ export const authRouter = createBrowserRouter([
     {
         path: '/',
         element: <SideBarMenu />,
+        errorElement: <NotAuth />,
         children: [
             {
                 path: '/',
@@ -20,12 +21,10 @@ export const authRouter = createBrowserRouter([
             {
                 path: 'products-list',
                 element: <ProductListPage />,
-                children: [
-                    {
-                        path: ':productId',
-                        element: <ProductId />,
-                    },
-                ],
+            },
+            {
+                path: 'products-list/:id',
+                element: <ProductIdPage />,
             },
             {
                 path: 'create-product',

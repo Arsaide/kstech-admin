@@ -7,10 +7,10 @@ import {
     useContext,
     useEffect,
 } from 'react';
-import { Context } from '../../main.tsx';
 import { observer } from 'mobx-react-lite';
 import { useMutation } from '@tanstack/react-query';
 import useSetLocalStorage from '../../hooks/useSetLocalStorage/useSetLocalStorage.tsx';
+import { Context } from '../../api/context.ts';
 
 interface IAuthContext {
     isLoggedIn: boolean;

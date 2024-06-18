@@ -1,6 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { ChangeEvent, useContext, useEffect } from 'react';
-import { Context } from '../../../main.tsx';
 import { AuthContext } from '../../../utils/providers/AuthProvider.tsx';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from './subcomponents/product-card/ProductCard.tsx';
@@ -9,6 +8,7 @@ import { Alert, Pagination } from '@mui/material';
 import Box from '@mui/material/Box';
 import { ProductListStyles } from './ProductList.styles.ts';
 import ProductsListSkeleton from './subcomponents/products-list-skeleton/ProductsListSkeleton.tsx';
+import { Context } from '../../../api/context.ts';
 
 const ProductList = () => {
     const { store } = useContext(Context);

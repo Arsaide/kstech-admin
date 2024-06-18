@@ -58,4 +58,12 @@ export default class Store {
             throw e;
         }
     }
+
+    async getOneProduct(id: string | undefined) {
+        try {
+            return await ProductsService.getOneProduct(id);
+        } catch (e: any) {
+            throw e;
+        }
+    }
 }

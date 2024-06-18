@@ -10,8 +10,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { AppBar } from '@mui/material';
 import { useContext } from 'react';
 import { AuthContext } from '../../../utils/providers/AuthProvider.tsx';
-import { Context } from '../../../main.tsx';
 import useAnchorElUser from '../../../hooks/use-anchor-el-user/useAnchorElUser.ts';
+import { Context } from '../../../api/context.ts';
 
 const AppBarMenu = () => {
     const { store } = useContext(Context);

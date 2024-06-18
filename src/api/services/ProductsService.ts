@@ -12,7 +12,7 @@ export default class ProductsService {
         return $api.get(`/products/get?page=${page}`);
     }
 
-    static async getOneProducts(
+    static async getOneProduct(
         id: string | undefined,
     ): Promise<AxiosResponse<OneProductResponseModel>> {
         return $api.get(`/products/getone?id=${id}`);
