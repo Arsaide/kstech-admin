@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, useContext, useEffect } from 'react';
 import { AuthContext } from '../../../utils/providers/AuthProvider.tsx';
 import ProductCard from './subcomponents/product-card/ProductCard.tsx';
 import './ProductList.css';
@@ -8,17 +8,25 @@ import Box from '@mui/material/Box';
 import { ProductListStyles } from './ProductList.styles.ts';
 import ProductsListSkeleton from './subcomponents/products-list-skeleton/ProductsListSkeleton.tsx';
 import { Context } from '../../../api/context.ts';
+import { useSearchParams } from 'react-router-dom';
 
 const ProductList = () => {
     const { store } = useContext(Context);
     const { isLoggedIn } = useContext(AuthContext);
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const currentPage = parseInt(searchParams.get('page') || '1', 10);
+
+    useEffect(() => {
+        setSearchParams({ page: currentPage.toString() });
+    }, [currentPage, setSearchParams]);
 
     const handleChangePagination = (
         _event: ChangeEvent<unknown>,
         page: number,
     ) => {
-        setCurrentPage(page);
+        setSearchParams({ page: page.toString() });
+        localStorage.setItem('ProductListPage', page.toString());
     };
 
     const { isLoading, isError, error, data } = useQuery({

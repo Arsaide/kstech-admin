@@ -1,10 +1,12 @@
-import { RouterProvider } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useContext } from 'react';
+import NotAuth from './not-auth/page.tsx';
+import AppBarMenu from '../components/layout/nav/AppBar.tsx';
+import SideBarMenu from '../components/layout/nav/side-bar/SideBar.tsx';
+import ProductListPage from './product-list/page.tsx';
 import { AuthContext } from '../utils/providers/AuthProvider.tsx';
 import PendingPage from './pending/page.tsx';
-import AppBarMenu from '../components/layout/nav/AppBar.tsx';
-import { authRouter, notAuthRouter } from '../utils/routes/routes.tsx';
-import SideBar from '../components/layout/nav/side-bar/SideBar.tsx';
+import HomePage from './home/page.tsx';
 
 function App() {
     const { isLoggedIn, isPending } = useContext(AuthContext);
@@ -14,14 +16,29 @@ function App() {
     }
 
     return (
-        <div className="App">
-            {isLoggedIn && <AppBarMenu />}
-            <SideBar>
-                <RouterProvider
-                    router={isLoggedIn ? authRouter : notAuthRouter}
-                    future={{ v7_startTransition: true }}
-                />
-            </SideBar>
+        <div className={'App'}>
+            {isPending ? (
+                <PendingPage />
+            ) : (
+                <>
+                    {isLoggedIn && <AppBarMenu />}
+                    {isLoggedIn ? (
+                        <SideBarMenu>
+                            <Routes>
+                                <Route path={'/'} element={<HomePage />} />
+                                <Route
+                                    path={'/products-list'}
+                                    element={<ProductListPage />}
+                                />
+                            </Routes>
+                        </SideBarMenu>
+                    ) : (
+                        <Routes>
+                            <Route path={'*'} element={<NotAuth />} />
+                        </Routes>
+                    )}
+                </>
+            )}
         </div>
     );
 }

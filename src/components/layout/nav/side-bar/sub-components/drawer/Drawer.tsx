@@ -7,8 +7,19 @@ import ListItemText from '@mui/material/ListItemText';
 import { NavLink } from 'react-router-dom';
 import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
 import { BadgeDollarSign, Home, LayoutList, Plus, Users } from 'lucide-react';
+import { useState } from 'react';
 
 const DrawerElements = () => {
+    const [page, setPage] = useState<string | null>('1');
+    const handleClick = () => {
+        if (localStorage.getItem('ProductListPage')) {
+            setPage(localStorage.getItem('ProductListPage'));
+        } else {
+            localStorage.setItem('ProductListPage', '1');
+            setPage('1');
+        }
+    };
+
     return (
         <div>
             <Divider />
@@ -16,6 +27,7 @@ const DrawerElements = () => {
                 <ListItem
                     disablePadding
                     sx={{ '&:hover': { bgcolor: MainColorsEnum.BLACK02 } }}
+                    onClick={handleClick}
                 >
                     <NavLink
                         to={'/'}
@@ -35,8 +47,12 @@ const DrawerElements = () => {
                 <ListItem
                     disablePadding
                     sx={{ '&:hover': { bgcolor: MainColorsEnum.BLACK02 } }}
+                    onClick={handleClick}
                 >
-                    <NavLink to={`/products-list`} style={{ width: '100%' }}>
+                    <NavLink
+                        to={`/products-list?page=${page}`}
+                        style={{ width: '100%' }}
+                    >
                         <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>
                             <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
                                 <LayoutList />
@@ -48,6 +64,7 @@ const DrawerElements = () => {
                 <ListItem
                     disablePadding
                     sx={{ '&:hover': { bgcolor: MainColorsEnum.BLACK02 } }}
+                    onClick={handleClick}
                 >
                     <NavLink to={'/create-product'} style={{ width: '100%' }}>
                         <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>
@@ -61,6 +78,7 @@ const DrawerElements = () => {
                 <ListItem
                     disablePadding
                     sx={{ '&:hover': { bgcolor: MainColorsEnum.BLACK02 } }}
+                    onClick={handleClick}
                 >
                     <NavLink to={'/analytics'} style={{ width: '100%' }}>
                         <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>
@@ -74,6 +92,7 @@ const DrawerElements = () => {
                 <ListItem
                     disablePadding
                     sx={{ '&:hover': { bgcolor: MainColorsEnum.BLACK02 } }}
+                    onClick={handleClick}
                 >
                     <NavLink to={'/clients'} style={{ width: '100%' }}>
                         <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>

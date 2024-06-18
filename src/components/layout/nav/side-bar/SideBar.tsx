@@ -5,10 +5,9 @@ import './SideBar.css';
 import { FC } from 'react';
 import DrawerElements from './sub-components/drawer/Drawer.tsx';
 import { drawerWidth } from '../index.ts';
-import { Outlet } from 'react-router-dom';
 
 interface SideBarProps {
-    children?: React.ReactNode;
+    children: React.ReactNode;
 }
 
 const SideBar: FC<SideBarProps> = ({ children }) => {
@@ -45,7 +44,6 @@ const SideBar: FC<SideBarProps> = ({ children }) => {
                 }}
             >
                 {children}
-                <Outlet />
             </Box>
         </Box>
     );
