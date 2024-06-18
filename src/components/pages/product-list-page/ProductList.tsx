@@ -1,35 +1,38 @@
 import { useQuery } from '@tanstack/react-query';
-import { ChangeEvent, useContext, useEffect } from 'react';
-import { AuthContext } from '../../../utils/providers/AuthProvider.tsx';
-import ProductCard from './subcomponents/product-card/ProductCard.tsx';
+import { ChangeEvent, Key, useContext, useEffect} from 'react';
+
 import './ProductList.css';
-import { Alert, Pagination } from '@mui/material';
+import {Alert, Pagination} from '@mui/material';
 import Box from '@mui/material/Box';
-import { ProductListStyles } from './ProductList.styles.ts';
-import ProductsListSkeleton from './subcomponents/products-list-skeleton/ProductsListSkeleton.tsx';
-import { Context } from '../../../api/context.ts';
-import { useSearchParams } from 'react-router-dom';
+
+import {useSearchParams} from 'react-router-dom';
+import {Context} from "../../../api/context";
+import {AuthContext} from "../../../utils/providers/AuthProvider";
+import ProductsListSkeleton from "./subcomponents/products-list-skeleton/ProductsListSkeleton";
+import ProductCard from "./subcomponents/product-card/ProductCard";
+import {ProductListStyles} from "./ProductList.styles";
+import {OneProductResponseModel} from "../../../api/models/ProductResponseModel";
 
 const ProductList = () => {
-    const { store } = useContext(Context);
-    const { isLoggedIn } = useContext(AuthContext);
+    const {store} = useContext(Context);
+    const {isLoggedIn} = useContext(AuthContext);
     const [searchParams, setSearchParams] = useSearchParams();
 
     const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
     useEffect(() => {
-        setSearchParams({ page: currentPage.toString() });
+        setSearchParams({page: currentPage.toString()});
     }, [currentPage, setSearchParams]);
 
     const handleChangePagination = (
         _event: ChangeEvent<unknown>,
         page: number,
     ) => {
-        setSearchParams({ page: page.toString() });
+        setSearchParams({page: page.toString()});
         localStorage.setItem('ProductListPage', page.toString());
     };
 
-    const { isLoading, isError, error, data } = useQuery({
+    const {isLoading, isError, error, data} = useQuery({
         queryKey: ['products', currentPage],
         queryFn: () => store.getProductsList(currentPage),
         select: data => data.data,
@@ -39,7 +42,7 @@ const ProductList = () => {
     return (
         <div>
             {isLoading ? (
-                <ProductsListSkeleton />
+                <ProductsListSkeleton/>
             ) : isError ? (
                 <Alert variant="filled" severity="error">
                     Error: {error.message}
@@ -47,7 +50,7 @@ const ProductList = () => {
             ) : (
                 <div className={'cardsList'}>
                     {data &&
-                        data.products.map(item => (
+                        data.products.map((item: OneProductResponseModel) => (
                             <ProductCard
                                 key={item.id}
                                 id={item.id}

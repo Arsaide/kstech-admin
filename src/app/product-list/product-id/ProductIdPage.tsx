@@ -1,5 +1,6 @@
 import { Alert } from '@mui/material';
-import ProductId from '../../../components/pages/product-list-page/product-id-page/ProductId.tsx';
+import ProductId from "../../../components/pages/product-list-page/product-id-page/ProductId";
+
 
 const ProductIdPage = () => {
     return (

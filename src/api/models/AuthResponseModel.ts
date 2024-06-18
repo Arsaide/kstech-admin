@@ -1,4 +1,5 @@
-import { IUser } from '../../types/IUser.types.ts';
+import {IUser} from "../../types/IUser.types";
+
 
 export interface AuthResponseModel {
     user: IUser;

@@ -1,15 +1,13 @@
 import { AxiosResponse } from 'axios';
 import $api from '../request';
-import {
-    AllProductResponseModel,
-    OneProductResponseModel,
-} from '../models/ProductResponseModel.ts';
+import {AllProductResponseModel, OneProductResponseModel} from "../models/ProductResponseModel";
+
 
 export default class ProductsService {
     static async getProductsList(
         page: number,
     ): Promise<AxiosResponse<AllProductResponseModel>> {
-        return $api.get(`/products/get?page=${page}`);
+        return $api.get<AllProductResponseModel>(`/products/get?page=${page}`);
     }
 
     static async getOneProduct(

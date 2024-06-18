@@ -3,8 +3,9 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import './SideBar.css';
 import { FC } from 'react';
-import DrawerElements from './sub-components/drawer/Drawer.tsx';
-import { drawerWidth } from '../index.ts';
+import { drawerWidth } from '..';
+import DrawerElements from "./sub-components/drawer/Drawer";
+
 
 interface SideBarProps {
     children?: React.ReactNode;

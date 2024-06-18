@@ -1,13 +1,14 @@
 import Container from '@mui/material/Container';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
-import { LoginData } from '../../../types/LoginData.types.ts';
-import { useMutation } from '@tanstack/react-query';
-import AuthForm from './auth-form/AuthForm.tsx';
-import { AuthContext } from '../../../utils/providers/AuthProvider.tsx';
-import { Context } from '../../../api/context.ts';
+import {Context} from "../../../api/context";
+import {AuthContext} from "../../../utils/providers/AuthProvider";
+import {LoginData} from "../../../types/LoginData.types";
+import {useMutation} from "@tanstack/react-query";
+import AuthForm from "./auth-form/AuthForm";
 
-const NotAuthPage = () => {
+
+const NotAuth = () => {
     const { store } = useContext(Context);
     const { setIsLoggedIn } = useContext(AuthContext);
 
@@ -42,4 +43,4 @@ const NotAuthPage = () => {
     );
 };
 
-export default NotAuthPage;
+export default NotAuth;

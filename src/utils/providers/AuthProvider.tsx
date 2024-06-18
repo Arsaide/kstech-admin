@@ -9,8 +9,9 @@ import {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useMutation } from '@tanstack/react-query';
-import useSetLocalStorage from '../../hooks/useSetLocalStorage/useSetLocalStorage.tsx';
-import { Context } from '../../api/context.ts';
+import {Context} from "../../api/context";
+import useSetLocalStorage from "../../hooks/useSetLocalStorage/useSetLocalStorage";
+
 
 interface IAuthContext {
     isLoggedIn: boolean;

@@ -1,9 +1,9 @@
-import { OneProductResponseModel } from '../../../../../api/models/ProductResponseModel.ts';
 import { FC } from 'react';
 import './ProductCard.css';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Settings } from 'lucide-react';
+import {OneProductResponseModel} from "../../../../../api/models/ProductResponseModel";
 
 type ProductCardProps = Pick<
     OneProductResponseModel,

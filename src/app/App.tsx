@@ -1,57 +1,58 @@
-import { useContext } from 'react';
-import { AuthContext } from '../utils/providers/AuthProvider.tsx';
-import PendingPage from './pending/page.tsx';
-import { Route, Routes } from 'react-router-dom';
-import HomePage from './home/page.tsx';
-import ProductListPage from './product-list/page.tsx';
-import AppBarMenu from '../components/layout/nav/AppBar.tsx';
-import SideBar from '../components/layout/nav/side-bar/SideBar.tsx';
-import NotAuthPage from './not-auth/page.tsx';
-import CreateProductPage from './create-product/page.tsx';
-import AnalyticsPage from './analytics/page.tsx';
-import ClientsPage from './clients/page.tsx';
-import ProductIdPage from './product-list/product-id/ProductIdPage.tsx';
+import React, {useContext} from 'react';
+import './App.css';
+import {Route, Routes} from "react-router-dom";
+import HomePage from "./home/page";
+import ProductListPage from "./product-list/page";
+import ProductIdPage from "./product-list/product-id/ProductIdPage";
+import CreateProductPage from "./create-product/page";
+import AnalyticsPage from "./analytics/page";
+import ClientsPage from "./clients/page";
+import NotAuthPage from "./not-auth/page";
+import PendingPage from './pending/page';
+import {AuthContext} from "../utils/providers/AuthProvider";
+import AppBarMenu from "../components/pages/layout/nav/AppBar";
+import SideBar from "../components/pages/layout/nav/side-bar/SideBar";
 
 function App() {
-    const { isLoggedIn, isPending } = useContext(AuthContext);
+  const { isLoggedIn, isPending } = useContext(AuthContext);
 
-    if (isPending) {
-        return <PendingPage />;
-    }
+  if (isPending) {
+    return <PendingPage />;
+  }
 
-    return (
-        <>
-            {isLoggedIn && <AppBarMenu />}
-            {isLoggedIn ? (
-                <SideBar>
-                    <Routes>
-                        <Route path={'/'} element={<HomePage />} />
-                        <Route
-                            path={'/products-list'}
-                            element={<ProductListPage />}
-                        />
-                        <Route
-                            path={'/products-list/:id'}
-                            element={<ProductIdPage />}
-                        />
-                        <Route
-                            path={'/create-product'}
-                            element={<CreateProductPage />}
-                        />
-                        <Route
-                            path={'/analytics'}
-                            element={<AnalyticsPage />}
-                        />
-                        <Route path={'/clients'} element={<ClientsPage />} />
-                    </Routes>
-                </SideBar>
-            ) : (
-                <Routes>
-                    <Route path={'*'} element={<NotAuthPage />} />
-                </Routes>
-            )}
-        </>
-    );
+  return (
+      <>
+        {isLoggedIn && <AppBarMenu />}
+        {isLoggedIn ? (
+            <SideBar>
+              <Routes>
+                <Route path={'/'} element={<HomePage />} />
+                <Route
+                    path={'/products-list'}
+                    element={<ProductListPage />}
+                />
+                <Route
+                    path={'/products-list/:id'}
+                    element={<ProductIdPage />}
+                />
+                <Route
+                    path={'/create-product'}
+                    element={<CreateProductPage />}
+                />
+                <Route
+                    path={'/analytics'}
+                    element={<AnalyticsPage />}
+                />
+                <Route path={'/clients'} element={<ClientsPage />} />
+              </Routes>
+            </SideBar>
+        ) : (
+            <Routes>
+              <Route path={'*'} element={<NotAuthPage />} />
+            </Routes>
+        )}
+      </>
+  );
 }
 
 export default App;

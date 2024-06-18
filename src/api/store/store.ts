@@ -1,8 +1,9 @@
 import { makeAutoObservable } from 'mobx';
 import { toast } from 'react-toastify';
-import AuthService from '../services/AuthService.ts';
-import { IUser } from '../../types/IUser.types.ts';
-import ProductsService from '../services/ProductsService.ts';
+import AuthService from "../services/AuthService";
+import {IUser} from "../../types/IUser.types";
+import ProductsService from "../services/ProductsService";
+
 
 export default class Store {
     constructor() {

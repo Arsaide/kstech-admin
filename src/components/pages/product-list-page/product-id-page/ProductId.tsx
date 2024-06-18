@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { Context } from '../../../../api/context.ts';
+import {Context} from "../../../../api/context";
+
 
 const ProductId = () => {
     const { store } = useContext(Context);
