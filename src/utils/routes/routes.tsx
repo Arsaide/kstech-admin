@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-
+import SideBarMenu from '../../components/layout/nav/side-bar/SideBar.tsx';
 import HomePage from '../../app/home/page.tsx';
 import ProductListPage from '../../app/product-list/page.tsx';
 import ProductIdPage from '../../app/product-list/product-id/ProductIdPage.tsx';
@@ -11,27 +11,34 @@ import NotAuth from '../../app/not-auth/page.tsx';
 export const authRouter = createBrowserRouter([
     {
         path: '/',
-        element: <HomePage />,
-    },
-    {
-        path: 'products-list',
-        element: <ProductListPage />,
-    },
-    {
-        path: 'products-list/:id',
-        element: <ProductIdPage />,
-    },
-    {
-        path: 'create-product',
-        element: <CreateProductPage />,
-    },
-    {
-        path: 'analytics',
-        element: <AnalyticsPage />,
-    },
-    {
-        path: 'clients',
-        element: <ClientsPage />,
+        element: <SideBarMenu />,
+        errorElement: <NotAuth />,
+        children: [
+            {
+                path: '/',
+                element: <HomePage />,
+            },
+            {
+                path: 'products-list',
+                element: <ProductListPage />,
+            },
+            {
+                path: 'products-list/:id',
+                element: <ProductIdPage />,
+            },
+            {
+                path: 'create-product',
+                element: <CreateProductPage />,
+            },
+            {
+                path: 'analytics',
+                element: <AnalyticsPage />,
+            },
+            {
+                path: 'clients',
+                element: <ClientsPage />,
+            },
+        ],
     },
 ]);
 
