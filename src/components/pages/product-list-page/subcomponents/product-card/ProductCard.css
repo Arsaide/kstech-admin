@@ -1,0 +1,55 @@
+.card {
+    border: 1px solid var(--black-05);
+    border-radius: 5px;
+    flex: 1 0 608px;
+}
+
+.cardCnt {
+    display: flex;
+    gap: 8px;
+    height: 100%;
+}
+
+.cardImgCnt {
+    flex: 0 0 300px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--black-02);
+}
+
+.cardImg {
+
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 10px 10px 0;
+}
+
+.cardTypography {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cardName {
+    font-size: var(--fz-title20);
+}
+
+.cardDesc {
+    font-size: var(--fz-text14);
+}
+
+.cardPrice {
+    font-size: var(--fz-text18);
+}
+
+.cardBtn {
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
