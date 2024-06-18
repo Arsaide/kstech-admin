@@ -19,7 +19,7 @@ const ProductList = () => {
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
-        const page = searchParams.get('page');
+        const page = searchParams.get('page') || '1'; // Default to '1' if no page parameter is present
         setCurrentPage(page);
     }, [location.search]);
 
@@ -27,12 +27,15 @@ const ProductList = () => {
         _event: ChangeEvent<unknown>,
         page: number,
     ) => {
-        setCurrentPage(page.toString());
+        const nextPage = page.toString();
+        setCurrentPage(nextPage);
+
         const searchParams = new URLSearchParams(location.search);
-        searchParams.set('page', page.toString());
+        searchParams.set('page', nextPage);
+
         navigate(`${location.pathname}?${searchParams.toString()}`);
 
-        localStorage.setItem('ProductListPage', page.toString());
+        localStorage.setItem('ProductListPage', nextPage);
     };
 
     const { isLoading, isError, error, data } = useQuery({
