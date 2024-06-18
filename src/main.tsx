@@ -14,15 +14,15 @@ const queryClient = new QueryClient();
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
-    <QueryClientProvider client={queryClient}>
-        <Context.Provider value={{ store }}>
-            <AuthProvider>
-                <BrowserRouter>
+    <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+            <Context.Provider value={{ store }}>
+                <AuthProvider>
                     <App />
-                </BrowserRouter>
-                <ToastMessage />
-            </AuthProvider>
-        </Context.Provider>
-        <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>,
+                    <ToastMessage />
+                </AuthProvider>
+            </Context.Provider>
+            <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+    </BrowserRouter>,
 );
