@@ -1,9 +1,0 @@
-.css-d9ml5t-MuiDrawer-docked .MuiDrawer-paper, .css-1j95noh .MuiDrawer-paper {
-    margin-top: 64px;
-}
-
-.active {
-    background-color: var(--black-06);
-    transition: background-color 0.3s ease;
-    border-bottom: 2px solid var(--green);
-}
