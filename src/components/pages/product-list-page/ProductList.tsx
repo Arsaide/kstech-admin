@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import { AuthContext } from '../../../utils/providers/AuthProvider.tsx';
-import { useLocation, useNavigate } from 'react-router-dom';
 import ProductCard from './subcomponents/product-card/ProductCard.tsx';
 import './ProductList.css';
 import { Alert, Pagination } from '@mui/material';
@@ -13,29 +12,13 @@ import { Context } from '../../../api/context.ts';
 const ProductList = () => {
     const { store } = useContext(Context);
     const { isLoggedIn } = useContext(AuthContext);
-    const location = useLocation();
-    const [currentPage, setCurrentPage] = useState<string | null>('1');
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const page = searchParams.get('page') || '1'; // Default to '1' if no page parameter is present
-        setCurrentPage(page);
-    }, [location.search]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
     const handleChangePagination = (
         _event: ChangeEvent<unknown>,
         page: number,
     ) => {
-        const nextPage = page.toString();
-        setCurrentPage(nextPage);
-
-        const searchParams = new URLSearchParams(location.search);
-        searchParams.set('page', nextPage);
-
-        navigate(`${location.pathname}?${searchParams.toString()}`);
-
-        localStorage.setItem('ProductListPage', nextPage);
+        setCurrentPage(page);
     };
 
     const { isLoading, isError, error, data } = useQuery({

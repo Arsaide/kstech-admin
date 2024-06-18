@@ -51,7 +51,7 @@ export default class Store {
         }
     }
 
-    async getProductsList(page: string | null) {
+    async getProductsList(page: number) {
         try {
             return await ProductsService.getProductsList(page);
         } catch (e: any) {

@@ -21,7 +21,6 @@ export const authRouter = createBrowserRouter([
             {
                 path: 'products-list',
                 element: <ProductListPage />,
-                errorElement: <ProductListPage />,
             },
             {
                 path: 'products-list/:id',

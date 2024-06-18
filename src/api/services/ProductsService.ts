@@ -7,7 +7,7 @@ import {
 
 export default class ProductsService {
     static async getProductsList(
-        page: string | null,
+        page: number,
     ): Promise<AxiosResponse<AllProductResponseModel>> {
         return $api.get(`/products/get?page=${page}`);
     }
