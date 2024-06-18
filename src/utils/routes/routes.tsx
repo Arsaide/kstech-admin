@@ -19,8 +19,14 @@ export const authRouter = createBrowserRouter([
                 element: <HomePage />,
             },
             {
-                path: 'products-list?/:page',
+                path: 'products-list',
                 element: <ProductListPage />,
+                children: [
+                    {
+                        path: ':pageId',
+                        element: <ProductListPage />,
+                    },
+                ],
             },
             {
                 path: 'products-list/:id',
