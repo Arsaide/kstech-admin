@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import 'react-toastify/dist/ReactToastify.css';
+import "react-image-gallery/styles/css/image-gallery.css";
 import App from "./app/App";
 import {BrowserRouter} from "react-router-dom";
 import {Context, store} from './api/context';
