@@ -15,10 +15,10 @@ const ProductList = () => {
     const { isLoggedIn } = useContext(AuthContext);
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const currentPage = parseInt(searchParams.get('page') || '1', 10);
+    const currentPage = searchParams.get('page') || '1';
 
     useEffect(() => {
-        setSearchParams({ page: currentPage.toString() });
+        setSearchParams({ page: currentPage });
     }, [currentPage, setSearchParams]);
 
     const handleChangePagination = (
