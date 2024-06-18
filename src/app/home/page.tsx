@@ -1,5 +1,5 @@
 const HomePage = () => {
-    return <>Auth success :)</>;
+    return <></>;
 };
 
 export default HomePage;
