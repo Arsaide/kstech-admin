@@ -12,7 +12,12 @@ import { useState } from 'react';
 const DrawerElements = () => {
     const [page, setPage] = useState<string | null>('1');
     const handleClick = () => {
-        setPage(localStorage.getItem('ProductListPage'));
+        if (localStorage.getItem('ProductListPage')) {
+            setPage(localStorage.getItem('ProductListPage'));
+        } else {
+            localStorage.setItem('ProductListPage', '1');
+            setPage('1');
+        }
     };
 
     return (
