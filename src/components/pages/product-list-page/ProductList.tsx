@@ -18,8 +18,10 @@ const ProductList = () => {
     const currentPage = searchParams.get('page') || '1';
 
     useEffect(() => {
-        setSearchParams({ page: currentPage });
-    }, [currentPage, setSearchParams]);
+        if (currentPage !== searchParams.get('page')) {
+            setSearchParams({ page: currentPage });
+        }
+    }, [currentPage, searchParams, setSearchParams]);
 
     const handleChangePagination = (
         _event: ChangeEvent<unknown>,
