@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { Alert, Button, CircularProgress, TextField } from '@mui/material';
-import { LoginData } from '../../../../types/LoginData.types';
+import { LoginData } from '../../../../types/forms/LoginData.types';
 
 interface AuthFormProps {
     handleSubmit: (e?: BaseSyntheticEvent) => Promise<void>;

@@ -1,5 +1,5 @@
 import { Alert } from '@mui/material';
-import ProductList from "../../components/pages/product-list-page/ProductList";
+import ProductList from '../../components/pages/product-list-page/ProductList';
 
 const ProductListPage = () => {
     return (

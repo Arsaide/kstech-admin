@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 
 import { BadgeDollarSign, Home, LayoutList, Plus, Users } from 'lucide-react';
 import { useState } from 'react';
-import { MainColorsEnum } from '../../../../../../../utils/enums/colors-enum';
+import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
 
 const DrawerElements = () => {
     const [page, setPage] = useState<string | null>('1');

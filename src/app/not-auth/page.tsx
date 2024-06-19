@@ -1,4 +1,4 @@
-import NotAuth from "../../components/pages/not-auth-page/NotAuthPage";
+import NotAuth from '../../components/pages/not-auth-page/NotAuthPage';
 
 const NotAuthPage = () => {
     return (
