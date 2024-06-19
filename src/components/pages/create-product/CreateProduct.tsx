@@ -25,7 +25,7 @@ const CreateProduct = () => {
                 product.colors,
                 product.description,
                 product.price,
-                product.discount,
+                product.discounts,
                 product.inAvailability,
                 product.category,
                 product.subcategory,

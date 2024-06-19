@@ -131,7 +131,7 @@ const CreateForm: FC<CreateFormProps> = ({
                     )}
                 />
                 <Controller
-                    name="discount"
+                    name="discounts"
                     control={control}
                     rules={{ required: 'Required field' }}
                     render={({ field }) => (
@@ -141,9 +141,9 @@ const CreateForm: FC<CreateFormProps> = ({
                             type="number"
                             fullWidth
                             margin="normal"
-                            error={!!errors.discount}
+                            error={!!errors.discounts}
                             helperText={
-                                errors.discount ? errors.discount.message : ''
+                                errors.discounts ? errors.discounts.message : ''
                             }
                         />
                     )}

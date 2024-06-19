@@ -4,7 +4,7 @@ export interface CreateProductDataType {
     colors: string;
     description: string;
     price: string;
-    discount: string;
+    discounts: string;
     inAvailability: string;
     category: string;
     subcategory: string;

@@ -24,7 +24,7 @@ export default class ProductsService {
         color: string,
         description: string,
         price: string,
-        discount: string,
+        discounts: string,
         inAvailability: string,
         category: string,
         subcategory: string,
@@ -45,7 +45,7 @@ export default class ProductsService {
         formData.append('colors', color);
         formData.append('description', description);
         formData.append('price', price);
-        formData.append('discount', discount);
+        formData.append('discounts', discounts);
         formData.append('inAvailability', inAvailability);
         formData.append('category', category);
         formData.append('subcategory', subcategory);
