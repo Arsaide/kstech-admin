@@ -1,12 +1,6 @@
-export interface AllProductResponseModel {
-    products: OneProductResponseModel[];
-    totalPages: number;
-}
-
-export interface OneProductResponseModel {
-    id: string;
+export interface CreateProductDataType {
     name: string;
-    imgArr: string[];
+    imgArr: File[];
     colors: string;
     description: string;
     price: string;

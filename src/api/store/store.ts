@@ -1,9 +1,8 @@
 import { makeAutoObservable } from 'mobx';
 import { toast } from 'react-toastify';
-import AuthService from "../services/AuthService";
-import {IUser} from "../../types/IUser.types";
-import ProductsService from "../services/ProductsService";
-
+import AuthService from '../services/AuthService';
+import { IUser } from '../../types/IUser.types';
+import ProductsService from '../services/ProductsService';
 
 export default class Store {
     constructor() {
@@ -63,6 +62,47 @@ export default class Store {
     async getOneProduct(id: string | undefined) {
         try {
             return await ProductsService.getOneProduct(id);
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async createProduct(
+        name: string,
+        images: File[],
+        color: string,
+        description: string,
+        price: string,
+        discount: string,
+        inAvailability: string,
+        category: string,
+        subcategory: string,
+        weight: string,
+        height: string,
+        deliveryMethod: string,
+        turningMethod: string,
+        paymentMethod: string,
+    ) {
+        try {
+            const token = localStorage.getItem('token');
+
+            return await ProductsService.createProduct(
+                name,
+                images,
+                color,
+                description,
+                price,
+                discount,
+                inAvailability,
+                category,
+                subcategory,
+                weight,
+                height,
+                deliveryMethod,
+                turningMethod,
+                paymentMethod,
+                token,
+            );
         } catch (e: any) {
             throw e;
         }
