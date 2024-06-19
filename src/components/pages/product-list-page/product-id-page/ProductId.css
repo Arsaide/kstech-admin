@@ -1,0 +1,38 @@
+.cnt {
+    width: 600px;
+    height: max-content;
+}
+
+
+.swiper {
+    width: 500px;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.swiper-slide {
+    background-size: cover;
+    background-position: center;
+    width: 500px;
+    height: 500px;
+}
+
+.mySwiper2 {
+}
+
+.mySwiper {
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+
+.mySwiper .swiper-slide {
+    width: 100px;
+    height: 100px;
+    opacity: 0.4;
+    object-fit: cover;
+}
+
+.mySwiper .swiper-slide-thumb-active {
+    opacity: 1;
+}
