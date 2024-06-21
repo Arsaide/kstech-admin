@@ -1,13 +1,17 @@
-import React, { useContext } from 'react';
-import CreateForm from './create-form/CreateForm';
-import { Context } from '../../../api/context';
-import { AuthContext } from '../../../utils/providers/AuthProvider';
+import React, { FC, useContext } from 'react';
+import ProductIdEditForm from '../../product-id-edit-form/ProductIdEditForm';
+import { Context } from '../../../../../../api/context';
 import { useForm } from 'react-hook-form';
+import { ProductDataTypes } from '../../../../../../types/forms/ProductData.types';
 import { useMutation } from '@tanstack/react-query';
-import { ProductDataTypes } from '../../../types/forms/ProductData.types';
 import { toast } from 'react-toastify';
+import { OneProductResponseModel } from '../../../../../../api/models/ProductResponseModel';
 
-const CreateProduct = () => {
+interface ProductIdEditProps {
+    data: OneProductResponseModel;
+}
+
+const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
     const { store } = useContext(Context);
 
     const {
@@ -42,19 +46,19 @@ const CreateProduct = () => {
     const onSubmit = (data: ProductDataTypes) => {
         mutate(data);
     };
-
     return (
         <div>
-            <CreateForm
+            <ProductIdEditForm
                 handleSubmit={handleSubmit(onSubmit)}
                 control={control}
                 errors={errors}
                 isPending={isPending}
                 isError={isError}
                 error={error}
+                data={data}
             />
         </div>
     );
 };
 
-export default CreateProduct;
+export default ProductIdEdit;

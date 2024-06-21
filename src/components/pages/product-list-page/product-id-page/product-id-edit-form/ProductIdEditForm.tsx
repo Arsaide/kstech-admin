@@ -10,29 +10,33 @@ import {
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { ProductDataTypes } from '../../../../types/forms/ProductData.types';
-import ImageUploadManager from '../../../layout/common/ui/form-inputs/image-upload-manager/ImageUploadManager';
+import { ProductDataTypes } from '../../../../../types/forms/ProductData.types';
+import { OneProductResponseModel } from '../../../../../api/models/ProductResponseModel';
+import ImageUploadManager from '../../../../layout/common/ui/form-inputs/image-upload-manager/ImageUploadManager';
 
-interface CreateFormProps {
+interface ProductIdEditFormProps {
     handleSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
     control: Control<ProductDataTypes>;
     errors: FieldErrors<ProductDataTypes>;
     isPending: boolean;
     isError: boolean;
     error: any;
+    data: OneProductResponseModel;
 }
 
-const CreateForm: FC<CreateFormProps> = ({
+const ProductIdEditForm: FC<ProductIdEditFormProps> = ({
     handleSubmit,
     control,
     error,
     isPending,
     isError,
     errors,
+    data,
 }) => {
     return (
         <Box>
             <Typography>Create Product</Typography>
+
             <Box component={'form'} onSubmit={handleSubmit}>
                 <Controller
                     name="imgArr"
@@ -59,6 +63,7 @@ const CreateForm: FC<CreateFormProps> = ({
                             label="Name"
                             fullWidth
                             margin="normal"
+                            defaultValue={data?.name}
                             error={!!errors.name}
                             helperText={errors.name ? errors.name.message : ''}
                         />
@@ -74,6 +79,7 @@ const CreateForm: FC<CreateFormProps> = ({
                             label="Colors (comma separated)"
                             fullWidth
                             margin="normal"
+                            defaultValue={data?.colors}
                             error={!!errors.colors}
                             helperText={
                                 errors.colors ? errors.colors.message : ''
@@ -91,6 +97,7 @@ const CreateForm: FC<CreateFormProps> = ({
                             label="Description"
                             fullWidth
                             margin="normal"
+                            defaultValue={data?.description}
                             error={!!errors.description}
                             helperText={
                                 errors.description
@@ -111,6 +118,7 @@ const CreateForm: FC<CreateFormProps> = ({
                             type="number"
                             fullWidth
                             margin="normal"
+                            defaultValue={data?.price}
                             error={!!errors.price}
                             helperText={
                                 errors.price ? errors.price.message : ''
@@ -129,6 +137,7 @@ const CreateForm: FC<CreateFormProps> = ({
                             type="number"
                             fullWidth
                             margin="normal"
+                            defaultValue={data?.discount}
                             error={!!errors.discounts}
                             helperText={
                                 errors.discounts ? errors.discounts.message : ''
@@ -147,7 +156,11 @@ const CreateForm: FC<CreateFormProps> = ({
                         control={control}
                         rules={{ required: 'Required field' }}
                         render={({ field }) => (
-                            <Select {...field} label="In Availability">
+                            <Select
+                                {...field}
+                                label="In Availability"
+                                defaultValue={data ? data.inAvailability : null}
+                            >
                                 <MenuItem value={'Можно'}>Можно</MenuItem>
                                 <MenuItem value={'Нет'}>Нет</MenuItem>
                             </Select>
@@ -170,7 +183,11 @@ const CreateForm: FC<CreateFormProps> = ({
                         control={control}
                         rules={{ required: 'Required field' }}
                         render={({ field }) => (
-                            <Select {...field} label="delivery Method">
+                            <Select
+                                {...field}
+                                label="delivery Method"
+                                defaultValue={data ? data.deliveryMethod : null}
+                            >
                                 <MenuItem value={'Новая почта'}>
                                     Новая почта
                                 </MenuItem>
@@ -200,7 +217,11 @@ const CreateForm: FC<CreateFormProps> = ({
                         control={control}
                         rules={{ required: 'Required field' }}
                         render={({ field }) => (
-                            <Select {...field} label="turning Method">
+                            <Select
+                                {...field}
+                                label="turning Method"
+                                defaultValue={data ? data.turningMethod : null}
+                            >
                                 <MenuItem value={'Можно'}>Можно</MenuItem>
                                 <MenuItem value={'Нет'}>Нет</MenuItem>
                             </Select>
@@ -223,7 +244,11 @@ const CreateForm: FC<CreateFormProps> = ({
                         control={control}
                         rules={{ required: 'Required field' }}
                         render={({ field }) => (
-                            <Select {...field} label="payment Method">
+                            <Select
+                                {...field}
+                                label="payment Method"
+                                defaultValue={data ? data.paymentMethod : null}
+                            >
                                 <MenuItem value={'На карту'}>На карту</MenuItem>
                                 <MenuItem value={'Налом'}>Налом</MenuItem>
                             </Select>
@@ -245,6 +270,7 @@ const CreateForm: FC<CreateFormProps> = ({
                             label="Category"
                             fullWidth
                             margin="normal"
+                            defaultValue={data?.category}
                             error={!!errors.category}
                             helperText={
                                 errors.category ? errors.category.message : ''
@@ -262,6 +288,7 @@ const CreateForm: FC<CreateFormProps> = ({
                             label="Subcategory"
                             fullWidth
                             margin="normal"
+                            defaultValue={data?.subcategory}
                             error={!!errors.subcategory}
                             helperText={
                                 errors.subcategory
@@ -282,6 +309,7 @@ const CreateForm: FC<CreateFormProps> = ({
                             type="text"
                             fullWidth
                             margin="normal"
+                            defaultValue={data?.weight}
                             error={!!errors.weight}
                             helperText={
                                 errors.weight ? errors.weight.message : ''
@@ -300,6 +328,7 @@ const CreateForm: FC<CreateFormProps> = ({
                             type="text"
                             fullWidth
                             margin="normal"
+                            defaultValue={data?.height}
                             error={!!errors.height}
                             helperText={
                                 errors.height ? errors.height.message : ''
@@ -326,4 +355,4 @@ const CreateForm: FC<CreateFormProps> = ({
     );
 };
 
-export default CreateForm;
+export default ProductIdEditForm;

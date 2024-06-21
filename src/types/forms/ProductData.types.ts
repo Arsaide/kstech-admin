@@ -1,4 +1,4 @@
-export interface CreateProductDataType {
+export interface ProductDataTypes {
     name: string;
     imgArr: File[];
     colors: string;

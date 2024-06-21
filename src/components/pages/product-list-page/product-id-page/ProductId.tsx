@@ -5,10 +5,10 @@ import { Context } from '../../../../api/context';
 import { Alert, Box, CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { MainColorsEnum } from '../../../../utils/enums/colors-enum';
-import ImageGallery from 'react-image-gallery';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import './ProductId.css';
+import ProductIdEdit from './components/product-id-edit/ProductIdEdit';
 
 const ProductId = () => {
     const { store } = useContext(Context);
@@ -132,6 +132,7 @@ const ProductId = () => {
                         <div>Color: {data?.colors}</div>
                         <div>Description: {data?.description}</div>
                     </div>
+                    {data && <ProductIdEdit data={data} />}
                 </div>
             )}
         </div>

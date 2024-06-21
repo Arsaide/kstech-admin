@@ -1,0 +1,24 @@
+.dropzoneStyle {
+    border: 2px dashed var(--black-08);
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.previewContainerStyle {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.imageContainerStyle {
+    position: relative;
+    margin: 10px;
+}
+
+.imageStyle {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
