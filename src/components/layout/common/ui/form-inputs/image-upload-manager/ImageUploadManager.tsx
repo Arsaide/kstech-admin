@@ -4,6 +4,7 @@ import './ImageUploadManager.css';
 
 interface ImageUploadManagerProps {
     field: any;
+    label?: string;
 }
 
 interface ImageFile {
@@ -11,7 +12,7 @@ interface ImageFile {
     preview: string;
 }
 
-const ImageUploadManager: FC<ImageUploadManagerProps> = ({ field }) => {
+const ImageUploadManager: FC<ImageUploadManagerProps> = ({ field, label }) => {
     const [images, setImages] = useState<ImageFile[]>(field.value || []);
 
     const onDrop = useCallback(
@@ -50,8 +51,10 @@ const ImageUploadManager: FC<ImageUploadManagerProps> = ({ field }) => {
             >
                 <input {...getInputProps()} />
                 <p>
-                    Drag &apos;n&apos; drop some files here, or click to select
-                    files
+                    {label
+                        ? label
+                        : ' Drag &apos;n&apos; drop some files here, or click to select\n' +
+                          '                    files'}
                 </p>
             </div>
             <div className={'previewContainerStyle'}>

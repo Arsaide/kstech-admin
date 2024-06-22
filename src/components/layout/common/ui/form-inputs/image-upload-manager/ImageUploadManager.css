@@ -4,6 +4,11 @@
     padding: 20px;
     text-align: center;
     cursor: pointer;
+    transition: opacity .2s ease-out 0s;
+}
+
+.dropzoneStyle:hover {
+    opacity: .75;
 }
 
 .previewContainerStyle {

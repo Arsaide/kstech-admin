@@ -1,0 +1,8 @@
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+    background-color: rgba(255, 255, 255, .8) !important;
+    backdrop-filter: blur(1px);
+}
+
+.hint {
+    font-size: var(--fz-text14);
+}

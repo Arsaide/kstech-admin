@@ -8,10 +8,9 @@ import { useSearchParams } from 'react-router-dom';
 import { Context } from '../../../api/context';
 import { AuthContext } from '../../../utils/providers/AuthProvider';
 import ProductsListSkeleton from './subcomponents/products-list-skeleton/ProductsListSkeleton';
-import ProductCard from './subcomponents/product-card/ProductCard';
 import { ProductListStyles } from './ProductList.styles';
-import { OneProductResponseModel } from '../../../api/models/ProductResponseModel';
-import { toast } from 'react-toastify';
+import { OneProductTypes } from '../../../api/models/ProductResponseModel';
+import ProductCard from './subcomponents/product-card/ProductCard';
 
 const ProductList = () => {
     const { store } = useContext(Context);
@@ -50,7 +49,7 @@ const ProductList = () => {
             ) : (
                 <div className={'cardsList'}>
                     {data &&
-                        data.products.map((item: OneProductResponseModel) => (
+                        data.products.map((item: OneProductTypes) => (
                             <ProductCard
                                 key={item.id}
                                 id={item.id}

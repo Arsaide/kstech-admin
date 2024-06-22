@@ -21,7 +21,7 @@ const ProductId = () => {
     const { isLoading, isError, error, data } = useQuery({
         queryKey: ['product-id', id],
         queryFn: async () => await store.getOneProduct(id),
-        select: data => data.data,
+        select: data => data.data.product,
     });
 
     useEffect(() => {
@@ -33,6 +33,8 @@ const ProductId = () => {
             setImages(imagesData);
         }
     }, [data]);
+
+    console.log(data);
 
     return (
         <div>
@@ -57,12 +59,8 @@ const ProductId = () => {
                     Error: {error.message}
                 </Alert>
             ) : (
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {/*<div style={{ maxWidth: '450px'}}>*/}
-                    {/*    <ImageGallery items={images} lazyLoad={true} showNav={false} showPlayButton={false} />*/}
-                    {/*</div>*/}
-
-                    <div className={'cnt'}>
+                <div style={{ display: 'flex', gap: '20px' }}>
+                    <div className={'cntImg'}>
                         <Swiper
                             style={{
                                 '--swiper-navigation-color': '#fff',
@@ -75,33 +73,15 @@ const ProductId = () => {
                             modules={[FreeMode, Navigation, Thumbs]}
                             className="mySwiper2"
                         >
-                            <SwiperSlide>
-                                <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-                            </SwiperSlide>
+                            {data &&
+                                data.imgArr.map((img, index) => (
+                                    <SwiperSlide key={index}>
+                                        <img
+                                            src={img}
+                                            alt={'Свайпер тумблер'}
+                                        />
+                                    </SwiperSlide>
+                                ))}
                         </Swiper>
                         <Swiper
                             onSwiper={setThumbsSwiper}
@@ -125,16 +105,36 @@ const ProductId = () => {
                         </Swiper>
                     </div>
 
-                    <div style={{ flex: '1 1 auto' }}>
-                        <div>Name: {data?.name}</div>
-                        <div>In availability: {data?.inAvailability}</div>
-                        <div>Price: {data?.price}</div>
-                        <div>Color: {data?.colors}</div>
-                        <div>Description: {data?.description}</div>
+                    <div className={'cntText'}>
+                        <div>
+                            Назва товару: {data?.name}. Артікул товару:{' '}
+                            {data?.article}
+                        </div>
+                        <div>
+                            Ціна: {data?.price}. Знижка: {data?.discount}
+                        </div>
+                        <div>Кольори: {data?.colors}</div>
+                        <div>Опис товару: {data?.description}</div>
+                        <div>
+                            Категорія товару - {data?.category}. Підкатегорія
+                            товару - {data?.subcategory}
+                        </div>
+                        <div>Послуги:</div>
+                        <div>Наяність: {data?.inAvailability}</div>
+                        <div>Методи оплати: {data?.paymentMethod}</div>
+                        <div>Методи доставки: {data?.deliveryMethod}</div>
+                        <div>
+                            Сервісне обслуговування: {data?.turningMethod}
+                        </div>
+                        <div>Характеристики товару</div>
+                        <div>Вага: {data?.weight}</div>
+                        <div>Довжина: {data?.long}</div>
+                        <div>Висота: {data?.height}</div>
+                        <div>Ширина: {data?.width}</div>
                     </div>
-                    {data && <ProductIdEdit data={data} />}
                 </div>
             )}
+            {data && <ProductIdEdit data={data} />}
         </div>
     );
 };

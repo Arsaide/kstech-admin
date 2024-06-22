@@ -1,6 +1,10 @@
-.cnt {
-    width: 600px;
+.cntImg {
+    max-width: 600px;
     height: max-content;
+}
+
+.cntText {
+    max-width: 800px;
 }
 
 
