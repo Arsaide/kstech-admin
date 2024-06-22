@@ -73,35 +73,98 @@ export default class Store {
         color: string,
         description: string,
         price: string,
-        discounts: string,
+        discount: string,
         inAvailability: string,
         category: string,
         subcategory: string,
         weight: string,
         height: string,
-        deliveryMethod: string,
+        width: string,
+        long: string,
+        deliveryMethod: string[],
         turningMethod: string,
-        paymentMethod: string,
+        paymentMethod: string[],
     ) {
         try {
             const token = localStorage.getItem('token');
 
-            return await ProductsService.createProduct(
-                name,
-                images,
-                color,
-                description,
-                price,
-                discounts,
-                inAvailability,
-                category,
-                subcategory,
-                weight,
-                height,
-                deliveryMethod,
-                turningMethod,
-                paymentMethod,
-                token,
+            return await toast.promise(
+                ProductsService.createProduct(
+                    name,
+                    images,
+                    color,
+                    description,
+                    price,
+                    discount,
+                    inAvailability,
+                    category,
+                    subcategory,
+                    weight,
+                    height,
+                    width,
+                    long,
+                    deliveryMethod,
+                    turningMethod,
+                    paymentMethod,
+                    token,
+                ),
+                {
+                    pending: 'Створення товару...',
+                    success: 'Створення усіпішне!',
+                },
+            );
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async editProduct(
+        name: string,
+        images: File[],
+        oldImgArr: string[],
+        color: string,
+        description: string,
+        price: string,
+        discount: string,
+        inAvailability: string,
+        category: string,
+        subcategory: string,
+        weight: string,
+        height: string,
+        width: string,
+        long: string,
+        deliveryMethod: string[],
+        turningMethod: string,
+        paymentMethod: string[],
+    ) {
+        try {
+            const token = localStorage.getItem('token');
+
+            return await toast.promise(
+                ProductsService.editProduct(
+                    name,
+                    images,
+                    oldImgArr,
+                    color,
+                    description,
+                    price,
+                    discount,
+                    inAvailability,
+                    category,
+                    subcategory,
+                    weight,
+                    height,
+                    width,
+                    long,
+                    deliveryMethod,
+                    turningMethod,
+                    paymentMethod,
+                    token,
+                ),
+                {
+                    pending: 'Редагування товару...',
+                    success: 'Редагування виконано!',
+                },
             );
         } catch (e: any) {
             throw e;

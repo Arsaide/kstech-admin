@@ -24,15 +24,17 @@ export default class ProductsService {
         color: string,
         description: string,
         price: string,
-        discounts: string,
+        discount: string,
         inAvailability: string,
         category: string,
         subcategory: string,
         weight: string,
         height: string,
-        deliveryMethod: string,
+        width: string,
+        long: string,
+        deliveryMethod: string[],
         turningMethod: string,
-        paymentMethod: string,
+        paymentMethod: string[],
         token: string | null,
     ) {
         const formData = new FormData();
@@ -45,18 +47,88 @@ export default class ProductsService {
         formData.append('colors', color);
         formData.append('description', description);
         formData.append('price', price);
-        formData.append('discounts', discounts);
+        formData.append('discount', discount);
         formData.append('inAvailability', inAvailability);
         formData.append('category', category);
         formData.append('subcategory', subcategory);
         formData.append('weight', weight);
         formData.append('height', height);
-        formData.append('deliveryMethod', deliveryMethod);
+        formData.append('width', width);
+        formData.append('long', long);
+        if (deliveryMethod && deliveryMethod.length > 0) {
+            deliveryMethod.forEach(item => {
+                formData.append('deliveryMethod', item);
+            });
+        }
+        if (paymentMethod && paymentMethod.length > 0) {
+            paymentMethod.forEach(item => {
+                formData.append('paymentMethod', item);
+            });
+        }
         formData.append('turningMethod', turningMethod);
-        formData.append('paymentMethod', paymentMethod);
         if (token) {
             formData.append('token', token);
         }
         return $api.post('/products/create', formData);
+    }
+
+    static async editProduct(
+        name: string,
+        images: File[],
+        oldImgArr: string[],
+        color: string,
+        description: string,
+        price: string,
+        discount: string,
+        inAvailability: string,
+        category: string,
+        subcategory: string,
+        weight: string,
+        height: string,
+        width: string,
+        long: string,
+        deliveryMethod: string[],
+        turningMethod: string,
+        paymentMethod: string[],
+        token: string | null,
+    ) {
+        const formData = new FormData();
+        if (oldImgArr && oldImgArr.length > 0) {
+            oldImgArr.forEach(img => {
+                formData.append('oldImgArr', img);
+            });
+        }
+        if (images && images.length > 0) {
+            images.forEach(img => {
+                formData.append('img[]', img);
+            });
+        }
+        formData.append('name', name);
+        formData.append('colors', color);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('discount', discount);
+        formData.append('inAvailability', inAvailability);
+        if (deliveryMethod && deliveryMethod.length > 0) {
+            deliveryMethod.forEach(item => {
+                formData.append('deliveryMethod', item);
+            });
+        }
+        if (paymentMethod && paymentMethod.length > 0) {
+            paymentMethod.forEach(item => {
+                formData.append('paymentMethod', item);
+            });
+        }
+        formData.append('category', category);
+        formData.append('subcategory', subcategory);
+        formData.append('weight', weight);
+        formData.append('height', height);
+        formData.append('width', width);
+        formData.append('long', long);
+        formData.append('turningMethod', turningMethod);
+        if (token) {
+            formData.append('token', token);
+        }
+        return $api.post('/products/change', formData);
     }
 }

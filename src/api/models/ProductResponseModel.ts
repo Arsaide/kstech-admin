@@ -1,12 +1,17 @@
 export interface AllProductResponseModel {
-    products: OneProductResponseModel[];
+    products: OneProductTypes[];
     totalPages: number;
 }
 
 export interface OneProductResponseModel {
+    product: OneProductTypes;
+}
+
+export interface OneProductTypes {
     id: string;
     name: string;
     imgArr: string[];
+    oldImgArr: string[];
     colors: string;
     description: string;
     price: string;
@@ -16,7 +21,10 @@ export interface OneProductResponseModel {
     subcategory: string;
     weight: string;
     height: string;
-    deliveryMethod: string;
+    width: string;
+    long: string;
+    deliveryMethod: string[];
     turningMethod: string;
-    paymentMethod: string;
+    paymentMethod: string[];
+    article: string;
 }

@@ -14,6 +14,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { Context, store } from './api/context';
 import { AuthProvider } from './utils/providers/AuthProvider';
 import './app/global.css';
+import ToastMessage from './components/layout/common/ui/alerts/toast-message/ToastMessage';
+import React from 'react';
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,7 @@ root.render(
             <Context.Provider value={{ store }}>
                 <AuthProvider>
                     <App />
+                    <ToastMessage />
                 </AuthProvider>
             </Context.Provider>
             <ReactQueryDevtools initialIsOpen={false} />
