@@ -41,7 +41,7 @@ const DrawerElements = () => {
                             <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
                                 <Home />
                             </ListItemIcon>
-                            <ListItemText primary={'Главная'} />
+                            <ListItemText primary={'Головна'} />
                         </ListItemButton>
                     </NavLink>
                 </ListItem>
@@ -58,7 +58,7 @@ const DrawerElements = () => {
                             <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
                                 <LayoutList />
                             </ListItemIcon>
-                            <ListItemText primary={'Все товары'} />
+                            <ListItemText primary={'Всі товари'} />
                         </ListItemButton>
                     </NavLink>
                 </ListItem>
@@ -72,7 +72,7 @@ const DrawerElements = () => {
                             <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
                                 <Plus />
                             </ListItemIcon>
-                            <ListItemText primary={'Создать товар'} />
+                            <ListItemText primary={'Створити товар'} />
                         </ListItemButton>
                     </NavLink>
                 </ListItem>
@@ -86,7 +86,7 @@ const DrawerElements = () => {
                             <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
                                 <BadgeDollarSign />
                             </ListItemIcon>
-                            <ListItemText primary={'Аналитика'} />
+                            <ListItemText primary={'Аналітика'} />
                         </ListItemButton>
                     </NavLink>
                 </ListItem>
@@ -100,7 +100,7 @@ const DrawerElements = () => {
                             <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
                                 <Users />
                             </ListItemIcon>
-                            <ListItemText primary={'Клиенты'} />
+                            <ListItemText primary={'Клієнти'} />
                         </ListItemButton>
                     </NavLink>
                 </ListItem>
