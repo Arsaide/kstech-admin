@@ -2,7 +2,13 @@ import { BaseSyntheticEvent, FC } from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { Alert, Button, CircularProgress, TextField } from '@mui/material';
+import {
+    Alert,
+    Button,
+    CircularProgress,
+    LinearProgress,
+    TextField,
+} from '@mui/material';
 import { LoginData } from '../../../../types/forms/LoginData.types';
 
 interface AuthFormProps {
@@ -30,10 +36,18 @@ const AuthForm: FC<AuthFormProps> = ({
                 alignItems: 'center',
             }}
         >
-            <Typography component="h1" variant="h5">
-                Login
+            <Typography
+                component="h1"
+                variant="h5"
+                sx={{ textAlign: 'center' }}
+            >
+                Форма авторизації
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{ width: '450px', mt: 1 }}
+            >
                 <Controller
                     name="name"
                     control={control}
@@ -46,7 +60,7 @@ const AuthForm: FC<AuthFormProps> = ({
                             margin="normal"
                             required
                             fullWidth
-                            label="Name"
+                            label="Логін"
                             autoFocus
                             error={!!errors.name}
                             helperText={
@@ -69,7 +83,7 @@ const AuthForm: FC<AuthFormProps> = ({
                             margin="normal"
                             required
                             fullWidth
-                            label="Password"
+                            label="Пароль"
                             type="password"
                             autoComplete="current-password"
                             error={!!errors.password}
@@ -81,10 +95,12 @@ const AuthForm: FC<AuthFormProps> = ({
                         />
                     )}
                 />
-                {isPending && <CircularProgress />}
+                {isPending && (
+                    <LinearProgress sx={{ width: '100%' }} color="success" />
+                )}
                 {isError && (
                     <Alert severity="error">
-                        LogIn error: {error?.message}
+                        Помилка авторизації: {error?.message}
                     </Alert>
                 )}
                 <Button
@@ -95,7 +111,7 @@ const AuthForm: FC<AuthFormProps> = ({
                     sx={{ mt: 3, mb: 2 }}
                     disabled={isPending}
                 >
-                    LogIn
+                    Увійти
                 </Button>
             </Box>
         </Box>

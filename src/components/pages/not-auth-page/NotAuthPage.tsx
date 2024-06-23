@@ -29,7 +29,14 @@ const NotAuth = () => {
     };
 
     return (
-        <Container>
+        <Container
+            sx={{
+                height: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
             <AuthForm
                 handleSubmit={handleSubmit(onSubmit)}
                 control={control}
