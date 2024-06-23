@@ -21,6 +21,11 @@ import ImageUploadManager from '../../../../../layout/common/ui/form-inputs/imag
 import ListItemText from '@mui/material/ListItemText';
 import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
 import './ProductIdEdit.css';
+import {
+    deliveryMethodArr,
+    inAvailabilityArr,
+    paymentMethodArr,
+} from './index';
 
 interface ProductIdEditProps {
     data: OneProductTypes;
@@ -329,15 +334,11 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                                 label="In Availability"
                                 defaultValue={data ? data.inAvailability : null}
                             >
-                                <MenuItem value={'В наявності'}>
-                                    В наявності
-                                </MenuItem>
-                                <MenuItem value={'Під замовлення'}>
-                                    Під замовлення
-                                </MenuItem>
-                                <MenuItem value={'Немає в наявності'}>
-                                    Немає в наявності
-                                </MenuItem>
+                                {inAvailabilityArr.map((item, index) => (
+                                    <MenuItem key={index} value={item}>
+                                        {item}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         )}
                     />
@@ -382,50 +383,17 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                                     }
                                     onChange={handleChange}
                                 >
-                                    <MenuItem value={'Нова пошта'}>
-                                        <Checkbox
-                                            checked={
-                                                field.value.indexOf(
-                                                    'Нова пошта',
-                                                ) > -1
-                                            }
-                                        />
-                                        <ListItemText primary={'Нова пошта'} />
-                                    </MenuItem>
-                                    <MenuItem value={"Кур'єр Нова Пошта"}>
-                                        <Checkbox
-                                            checked={
-                                                field.value.indexOf(
-                                                    "Кур'єр Нова Пошта",
-                                                ) > -1
-                                            }
-                                        />
-                                        <ListItemText
-                                            primary={"Кур'єр Нова Пошта"}
-                                        />
-                                    </MenuItem>
-                                    <MenuItem value={'Укр пошта'}>
-                                        <Checkbox
-                                            checked={
-                                                field.value.indexOf(
-                                                    'Укр пошта',
-                                                ) > -1
-                                            }
-                                        />
-                                        <ListItemText primary={'Укр пошта'} />
-                                    </MenuItem>
-                                    <MenuItem value={'Тільки самовивіз'}>
-                                        <Checkbox
-                                            checked={
-                                                field.value.indexOf(
-                                                    'Тільки самовивіз',
-                                                ) > -1
-                                            }
-                                        />
-                                        <ListItemText
-                                            primary={'Тільки самовивіз'}
-                                        />
-                                    </MenuItem>
+                                    {deliveryMethodArr.map((item, index) => (
+                                        <MenuItem key={index} value={item}>
+                                            <Checkbox
+                                                checked={
+                                                    field.value.indexOf(item) >
+                                                    -1
+                                                }
+                                            />
+                                            <ListItemText primary={item} />
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                                 {errors.deliveryMethod && (
                                     <Typography color="error">
@@ -484,78 +452,16 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                                 multiple
                                 renderValue={selected => selected.join(', ')}
                             >
-                                <MenuItem
-                                    value={
-                                        "Готівкою (кур'єру, в магазині, у відділенні)"
-                                    }
-                                >
-                                    <Checkbox
-                                        checked={
-                                            field.value.indexOf(
-                                                "Готівкою (кур'єру, в магазині, у відділенні)",
-                                            ) > -1
-                                        }
-                                    />
-                                    <ListItemText
-                                        primary={
-                                            "Готівкою (кур'єру, в магазині, у відділенні)"
-                                        }
-                                    />
-                                </MenuItem>
-                                <MenuItem
-                                    value={
-                                        'Оплата частинами від ПриватБанк або Монобанку'
-                                    }
-                                >
-                                    <Checkbox
-                                        checked={
-                                            field.value.indexOf(
-                                                'Оплата частинами від ПриватБанк або Монобанку',
-                                            ) > -1
-                                        }
-                                    />
-                                    <ListItemText
-                                        primary={
-                                            'Оплата частинами від ПриватБанк або Монобанку'
-                                        }
-                                    />
-                                </MenuItem>
-                                <MenuItem
-                                    value={
-                                        'Безготівковий розрахунок для юр.осіб'
-                                    }
-                                >
-                                    <Checkbox
-                                        checked={
-                                            field.value.indexOf(
-                                                'Безготівковий розрахунок для юр.осіб',
-                                            ) > -1
-                                        }
-                                    />
-                                    <ListItemText
-                                        primary={
-                                            'Безготівковий розрахунок для юр.осіб'
-                                        }
-                                    />
-                                </MenuItem>
-                                <MenuItem
-                                    value={
-                                        'Оплата на карту через VISA, Private24, Apple Pay, Google Pay, MasterCard'
-                                    }
-                                >
-                                    <Checkbox
-                                        checked={
-                                            field.value.indexOf(
-                                                'Оплата на карту через VISA, Private24, Apple Pay, Google Pay, MasterCard',
-                                            ) > -1
-                                        }
-                                    />
-                                    <ListItemText
-                                        primary={
-                                            'Оплата на карту через VISA, Private24, Apple Pay, Google Pay, MasterCard'
-                                        }
-                                    />
-                                </MenuItem>
+                                {paymentMethodArr.map((item, index) => (
+                                    <MenuItem key={index} value={item}>
+                                        <Checkbox
+                                            checked={
+                                                field.value.indexOf(item) > -1
+                                            }
+                                        />
+                                        <ListItemText primary={item} />
+                                    </MenuItem>
+                                ))}
                             </Select>
                             {errors.paymentMethod && (
                                 <Typography color="error">
@@ -642,7 +548,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label="Вага товару"
+                                label="Вага товару (кг)"
                                 type="text"
                                 fullWidth
                                 margin="normal"
@@ -661,7 +567,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label="Висота"
+                                label="Висота (м)"
                                 type="text"
                                 fullWidth
                                 margin="normal"
@@ -680,7 +586,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label="Ширина"
+                                label="Ширина (м)"
                                 type="text"
                                 fullWidth
                                 margin="normal"
@@ -699,7 +605,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label="Довжина"
+                                label="Довжина (м)"
                                 type="text"
                                 fullWidth
                                 margin="normal"
