@@ -95,7 +95,7 @@ export default class ProductsService {
         const formData = new FormData();
         if (oldImgArr && oldImgArr.length > 0) {
             oldImgArr.forEach(img => {
-                formData.append('oldImgArr', img);
+                formData.append('oldImg', img);
             });
         }
         if (images && images.length > 0) {
