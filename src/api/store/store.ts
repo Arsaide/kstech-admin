@@ -119,6 +119,7 @@ export default class Store {
     }
 
     async editProduct(
+        id: string,
         name: string,
         images: File[],
         oldImgArr: string[],
@@ -142,6 +143,7 @@ export default class Store {
 
             return await toast.promise(
                 ProductsService.editProduct(
+                    id,
                     name,
                     images,
                     oldImgArr,

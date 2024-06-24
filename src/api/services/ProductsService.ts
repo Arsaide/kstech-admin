@@ -73,6 +73,7 @@ export default class ProductsService {
     }
 
     static async editProduct(
+        id: string,
         name: string,
         images: File[],
         oldImgArr: string[],
@@ -93,6 +94,7 @@ export default class ProductsService {
         token: string | null,
     ) {
         const formData = new FormData();
+        formData.append('id', id);
         if (oldImgArr && oldImgArr.length > 0) {
             oldImgArr.forEach(img => {
                 formData.append('oldImg', img);

@@ -49,6 +49,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
         mutationKey: ['create-product'],
         mutationFn: async (product: ProductDataTypes) =>
             store.editProduct(
+                data.id,
                 product.name,
                 product.imgArr,
                 product.oldImgArr,
