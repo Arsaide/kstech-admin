@@ -12,7 +12,6 @@ import PendingPage from './pending/page';
 import { AuthContext } from '../utils/providers/AuthProvider';
 import AppBarMenu from '../components/layout/nav/AppBar';
 import SideBar from '../components/layout/nav/side-bar/SideBar';
-import ToastMessage from '../components/layout/common/ui/alerts/toast-message/ToastMessage';
 
 function App() {
     const { isLoggedIn, isPending } = useContext(AuthContext);

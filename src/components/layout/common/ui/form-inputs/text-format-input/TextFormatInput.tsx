@@ -1,21 +1,28 @@
 import React, { FC, useEffect } from 'react';
-import {
-    Controller,
-    FieldErrors,
-    useForm,
-    useFormContext,
-} from 'react-hook-form';
-import { CustomTooltip } from '../../custom-tooltip/CustomTooltip';
-import { Button } from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
+import { CustomTooltip } from '../../custom-components/custom-tooltip/CustomTooltip';
 import { Bold, Eraser, Italic, Underline, WrapText } from 'lucide-react';
 import { useEditorText } from '../../../../../../hooks/use-editor-text/useEditorText';
+import {
+    ActionsContainer,
+    FormattedTextContainer,
+    StyledTextFieldMultiline,
+    ToolsButton,
+} from '../../custom-components/custom-formatted-text/CustomFormattedText';
 
 interface ITextFormatInput {
     id: string;
     name: string;
+    label: string;
+    placeholder: string;
 }
 
-const TextFormatInput: FC<ITextFormatInput> = ({ id, name }) => {
+const TextFormatInput: FC<ITextFormatInput> = ({
+    id,
+    name,
+    label,
+    placeholder,
+}) => {
     const { text, setText, textRef, updateSelection, applyFormat, lineBreak } =
         useEditorText();
 
@@ -30,76 +37,68 @@ const TextFormatInput: FC<ITextFormatInput> = ({ id, name }) => {
         setValue(name, text);
     }, [text, setValue, name]);
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            lineBreak();
+        }
+    };
+
     return (
-        <div className={'card'}>
+        <FormattedTextContainer>
             <Controller
                 name={name}
                 control={control}
                 render={({ field, fieldState: { error } }) => (
-                    <>
-                        <textarea
-                            {...field}
-                            id={id}
-                            ref={textRef}
-                            className={'editor'}
-                            spellCheck={'false'}
-                            onSelect={updateSelection}
-                        />
-                        {error && <p>{error.message}</p>}
-                    </>
+                    <StyledTextFieldMultiline
+                        {...field}
+                        id={id}
+                        inputRef={textRef}
+                        spellCheck={false}
+                        onSelect={updateSelection}
+                        label={label}
+                        placeholder={placeholder}
+                        multiline={true}
+                        variant={'outlined'}
+                        error={!!error}
+                        helperText={error ? error.message : ''}
+                    />
                 )}
             />
-            <div className={'actions'}>
-                <div className={'tools'}>
-                    <CustomTooltip
-                        title={'Очистити весь текст'}
-                        placement={'top'}
-                    >
-                        <Button
-                            className={'toolsBtn'}
-                            onClick={() => setText('')}
-                        >
-                            <Eraser />
-                        </Button>
-                    </CustomTooltip>
-                    <CustomTooltip title={'Жирний шрифт'} placement={'top'}>
-                        <Button
-                            className={'toolsBtn'}
-                            onClick={() => applyFormat('bold')}
-                        >
-                            <Bold />
-                        </Button>
-                    </CustomTooltip>
-                    <CustomTooltip title={'Курсивний шрифт'} placement={'top'}>
-                        <Button
-                            className={'toolsBtn'}
-                            onClick={() => applyFormat('italic')}
-                        >
-                            <Italic />
-                        </Button>
-                    </CustomTooltip>
-                    <CustomTooltip
-                        title={'Підкреслений текст'}
-                        placement={'top'}
-                    >
-                        <Button
-                            className={'toolsBtn'}
-                            onClick={() => applyFormat('underline')}
-                        >
-                            <Underline />
-                        </Button>
-                    </CustomTooltip>
-                    <CustomTooltip title={'Зробити відступ'} placement={'top'}>
-                        <Button
-                            className={'toolsBtn'}
-                            onClick={() => lineBreak()}
-                        >
-                            <WrapText />
-                        </Button>
-                    </CustomTooltip>
-                </div>
-            </div>
-        </div>
+            <ActionsContainer>
+                <CustomTooltip
+                    title={'Очистити весь текст'}
+                    placement={'bottom'}
+                >
+                    <ToolsButton onClick={() => setText('')}>
+                        <Eraser />
+                    </ToolsButton>
+                </CustomTooltip>
+                <CustomTooltip title={'Жирний шрифт'} placement={'bottom'}>
+                    <ToolsButton onClick={() => applyFormat('bold')}>
+                        <Bold />
+                    </ToolsButton>
+                </CustomTooltip>
+                <CustomTooltip title={'Курсивний шрифт'} placement={'bottom'}>
+                    <ToolsButton onClick={() => applyFormat('italic')}>
+                        <Italic />
+                    </ToolsButton>
+                </CustomTooltip>
+                <CustomTooltip
+                    title={'Підкреслений текст'}
+                    placement={'bottom'}
+                >
+                    <ToolsButton onClick={() => applyFormat('underline')}>
+                        <Underline />
+                    </ToolsButton>
+                </CustomTooltip>
+                <CustomTooltip title={'Зробити відступ'} placement={'bottom'}>
+                    <ToolsButton onClick={() => lineBreak()}>
+                        <WrapText />
+                    </ToolsButton>
+                </CustomTooltip>
+            </ActionsContainer>
+        </FormattedTextContainer>
     );
 };
 
