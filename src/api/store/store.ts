@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import AuthService from '../services/AuthService';
 import { IUser } from '../../types/IUser.types';
 import ProductsService from '../services/ProductsService';
+import CategoriesService from '../services/CategoriesService';
 
 export default class Store {
     constructor() {
@@ -168,6 +169,48 @@ export default class Store {
                     success: 'Редагування виконано!',
                 },
             );
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async getAllCategories() {
+        try {
+            return CategoriesService.getAllCategories();
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async getOneCategory(id: string) {
+        try {
+            return toast.promise(CategoriesService.getOneCategory(id), {
+                pending: 'Отримання категорії',
+                success: 'Категорії отримано успішно!',
+            });
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async createCategory(category: string) {
+        try {
+            const token = localStorage.getItem('token');
+            return toast.promise(
+                CategoriesService.createCategory(token, category),
+                {
+                    pending: 'Створення категорії',
+                    success: 'Категорія створена успішно!',
+                },
+            );
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async addSubcategory(id: string | undefined, subcategory: string) {
+        try {
+            return CategoriesService.addSubcategory(id, subcategory);
         } catch (e: any) {
             throw e;
         }
