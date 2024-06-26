@@ -1,0 +1,11 @@
+export interface CategoryResponseModel {
+    id: string;
+    category: string;
+    subcategories: string[];
+}
+
+export interface SubcategoryResponseModel {
+    id: string;
+    category: string;
+    subcategory: string;
+}
