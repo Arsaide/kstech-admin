@@ -231,7 +231,7 @@ const CreateProduct = () => {
                         control={control}
                         rules={{ required: 'Required field' }}
                         render={({ field }) => (
-                            <Select {...field} label="In Availability">
+                            <Select {...field} label="Наявність">
                                 {inAvailabilityArr.map((item, index) => (
                                     <MenuItem key={index} value={item}>
                                         {item}
