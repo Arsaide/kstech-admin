@@ -12,6 +12,7 @@ import PendingPage from './pending/page';
 import { AuthContext } from '../utils/providers/AuthProvider';
 import AppBarMenu from '../components/layout/nav/AppBar';
 import SideBar from '../components/layout/nav/side-bar/SideBar';
+import { CategoriesProvider } from '../utils/providers/CategoriesProvider';
 
 function App() {
     const { isLoggedIn, isPending } = useContext(AuthContext);
@@ -21,7 +22,7 @@ function App() {
     }
 
     return (
-        <>
+        <CategoriesProvider>
             {isLoggedIn && <AppBarMenu />}
             {isLoggedIn ? (
                 <SideBar>
@@ -51,7 +52,7 @@ function App() {
                     <Route path={'*'} element={<NotAuthPage />} />
                 </Routes>
             )}
-        </>
+        </CategoriesProvider>
     );
 }
 

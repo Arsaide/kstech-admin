@@ -6,9 +6,11 @@ import { CategoryResponseModel } from '../../../../api/models/CategoriesResponse
 import { toast } from 'react-toastify';
 import { Box, Button, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { CategoriesContext } from '../../../../utils/providers/CategoriesProvider';
 
 const CategoriesForm = () => {
     const { store } = useContext(Context);
+    const { setIsVisibleSubcategories } = useContext(CategoriesContext);
 
     const {
         handleSubmit,
@@ -23,6 +25,7 @@ const CategoriesForm = () => {
         },
         onError: e =>
             toast.error(`Сталась помилка при створені категорії: ${e}`),
+        onSuccess: () => setIsVisibleSubcategories(true),
     });
 
     const onSubmit = (data: CategoryResponseModel) => {
