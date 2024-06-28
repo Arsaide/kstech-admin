@@ -45,7 +45,7 @@ export default class ProductsService {
         }
         formData.append('name', name);
         formData.append('colors', color);
-        formData.append('description', description);
+        formData.append('description', JSON.stringify(description));
         formData.append('price', price);
         formData.append('discount', discount);
         formData.append('inAvailability', inAvailability);

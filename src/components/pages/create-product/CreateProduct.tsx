@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import { Context } from '../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
@@ -23,9 +23,12 @@ import {
     inAvailabilityArr,
     paymentMethodArr,
 } from '../product-list-page/product-id-page/components/product-id-edit';
+import { convertToRaw, EditorState } from 'draft-js';
+import TextEditorInput from '../../layout/common/ui/custom-components/text-editor-input/TextEditorInput';
 
 const CreateProduct = () => {
     const { store } = useContext(Context);
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
     const {
         handleSubmit,
@@ -58,7 +61,14 @@ const CreateProduct = () => {
     });
 
     const onSubmit = (data: ProductDataTypes) => {
-        mutate(data);
+        const formattedDescription = JSON.stringify(
+            convertToRaw(editorState.getCurrentContent()),
+        );
+        const productData = {
+            ...data,
+            description: formattedDescription,
+        };
+        mutate(productData);
     };
 
     return (
@@ -139,21 +149,17 @@ const CreateProduct = () => {
                     )}
                 />
                 <Controller
-                    name="description"
+                    name={'description'}
                     control={control}
                     rules={{ required: 'Required field' }}
                     render={({ field }) => (
-                        <TextField
-                            {...field}
-                            label="Опис товару"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.description}
-                            helperText={
-                                errors.description
-                                    ? errors.description.message
-                                    : ''
-                            }
+                        <TextEditorInput
+                            editorState={editorState}
+                            onEditorStateChange={newState => {
+                                setEditorState(newState);
+                                field.onChange(newState);
+                            }}
+                            placeholder={'Опис товару'}
                         />
                     )}
                 />

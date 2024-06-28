@@ -10,12 +10,16 @@ export function useEditorText() {
 
     const updateSelection = () => {
         if (!textRef.current) return;
-        setSelectionStart(textRef.current?.selectionStart);
-        setSelectionEnd(textRef.current?.selectionEnd);
+        const start = textRef.current?.selectionStart ?? 0;
+        const end = textRef.current?.selectionEnd ?? 0;
+        setSelectionStart(start);
+        setSelectionEnd(end);
+        console.log('Функция updateSelection: ', start, end);
     };
 
     const applyFormat = (type: TStyle) => {
         const selectedText = text.substring(selectionStart, selectionEnd);
+        console.log(`Функция applyFormat и selectedText: '${selectedText}'`);
 
         if (!selectedText) return;
 
@@ -23,6 +27,7 @@ export function useEditorText() {
         const after = text.substring(selectionEnd);
 
         const formattedText = applyStyle(type, selectedText);
+        console.log(`Функция applyFormat и formattedText: '${formattedText}'`);
 
         setText(before + formattedText + after);
     };
