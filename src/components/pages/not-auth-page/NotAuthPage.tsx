@@ -2,7 +2,7 @@ import Container from '@mui/material/Container';
 import { useForm } from 'react-hook-form';
 import { useContext } from 'react';
 import { Context } from '../../../api/context';
-import { AuthContext } from '../../../utils/providers/AuthProvider';
+import { AuthContext } from '../../../providers/AuthProvider';
 import { LoginData } from '../../../types/forms/LoginData.types';
 import { useMutation } from '@tanstack/react-query';
 import AuthForm from './auth-form/AuthForm';

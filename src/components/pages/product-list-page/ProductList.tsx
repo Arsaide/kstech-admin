@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 
 import { useSearchParams } from 'react-router-dom';
 import { Context } from '../../../api/context';
-import { AuthContext } from '../../../utils/providers/AuthProvider';
+import { AuthContext } from '../../../providers/AuthProvider';
 import ProductsListSkeleton from './subcomponents/products-list-skeleton/ProductsListSkeleton';
 import { ProductListStyles } from './ProductList.styles';
 import { OneProductTypes } from '../../../api/models/ProductResponseModel';

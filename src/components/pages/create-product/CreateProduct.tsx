@@ -24,7 +24,7 @@ import {
     paymentMethodArr,
 } from '../product-list-page/product-id-page/components/product-id-edit';
 import { convertToRaw, EditorState } from 'draft-js';
-import TextEditorInput from '../../layout/common/ui/custom-components/text-editor-input/TextEditorInput';
+import TextEditorInput from '../../layout/common/ui/form-inputs/text-editor-input/TextEditorInput';
 
 const CreateProduct = () => {
     const { store } = useContext(Context);

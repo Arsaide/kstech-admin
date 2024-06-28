@@ -11,7 +11,7 @@ import { AppBar } from '@mui/material';
 import { useContext } from 'react';
 import { Context } from '../../../api/context';
 import useAnchorElUser from '../../../hooks/use-anchor-el-user/useAnchorElUser';
-import { AuthContext } from '../../../utils/providers/AuthProvider';
+import { AuthContext } from '../../../providers/AuthProvider';
 
 const AppBarMenu = () => {
     const { store } = useContext(Context);

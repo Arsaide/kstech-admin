@@ -9,10 +9,10 @@ import AnalyticsPage from './analytics/page';
 import ClientsPage from './clients/page';
 import NotAuthPage from './not-auth/page';
 import PendingPage from './pending/page';
-import { AuthContext } from '../utils/providers/AuthProvider';
+import { AuthContext } from '../providers/AuthProvider';
 import AppBarMenu from '../components/layout/nav/AppBar';
 import SideBar from '../components/layout/nav/side-bar/SideBar';
-import { CategoriesProvider } from '../utils/providers/CategoriesProvider';
+import { CategoriesProvider } from '../providers/CategoriesProvider';
 
 function App() {
     const { isLoggedIn, isPending } = useContext(AuthContext);

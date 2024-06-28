@@ -6,7 +6,7 @@ import { CategoryResponseModel } from '../../../../api/models/CategoriesResponse
 import { toast } from 'react-toastify';
 import { Box, Button, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { CategoriesContext } from '../../../../utils/providers/CategoriesProvider';
+import { CategoriesContext } from '../../../../providers/CategoriesProvider';
 
 const CategoriesForm = () => {
     const { store } = useContext(Context);

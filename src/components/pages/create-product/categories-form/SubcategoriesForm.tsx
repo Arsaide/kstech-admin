@@ -13,7 +13,7 @@ import { SubcategoryResponseModel } from '../../../../api/models/CategoriesRespo
 import { Context } from '../../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { AuthContext } from '../../../../utils/providers/AuthProvider';
+import { AuthContext } from '../../../../providers/AuthProvider';
 
 const SubcategoriesForm = () => {
     const { store } = useContext(Context);

@@ -12,7 +12,7 @@ import 'swiper/css/thumbs';
 import App from './app/App';
 import { BrowserRouter } from 'react-router-dom';
 import { Context, store } from './api/context';
-import { AuthProvider } from './utils/providers/AuthProvider';
+import { AuthProvider } from './providers/AuthProvider';
 import './app/global.css';
 import ToastMessage from './components/layout/common/ui/alerts/toast-message/ToastMessage';
 import React from 'react';
