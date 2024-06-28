@@ -4,6 +4,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'draft-js/dist/Draft.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './TextEditorInput.css';
+import BoldIcon from '../../../../../../lib/icons/BoldIcon';
 
 interface TextEditorInputProps {
     editorState: EditorState;
@@ -35,35 +36,24 @@ const TextEditorInput: FC<TextEditorInputProps> = ({
                             'strikethrough',
                         ],
                         bold: {
-                            icon: ['./icons/bold-icon.svg'],
-                            className: undefined,
+                            icon: './icons/bold.svg',
                         },
                         italic: {
-                            icon: ['./icons/italic-icon.svg'],
-                            className: undefined,
+                            icon: ['./icons/italic.svg'],
                         },
                         underline: {
-                            icon: ['./icons/underline-icon.svg'],
-                            className: undefined,
+                            icon: ['./icons/underline.svg'],
                         },
                         strikethrough: {
-                            icon: ['./icons/strikethrough-icon.svg'],
-                            className: undefined,
+                            icon: ['./icons/strikethrough.svg'],
                         },
                     },
                     list: {
                         options: ['unordered', 'ordered'],
-                        unordered: {
-                            icon: ['./icons/list.svg'],
-                            className: undefined,
-                        },
-                        ordered: {
-                            icon: ['./icons/list-ordered.svg'],
-                            className: undefined,
-                        },
                     },
                 }}
             />
+            <BoldIcon />
         </div>
     );
 };
