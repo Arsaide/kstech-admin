@@ -46,7 +46,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
     });
 
     const { mutate, isPending, isError, error } = useMutation({
-        mutationKey: ['create-product'],
+        mutationKey: ['create-page'],
         mutationFn: async (product: ProductDataTypes) =>
             store.editProduct(
                 data.id,

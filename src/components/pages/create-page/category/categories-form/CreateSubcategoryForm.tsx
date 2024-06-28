@@ -9,13 +9,13 @@ import {
     TextField,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { SubcategoryResponseModel } from '../../../../api/models/CategoriesResponseModel';
-import { Context } from '../../../../api/context';
+import { SubcategoryResponseModel } from '../../../../../api/models/CategoriesResponseModel';
+import { Context } from '../../../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { AuthContext } from '../../../../providers/AuthProvider';
+import { AuthContext } from '../../../../../providers/AuthProvider';
 
-const SubcategoriesForm = () => {
+const CreateSubcategoryForm = () => {
     const { store } = useContext(Context);
     const { isLoggedIn } = useContext(AuthContext);
     const {
@@ -125,4 +125,4 @@ const SubcategoriesForm = () => {
     );
 };
 
-export default SubcategoriesForm;
+export default CreateSubcategoryForm;

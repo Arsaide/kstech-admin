@@ -67,7 +67,7 @@ const DrawerElements = () => {
                     sx={{ '&:hover': { bgcolor: MainColorsEnum.BLACK02 } }}
                     onClick={handleClick}
                 >
-                    <NavLink to={'/create-product'} style={{ width: '100%' }}>
+                    <NavLink to={'/create'} style={{ width: '100%' }}>
                         <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>
                             <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
                                 <Plus />

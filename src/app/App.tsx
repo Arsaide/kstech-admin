@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import HomePage from './home/page';
 import ProductListPage from './product-list/page';
 import ProductIdPage from './product-list/product-id/ProductIdPage';
-import CreateProductPage from './create-product/page';
+import CreatePage from './create-product/page';
 import AnalyticsPage from './analytics/page';
 import ClientsPage from './clients/page';
 import NotAuthPage from './not-auth/page';
@@ -13,6 +13,8 @@ import { AuthContext } from '../providers/AuthProvider';
 import AppBarMenu from '../components/layout/nav/AppBar';
 import SideBar from '../components/layout/nav/side-bar/SideBar';
 import { CategoriesProvider } from '../providers/CategoriesProvider';
+import CreateCategoryPage from './create-product/category/page';
+import CreateProductPage from './create-product/product/page';
 
 function App() {
     const { isLoggedIn, isPending } = useContext(AuthContext);
@@ -36,8 +38,13 @@ function App() {
                             path={'/products-list/:id'}
                             element={<ProductIdPage />}
                         />
+                        <Route path={'/create'} element={<CreatePage />} />
                         <Route
-                            path={'/create-product'}
+                            path={'/create/category'}
+                            element={<CreateCategoryPage />}
+                        />
+                        <Route
+                            path={'/create/product'}
                             element={<CreateProductPage />}
                         />
                         <Route

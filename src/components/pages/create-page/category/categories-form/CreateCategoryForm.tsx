@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
-import { Context } from '../../../../api/context';
+import { Context } from '../../../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { CategoryResponseModel } from '../../../../api/models/CategoriesResponseModel';
+import { CategoryResponseModel } from '../../../../../api/models/CategoriesResponseModel';
 import { toast } from 'react-toastify';
 import { Box, Button, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { CategoriesContext } from '../../../../providers/CategoriesProvider';
+import { CategoriesContext } from '../../../../../providers/CategoriesProvider';
 
-const CategoriesForm = () => {
+const CreateCategoryForm = () => {
     const { store } = useContext(Context);
     const { setIsVisibleSubcategories } = useContext(CategoriesContext);
 
@@ -19,7 +19,7 @@ const CategoriesForm = () => {
     } = useForm<CategoryResponseModel>();
 
     const { mutate, isPending, isError, error } = useMutation({
-        mutationKey: ['create-category'],
+        mutationKey: ['category'],
         mutationFn: async (category: CategoryResponseModel) => {
             await store.createCategory(category.category);
         },
@@ -71,4 +71,4 @@ const CategoriesForm = () => {
     );
 };
 
-export default CategoriesForm;
+export default CreateCategoryForm;

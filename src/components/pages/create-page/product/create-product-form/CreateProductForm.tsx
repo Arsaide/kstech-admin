@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useContext, useState } from 'react';
-import { Context } from '../../../api/context';
+import { Context } from '../../../../../api/context';
+import { convertToRaw, EditorState } from 'draft-js';
 import { Controller, useForm } from 'react-hook-form';
+import { ProductDataTypes } from '../../../../../types/forms/ProductData.types';
 import { useMutation } from '@tanstack/react-query';
-import { ProductDataTypes } from '../../../types/forms/ProductData.types';
 import { toast } from 'react-toastify';
-import Typography from '@mui/material/Typography';
 import {
     Box,
     Button,
@@ -16,17 +16,17 @@ import {
     SelectChangeEvent,
     TextField,
 } from '@mui/material';
-import ListItemText from '@mui/material/ListItemText';
-import ImageUploadManager from '../../layout/common/ui/form-inputs/image-upload-manager/ImageUploadManager';
+import Typography from '@mui/material/Typography';
+import ImageUploadManager from '../../../../layout/common/ui/form-inputs/image-upload-manager/ImageUploadManager';
+import TextEditorInput from '../../../../layout/common/ui/form-inputs/text-editor-input/TextEditorInput';
 import {
     deliveryMethodArr,
     inAvailabilityArr,
     paymentMethodArr,
-} from '../product-list-page/product-id-page/components/product-id-edit';
-import { convertToRaw, EditorState } from 'draft-js';
-import TextEditorInput from '../../layout/common/ui/form-inputs/text-editor-input/TextEditorInput';
+} from '../../../product-list-page/product-id-page/components/product-id-edit';
+import ListItemText from '@mui/material/ListItemText';
 
-const CreateProduct = () => {
+const CreateProductForm = () => {
     const { store } = useContext(Context);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
@@ -37,7 +37,7 @@ const CreateProduct = () => {
     } = useForm<ProductDataTypes>();
 
     const { mutate, isPending, isError, error } = useMutation({
-        mutationKey: ['create-product'],
+        mutationKey: ['create-page'],
         mutationFn: async (product: ProductDataTypes) =>
             store.createProduct(
                 product.name,
@@ -536,4 +536,4 @@ const CreateProduct = () => {
     );
 };
 
-export default CreateProduct;
+export default CreateProductForm;
