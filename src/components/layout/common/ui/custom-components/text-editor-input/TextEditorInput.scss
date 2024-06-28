@@ -1,7 +1,25 @@
+.editor {
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
 .wrapperEditor {
-    border: 1px solid rgb(206, 212, 218);
-    border-radius: 4px;
-    box-sizing: border-box;
+    outline: 1px solid rgb(206, 212, 218);
+    border-radius: 3px;
+    box-sizing: content-box;
+    color: var(--red-mui) !important;
+
+    &.wrapperEditor--focused {
+        outline: 2px solid var(--blue-mui);
+    }
+
+    &.wrapperEditor--focused .wrapperError--error {
+        outline: 2px solid var(--red-mui);
+    }
+
+    &.wrapperError--error {
+        outline: 1px solid var(--red-mui);
+    }
 }
 
 .fieldEditor {
@@ -43,6 +61,44 @@
     }
 }
 
+.rdw-option-disabled {
+    background-color: #ece9e9 !important;
+    cursor: default !important;
+
+    &:hover {
+        background-color: #ece9e9 !important;
+    }
+}
+
+.rdw-link-modal-btn {
+    width: auto;
+    height: auto;
+    border: none;
+    margin: 0;
+    transition: background-color .2s ease-out 0s;
+    background: none;
+    padding: 5px 10px;
+
+    &:hover, &:active {
+        box-shadow: none;
+        background-color: rgba(206, 212, 218, .5);
+    }
+
+    &:disabled {
+        background-color: #ece9e9;
+        color: darkgrey;
+        cursor: default;
+
+        &:hover {
+            background-color: #ece9e9;
+        }
+    }
+
+    &:first-child {
+        margin-right: 5px;
+    }
+}
+
 .rdw-option-active {
     box-shadow: none;
     background-color: rgba(206, 212, 218, .8);
@@ -50,4 +106,14 @@
 
 .public-DraftStyleDefault-ul, .public-DraftStyleDefault-ol {
     margin: 5px 0;
+}
+
+.rdw-link-modal {
+    height: auto;
+}
+
+.public-DraftEditorPlaceholder-hasFocus {
+    > .wrapperEditor {
+        border: 2px solid var(--blue-mui);
+    }
 }

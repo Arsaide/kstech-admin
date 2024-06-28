@@ -160,6 +160,7 @@ const CreateProduct = () => {
                                 field.onChange(newState);
                             }}
                             placeholder={'Опис товару'}
+                            error={!!errors.description}
                         />
                     )}
                 />
@@ -247,9 +248,9 @@ const CreateProduct = () => {
                         )}
                     />
                     {errors.inAvailability && (
-                        <Typography color="error">
+                        <p className={'fieldError'}>
                             {errors.inAvailability.message}
-                        </Typography>
+                        </p>
                     )}
                 </FormControl>
                 <Controller
@@ -301,9 +302,9 @@ const CreateProduct = () => {
                                     ))}
                                 </Select>
                                 {errors.deliveryMethod && (
-                                    <Typography color="error">
+                                    <p className={'fieldError'}>
                                         {errors.deliveryMethod.message}
-                                    </Typography>
+                                    </p>
                                 )}
                             </FormControl>
                         );
@@ -369,9 +370,9 @@ const CreateProduct = () => {
                                 ))}
                             </Select>
                             {errors.paymentMethod && (
-                                <Typography color="error">
+                                <p className={'fieldError'}>
                                     {errors.paymentMethod.message}
-                                </Typography>
+                                </p>
                             )}
                         </FormControl>
                     )}
