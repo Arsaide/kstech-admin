@@ -53,7 +53,7 @@ const CreateSubcategoryForm = () => {
 
     return (
         <Box>
-            <Typography variant={'h4'}>Створення категорії</Typography>
+            <Typography variant={'h4'}>Створення підкатегорії</Typography>
             <Box component={'form'} onSubmit={handleSubmit(onSubmit)}>
                 <FormControl
                     fullWidth
