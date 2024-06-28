@@ -3,8 +3,7 @@ import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'draft-js/dist/Draft.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import './TextEditorInput.css';
-import BoldIcon from '../../../../../../lib/icons/BoldIcon';
+import './TextEditorInput.scss';
 
 interface TextEditorInputProps {
     editorState: EditorState;
@@ -37,23 +36,34 @@ const TextEditorInput: FC<TextEditorInputProps> = ({
                         ],
                         bold: {
                             icon: './icons/bold.svg',
+                            title: 'Жирний шрифт',
                         },
                         italic: {
                             icon: ['./icons/italic.svg'],
+                            title: 'Курсивний шрифт',
                         },
                         underline: {
                             icon: ['./icons/underline.svg'],
+                            title: 'Підкреслений шрифт',
                         },
                         strikethrough: {
                             icon: ['./icons/strikethrough.svg'],
+                            title: 'Закреслений шрифт',
                         },
                     },
                     list: {
                         options: ['unordered', 'ordered'],
+                        unordered: {
+                            icon: './icons/list.svg',
+                            title: 'Список з колами',
+                        },
+                        ordered: {
+                            icon: './icons/listOrdered.svg',
+                            title: 'Список з цифрами',
+                        },
                     },
                 }}
             />
-            <BoldIcon />
         </div>
     );
 };
