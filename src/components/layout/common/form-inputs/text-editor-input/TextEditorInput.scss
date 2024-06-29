@@ -7,7 +7,7 @@
     outline: 1px solid rgb(206, 212, 218);
     border-radius: 3px;
     box-sizing: content-box;
-    color: var(--red-mui) !important;
+    color: var(--black);
 
     &.wrapperEditor--focused {
         outline: 2px solid var(--blue-mui);
@@ -70,7 +70,7 @@
     }
 }
 
-.rdw-link-modal-btn {
+.rdw-link-modal-btn, .rdw-dropdown-wrapper {
     width: auto;
     height: auto;
     border: none;
@@ -78,6 +78,7 @@
     transition: background-color .2s ease-out 0s;
     background: none;
     padding: 5px 10px;
+    position: relative;
 
     &:hover, &:active {
         box-shadow: none;
@@ -97,6 +98,23 @@
     &:first-child {
         margin-right: 5px;
     }
+}
+
+.rdw-dropdown-wrapper {
+    padding: 5px 18px 5px 8px;
+}
+
+.rdw-fontsize-wrapper {
+    margin: 0;
+}
+
+.rdw-dropdown-optionwrapper {
+    position: absolute;
+    left: 0;
+}
+
+.rdw-dropdown-carettoopen,.rdw-dropdown-carettoclose  {
+    right: -8px;
 }
 
 .rdw-option-active {
