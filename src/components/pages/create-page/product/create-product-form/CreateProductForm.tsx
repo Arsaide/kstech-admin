@@ -17,8 +17,8 @@ import {
     TextField,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import ImageUploadManager from '../../../../layout/common/ui/form-inputs/image-upload-manager/ImageUploadManager';
-import TextEditorInput from '../../../../layout/common/ui/form-inputs/text-editor-input/TextEditorInput';
+import ImageUploadManager from '../../../../layout/common/form-inputs/image-upload-manager/ImageUploadManager';
+import TextEditorInput from '../../../../layout/common/form-inputs/text-editor-input/TextEditorInput';
 import {
     deliveryMethodArr,
     inAvailabilityArr,

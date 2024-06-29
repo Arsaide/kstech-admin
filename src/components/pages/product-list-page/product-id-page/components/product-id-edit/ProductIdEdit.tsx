@@ -17,7 +17,7 @@ import {
     SelectChangeEvent,
     TextField,
 } from '@mui/material';
-import ImageUploadManager from '../../../../../layout/common/ui/form-inputs/image-upload-manager/ImageUploadManager';
+import ImageUploadManager from '../../../../../layout/common/form-inputs/image-upload-manager/ImageUploadManager';
 import ListItemText from '@mui/material/ListItemText';
 import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
 import './ProductIdEdit.css';
