@@ -21,9 +21,8 @@ export default class Store {
             const response = await toast.promise(
                 AuthService.login(name, password),
                 {
-                    pending: 'Logged-in...',
-                    success: 'Log-in success!',
-                    error: 'Failed to log-in, please try again...',
+                    pending: 'Вхід...',
+                    success: 'Успішно вхід до адмін.панелі!',
                 },
             );
 
@@ -185,7 +184,7 @@ export default class Store {
     async getOneCategory(id: string) {
         try {
             return toast.promise(CategoriesService.getOneCategory(id), {
-                pending: 'Отримання категорії',
+                pending: 'Отримання категорії...',
                 success: 'Категорії отримано успішно!',
             });
         } catch (e: any) {
@@ -199,7 +198,7 @@ export default class Store {
             return toast.promise(
                 CategoriesService.createCategory(token, category),
                 {
-                    pending: 'Створення категорії',
+                    pending: 'Створення категорії...',
                     success: 'Категорія створена успішно!',
                 },
             );
@@ -210,7 +209,13 @@ export default class Store {
 
     async addSubcategory(id: string | undefined, subcategory: string) {
         try {
-            return CategoriesService.addSubcategory(id, subcategory);
+            return toast.promise(
+                CategoriesService.addSubcategory(id, subcategory),
+                {
+                    pending: 'Створення підкатегорії...',
+                    success: 'Підкатегорія створена успішно!',
+                },
+            );
         } catch (e: any) {
             throw e;
         }
