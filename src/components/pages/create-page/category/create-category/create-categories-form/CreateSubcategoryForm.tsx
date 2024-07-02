@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
     Box,
     Button,
@@ -10,14 +10,11 @@ import {
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { SubcategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
-import { Context } from '../../../../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { AuthContext } from '../../../../../../providers/AuthProvider';
+import useGetAllCategories from '../../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
+import useCreateSubCategory from '../../../../../../hooks/queries/categories/use-create-subcategory/useCreateSubCategory';
 
 const CreateSubcategoryForm = () => {
-    const { store } = useContext(Context);
-    const { isLoggedIn } = useContext(AuthContext);
     const {
         handleSubmit,
         control,
@@ -25,30 +22,21 @@ const CreateSubcategoryForm = () => {
     } = useForm<SubcategoryResponseModel>();
 
     const {
-        isLoading,
-        isError: isQueryError,
-        error: queryError,
-        data,
-    } = useQuery({
-        queryKey: ['get-categories'],
-        queryFn: async () => await store.getAllCategories(),
-        enabled: isLoggedIn,
-        select: data => data.data,
-    });
+        isCategoriesLoading,
+        isCategoriesError,
+        categoriesError,
+        categoriesData,
+    } = useGetAllCategories();
 
     const {
-        mutate,
-        isPending,
-        isError: isMutateError,
-        error: mutateError,
-    } = useMutation({
-        mutationKey: ['create-subcategory'],
-        mutationFn: async (subcategory: SubcategoryResponseModel) =>
-            store.addSubcategory(subcategory.category, subcategory.subcategory),
-    });
+        createSubcategoryMutate,
+        isPendingCreateSubcategory,
+        isCreateSubcategoryError,
+        mutateSubcategoryError,
+    } = useCreateSubCategory();
 
     const onSubmit = (subcategoriesData: SubcategoryResponseModel) => {
-        mutate(subcategoriesData);
+        createSubcategoryMutate(subcategoriesData);
     };
 
     return (
@@ -59,7 +47,7 @@ const CreateSubcategoryForm = () => {
                     fullWidth
                     margin="normal"
                     error={!!errors.category}
-                    disabled={isLoading}
+                    disabled={isCategoriesLoading}
                 >
                     <InputLabel>Категорія</InputLabel>
                     <Controller
@@ -68,8 +56,8 @@ const CreateSubcategoryForm = () => {
                         defaultValue={''}
                         render={({ field }) => (
                             <Select {...field} label={'Категорія'}>
-                                {data &&
-                                    data.map((item, index) => (
+                                {categoriesData &&
+                                    categoriesData.map((item, index) => (
                                         <MenuItem key={index} value={item.id}>
                                             {item.category}
                                         </MenuItem>
@@ -106,18 +94,18 @@ const CreateSubcategoryForm = () => {
                     type={'submit'}
                     variant={'contained'}
                     color={'primary'}
-                    disabled={isPending}
+                    disabled={isPendingCreateSubcategory}
                 >
-                    {isPending ? 'Створення...' : 'Створити'}
+                    {isPendingCreateSubcategory ? 'Створення...' : 'Створити'}
                 </Button>
-                {isQueryError && (
+                {isCategoriesError && (
                     <Typography color="error">
-                        Помилка категорії: {queryError?.message}
+                        Помилка категорії: {categoriesError?.message}
                     </Typography>
                 )}
-                {isMutateError && (
+                {isCreateSubcategoryError && (
                     <Typography color="error">
-                        Помилка підкатегорії: {mutateError?.message}
+                        Помилка підкатегорії: {mutateSubcategoryError?.message}
                     </Typography>
                 )}
             </Box>

@@ -28,23 +28,23 @@ const Category = () => {
                 <Typography variant={'h5'}>
                     Створення категорій та підкатегорій
                 </Typography>
-                <Typography mt={1} mb={1}>
+                <p className={'hint'} style={{ margin: '5px 0 20px' }}>
                     *На цій сторінці ви зможете створити нові категорії та
                     підкатегорії
-                </Typography>
+                </p>
                 <NavLink to={'/create/category-menu/create-categories'}>
                     <Button variant={'contained'}>Перейти</Button>
                 </NavLink>
             </Box>
 
-            <Box>
+            <Box mt={5}>
                 <Typography variant={'h5'}>
                     Редагування та видалення категорій та підкатегорій
                 </Typography>
-                <Typography mt={1} mb={1}>
+                <p className={'hint'} style={{ margin: '5px 0 20px' }}>
                     *На цій сторінці ви зможете відредагувати або видалити
                     категорії та підкатегорії
-                </Typography>
+                </p>
                 <NavLink to={'/create/category-menu/edit-categories'}>
                     <Button variant={'contained'}>Перейти</Button>
                 </NavLink>

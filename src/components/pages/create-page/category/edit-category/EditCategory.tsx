@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Breadcrumbs, Typography } from '@mui/material';
+import CategoriesList from './categories-list/CategoriesList';
 
 const EditCategory = () => {
     const breadcrumbs = [
@@ -32,6 +33,7 @@ const EditCategory = () => {
             <Breadcrumbs separator="›" aria-label="breadcrumb" sx={{ mb: 2 }}>
                 {breadcrumbs}
             </Breadcrumbs>
+            <CategoriesList />
         </>
     );
 };

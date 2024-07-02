@@ -81,7 +81,6 @@ const CreateProductForm = () => {
             item => item.category === selectedCategoryId,
         );
         setSubcategories(category?.subcategory ?? []);
-        console.log(subcategories);
     };
 
     const onSubmit = (data: ProductDataTypes) => {
