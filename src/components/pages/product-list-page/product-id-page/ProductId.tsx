@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../../../api/context';
@@ -8,7 +8,8 @@ import { MainColorsEnum } from '../../../../utils/enums/colors-enum';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import './ProductId.css';
-import ProductIdEdit from './components/product-id-edit/ProductIdEdit';
+import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
 const ProductId = () => {
     const { store } = useContext(Context);
@@ -17,6 +18,9 @@ const ProductId = () => {
         { original: string; thumbnail: string }[]
     >([]);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const [editorState, setEditorState] = useState<EditorState>(
+        EditorState.createEmpty(),
+    );
 
     const { isLoading, isError, error, data } = useQuery({
         queryKey: ['product-id', id],
@@ -32,9 +36,12 @@ const ProductId = () => {
             }));
             setImages(imagesData);
         }
+        if (data && data.description) {
+            // Преобразуйте описание из JSON строки в ContentState
+            const contentState = convertFromRaw(JSON.parse(data.description));
+            setEditorState(EditorState.createWithContent(contentState));
+        }
     }, [data]);
-
-    console.log(data);
 
     return (
         <div>
@@ -114,7 +121,15 @@ const ProductId = () => {
                             Ціна: {data?.price}. Знижка: {data?.discount}
                         </div>
                         <div>Кольори: {data?.colors}</div>
-                        <div>Опис товару: {data?.description}</div>
+                        <div>Опис товару:</div>
+                        <textarea
+                            disabled
+                            value={draftToHtml(
+                                convertToRaw(editorState.getCurrentContent()),
+                            )}
+                            rows={10}
+                            cols={50}
+                        />
                         <div>
                             Категорія товару - {data?.category}. Підкатегорія
                             товару - {data?.subcategory}
@@ -134,7 +149,7 @@ const ProductId = () => {
                     </div>
                 </div>
             )}
-            {data && <ProductIdEdit data={data} />}
+            {/*{data && <ProductIdEdit data={data} />}*/}
         </div>
     );
 };
