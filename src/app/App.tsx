@@ -13,8 +13,10 @@ import { AuthContext } from '../providers/AuthProvider';
 import AppBarMenu from '../components/layout/nav/AppBar';
 import SideBar from '../components/layout/nav/side-bar/SideBar';
 import { CategoriesProvider } from '../providers/CategoriesProvider';
-import CreateCategoryPage from './create-product/category/page';
+import CategoryMenuPage from './create-product/category-menu/page';
 import CreateProductPage from './create-product/product/page';
+import CreateCategoriesPage from './create-product/category-menu/create-categories/page';
+import EditCategoriesPage from './create-product/category-menu/edit-categories/page';
 
 function App() {
     const { isLoggedIn, isPending } = useContext(AuthContext);
@@ -40,8 +42,16 @@ function App() {
                         />
                         <Route path={'/create'} element={<CreatePage />} />
                         <Route
-                            path={'/create/category'}
-                            element={<CreateCategoryPage />}
+                            path={'/create/category-menu'}
+                            element={<CategoryMenuPage />}
+                        />
+                        <Route
+                            path={'/create/category-menu/create-categories'}
+                            element={<CreateCategoriesPage />}
+                        />
+                        <Route
+                            path={'/create/category-menu/edit-categories'}
+                            element={<EditCategoriesPage />}
                         />
                         <Route
                             path={'/create/product'}

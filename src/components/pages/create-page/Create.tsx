@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 const Create = () => {
     const breadcrumbs = [
         <Typography key={'1'} color="text.primary">
-            Створення
+            Перегляд меню
         </Typography>,
         <Typography key={'2'} color="text.primary">
             ...
@@ -33,14 +33,14 @@ const Create = () => {
                 </NavLink>
 
                 <Typography variant={'h5'} mt={5}>
-                    Створення категорій та підкатегорій
+                    Меню категорій та підкатегорій
                 </Typography>
                 <Typography mt={1} mb={1}>
                     *Натиснувши на кнопку, ви перейдете на сторінку, де зможете
                     створити нові категорії або підкатегорії, відредагувати
                     категорії або видалити їх
                 </Typography>
-                <NavLink to={'/create/category'}>
+                <NavLink to={'/create/category-menu'}>
                     <Button variant={'contained'}>Перейти</Button>
                 </NavLink>
             </Box>

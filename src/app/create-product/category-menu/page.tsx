@@ -1,7 +1,7 @@
 import React from 'react';
 import Category from '../../../components/pages/create-page/category/Category';
 
-const CreateCategoryPage = () => {
+const CategoryMenuPage = () => {
     return (
         <>
             <Category />
@@ -9,4 +9,4 @@ const CreateCategoryPage = () => {
     );
 };
 
-export default CreateCategoryPage;
+export default CategoryMenuPage;

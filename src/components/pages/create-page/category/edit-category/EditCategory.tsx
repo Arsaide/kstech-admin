@@ -1,10 +1,8 @@
-import { Breadcrumbs, Typography } from '@mui/material';
 import React from 'react';
-import CreateProductForm from './create-product-form/CreateProductForm';
 import { NavLink } from 'react-router-dom';
-import '../Create.scss';
+import { Breadcrumbs, Typography } from '@mui/material';
 
-const Product = () => {
+const EditCategory = () => {
     const breadcrumbs = [
         <NavLink
             key={'1'}
@@ -15,8 +13,17 @@ const Product = () => {
         >
             Перегляд меню
         </NavLink>,
-        <Typography key={'2'} color="text.primary">
-            Створення товару
+        <NavLink
+            key={'2'}
+            to="/create/category-menu"
+            className={({ isActive }) =>
+                [isActive ? 'activeBreadcrumbs' : ''].join(' ')
+            }
+        >
+            Категорії та підкатегорії
+        </NavLink>,
+        <Typography key={'3'} color="text.primary">
+            Перегляд
         </Typography>,
     ];
 
@@ -25,9 +32,8 @@ const Product = () => {
             <Breadcrumbs separator="›" aria-label="breadcrumb" sx={{ mb: 2 }}>
                 {breadcrumbs}
             </Breadcrumbs>
-            <CreateProductForm />
         </>
     );
 };
 
-export default Product;
+export default EditCategory;
