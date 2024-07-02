@@ -1,0 +1,14 @@
+.toolIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: background-color .2s ease-in-out;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: var(--black-02);
+  }
+}
