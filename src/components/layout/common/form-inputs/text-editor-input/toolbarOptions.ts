@@ -1,5 +1,6 @@
 export const toolbarOptions = {
     options: ['inline', 'fontSize', 'list', 'link', 'history'],
+    // options: ['inline', 'history'],
     inline: {
         options: [
             'bold',

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { EditorState } from 'draft-js';
+import { convertToRaw, EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'draft-js/dist/Draft.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -7,6 +7,7 @@ import './TextEditorInput.scss';
 import { editorLabels } from './ua';
 import { toolbarOptions } from './toolbarOptions';
 import classNames from 'classnames';
+import draftToHtml from 'draftjs-to-html';
 
 interface TextEditorInputProps {
     editorState: EditorState;
@@ -36,6 +37,8 @@ const TextEditorInput: FC<TextEditorInputProps> = ({
         'wrapperError--error': error,
     });
 
+    console.log(convertToRaw(editorState.getCurrentContent()));
+
     return (
         <div className={'editor'}>
             <Editor
@@ -49,6 +52,12 @@ const TextEditorInput: FC<TextEditorInputProps> = ({
                 toolbar={toolbarOptions}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+            />
+            <textarea
+                disabled
+                value={draftToHtml(
+                    convertToRaw(editorState.getCurrentContent()),
+                )}
             />
             {error && <p className={'fieldError'}>Required field</p>}
         </div>
