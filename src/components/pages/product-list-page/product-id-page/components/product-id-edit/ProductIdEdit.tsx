@@ -27,7 +27,7 @@ import {
     paymentMethodArr,
 } from './index';
 import TextEditorInput from '../../../../../layout/common/form-inputs/text-editor-input/TextEditorInput';
-import { convertToRaw, EditorState } from 'draft-js';
+import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 
 interface ProductIdEditProps {
     data: OneProductTypes;
@@ -299,6 +299,15 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                             }}
                             placeholder={'Опис товару'}
                             error={!!errors.description}
+                            defaultValue={
+                                data.description
+                                    ? EditorState.createWithContent(
+                                          convertFromRaw(
+                                              JSON.parse(data.description),
+                                          ),
+                                      )
+                                    : EditorState.createEmpty()
+                            }
                         />
                     )}
                 />

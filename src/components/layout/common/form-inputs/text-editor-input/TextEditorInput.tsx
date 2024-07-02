@@ -14,6 +14,7 @@ interface TextEditorInputProps {
     onEditorStateChange: (state: EditorState) => void;
     placeholder: string;
     error: boolean;
+    defaultValue?: EditorState;
 }
 
 const TextEditorInput: FC<TextEditorInputProps> = ({
@@ -21,6 +22,7 @@ const TextEditorInput: FC<TextEditorInputProps> = ({
     onEditorStateChange,
     placeholder,
     error,
+    defaultValue,
 }) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -37,8 +39,6 @@ const TextEditorInput: FC<TextEditorInputProps> = ({
         'wrapperError--error': error,
     });
 
-    console.log(convertToRaw(editorState.getCurrentContent()));
-
     return (
         <div className={'editor'}>
             <Editor
@@ -46,7 +46,7 @@ const TextEditorInput: FC<TextEditorInputProps> = ({
                 editorClassName={'fieldEditor'}
                 toolbarClassName={'toolbarEditor'}
                 placeholder={placeholder}
-                editorState={editorState}
+                editorState={defaultValue ? defaultValue : editorState}
                 onEditorStateChange={onEditorStateChange}
                 localization={{ translations: editorLabels }}
                 toolbar={toolbarOptions}
