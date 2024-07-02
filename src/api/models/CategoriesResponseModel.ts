@@ -1,7 +1,7 @@
 export interface CategoryResponseModel {
     id: string;
     category: string;
-    subcategories: string[];
+    subcategory: string[];
 }
 
 export interface SubcategoryResponseModel {
