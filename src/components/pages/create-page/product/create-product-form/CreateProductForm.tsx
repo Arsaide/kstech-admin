@@ -471,6 +471,11 @@ const CreateProductForm = () => {
                         </FormControl>
                     )}
                 />
+                {isQueryError && (
+                    <Typography color="error">
+                        Помилка: {queryError?.message}
+                    </Typography>
+                )}
                 <Typography variant={'h5'} sx={{ mt: 3 }}>
                     Характеристики товару:
                 </Typography>

@@ -588,7 +588,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                             <Select
                                 {...field}
                                 label={'Підкатегорія'}
-                                // disabled={!selectedCategory}
+                                disabled={!selectedCategory}
                             >
                                 {subcategories.map((item, index) => (
                                     <MenuItem key={index} value={item}>
@@ -604,6 +604,11 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         </FormControl>
                     )}
                 />
+                {isQueryError && (
+                    <Typography color="error">
+                        Помилка: {queryError?.message}
+                    </Typography>
+                )}
                 <Typography variant={'h5'} sx={{ mt: 3 }}>
                     Характеристики товару:
                 </Typography>
