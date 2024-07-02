@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FC, useContext } from 'react';
+import React, { ChangeEvent, FC, useContext, useEffect, useState } from 'react';
 import { Context } from '../../../../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
 import { ProductDataTypes } from '../../../../../../types/forms/ProductData.types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { OneProductTypes } from '../../../../../../api/models/ProductResponseModel';
 import Typography from '@mui/material/Typography';
@@ -26,6 +26,8 @@ import {
     inAvailabilityArr,
     paymentMethodArr,
 } from './index';
+import TextEditorInput from '../../../../../layout/common/form-inputs/text-editor-input/TextEditorInput';
+import { convertToRaw, EditorState } from 'draft-js';
 
 interface ProductIdEditProps {
     data: OneProductTypes;
@@ -33,16 +35,32 @@ interface ProductIdEditProps {
 
 const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
     const { store } = useContext(Context);
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
+    const [subcategories, setSubcategories] = useState<string[]>([]);
 
     const {
         handleSubmit,
         control,
-        // setValue,
+        setValue,
         formState: { errors },
     } = useForm<ProductDataTypes>({
-        // defaultValues: {
-        //     inAvailability: [],
-        // },
+        defaultValues: {
+            name: data.name || '',
+            colors: data.colors || '',
+            price: data.price || '',
+            discount: data.discount || '0',
+            inAvailability: data.inAvailability || '',
+            deliveryMethod: data.deliveryMethod || [],
+            turningMethod: data.turningMethod || '',
+            paymentMethod: data.paymentMethod || [],
+            category: data.category || '',
+            subcategory: data.subcategory || '',
+            weight: data.weight || '',
+            height: data.height || '',
+            width: data.width || '',
+            long: data.long || '',
+        },
     });
 
     const { mutate, isPending, isError, error } = useMutation({
@@ -71,14 +89,52 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
         onError: e => toast.error(`Сталась помилка ${e}`),
     });
 
-    // useEffect(() => {
-    //     if (data?.inAvailability) {
-    //         setValue('inAvailability', data.inAvailability);
-    //     }
-    // }, [data]);
+    const {
+        isLoading,
+        isError: isQueryError,
+        error: queryError,
+        data: categoriesData,
+    } = useQuery({
+        queryKey: ['get-categories'],
+        queryFn: async () => await store.getAllCategories(),
+        select: data => data.data,
+    });
+
+    useEffect(() => {
+        if (data.category) {
+            setSelectedCategory(data.category);
+
+            const category = categoriesData?.find(
+                item => item.category === data.category,
+            );
+
+            setSubcategories(category?.subcategory || []);
+
+            if (data.subcategory) {
+                setValue('subcategory', data.subcategory);
+            }
+        }
+    }, [data.category, data.subcategory, categoriesData, setValue]);
+
+    const handleCategorySelected = (event: SelectChangeEvent<string>) => {
+        const selectedCategoryId = event.target.value;
+        setSelectedCategory(selectedCategoryId);
+
+        const category = categoriesData?.find(
+            item => item.category === selectedCategoryId,
+        );
+        setSubcategories(category?.subcategory || []);
+    };
 
     const onSubmit = (data: ProductDataTypes) => {
-        mutate(data);
+        const formattedDescription = JSON.stringify(
+            convertToRaw(editorState.getCurrentContent()),
+        );
+        const productData = {
+            ...data,
+            description: formattedDescription,
+        };
+        mutate(productData);
     };
 
     return (
@@ -231,22 +287,18 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                     )}
                 />
                 <Controller
-                    name="description"
+                    name={'description'}
                     control={control}
                     rules={{ required: 'Required field' }}
                     render={({ field }) => (
-                        <TextField
-                            {...field}
-                            label="Опис товару"
-                            fullWidth
-                            margin="normal"
-                            defaultValue={data?.description}
+                        <TextEditorInput
+                            editorState={editorState}
+                            onEditorStateChange={newState => {
+                                setEditorState(newState);
+                                field.onChange(newState);
+                            }}
+                            placeholder={'Опис товару'}
                             error={!!errors.description}
-                            helperText={
-                                errors.description
-                                    ? errors.description.message
-                                    : ''
-                            }
                         />
                     )}
                 />
@@ -475,60 +527,72 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                 <Typography variant={'h5'} sx={{ mt: 3 }}>
                     Категорії та розташування товару:
                 </Typography>
-                <Controller
-                    name="category"
-                    control={control}
-                    rules={{ required: 'Required field' }}
-                    render={({ field }) => (
-                        <>
-                            <TextField
+                <FormControl
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.category}
+                    disabled={isLoading}
+                >
+                    <InputLabel>Категорія</InputLabel>
+                    <Controller
+                        name={'category'}
+                        control={control}
+                        defaultValue={''}
+                        render={({ field }) => (
+                            <Select
                                 {...field}
-                                label="Категорія товару"
-                                fullWidth
-                                margin="normal"
-                                defaultValue={data?.category}
-                                error={!!errors.category}
-                                helperText={
-                                    errors.category
-                                        ? errors.category.message
-                                        : ''
-                                }
-                            />
-                            <p className={'hint'}>
-                                <i>
-                                    *Підказка: Категорія:
-                                    &ldquo;Електрогенератори&ldquo;
-                                </i>
-                            </p>
-                        </>
+                                label={'Категорія'}
+                                onChange={event => {
+                                    handleCategorySelected(event);
+                                    field.onChange(event);
+                                }}
+                            >
+                                {categoriesData &&
+                                    categoriesData.map((item, index) => (
+                                        <MenuItem
+                                            key={index}
+                                            value={item.category}
+                                        >
+                                            {item.category}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
+                        )}
+                    />
+                    {errors.category && (
+                        <Typography color="error">
+                            {errors.category.message}
+                        </Typography>
                     )}
-                />
+                </FormControl>
                 <Controller
-                    name="subcategory"
+                    name={'subcategory'}
                     control={control}
-                    rules={{ required: 'Required field' }}
+                    defaultValue={data.subcategory || ''}
                     render={({ field }) => (
-                        <>
-                            <TextField
+                        <FormControl
+                            fullWidth
+                            margin={'normal'}
+                            error={!!errors.subcategory}
+                        >
+                            <InputLabel>Підкатегорія</InputLabel>
+                            <Select
                                 {...field}
-                                label="Підкатегорія товару"
-                                fullWidth
-                                margin="normal"
-                                defaultValue={data?.subcategory}
-                                error={!!errors.subcategory}
-                                helperText={
-                                    errors.subcategory
-                                        ? errors.subcategory.message
-                                        : ''
-                                }
-                            />
-                            <p className={'hint'}>
-                                <i>
-                                    *Підказка: Підкатегорія: &ldquo;Бензинові
-                                    генератори&ldquo;
-                                </i>
-                            </p>
-                        </>
+                                label={'Підкатегорія'}
+                                // disabled={!selectedCategory}
+                            >
+                                {subcategories.map((item, index) => (
+                                    <MenuItem key={index} value={item}>
+                                        {item}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                            {errors.subcategory && (
+                                <Typography color="error">
+                                    {errors.subcategory.message}
+                                </Typography>
+                            )}
+                        </FormControl>
                     )}
                 />
                 <Typography variant={'h5'} sx={{ mt: 3 }}>

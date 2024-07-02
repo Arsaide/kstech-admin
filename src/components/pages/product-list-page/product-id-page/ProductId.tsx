@@ -10,6 +10,7 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import './ProductId.css';
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import ProductIdEdit from './components/product-id-edit/ProductIdEdit';
 
 const ProductId = () => {
     const { store } = useContext(Context);
@@ -149,7 +150,7 @@ const ProductId = () => {
                     </div>
                 </div>
             )}
-            {/*{data && <ProductIdEdit data={data} />}*/}
+            {data && <ProductIdEdit data={data} />}
         </div>
     );
 };
