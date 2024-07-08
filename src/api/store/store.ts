@@ -192,11 +192,20 @@ export default class Store {
         }
     }
 
-    async createCategory(category: string) {
+    async createCategory(
+        category: string,
+        mainImg: File | null,
+        iconImg: File | null,
+    ) {
         try {
             const token = localStorage.getItem('token');
             return toast.promise(
-                CategoriesService.createCategory(token, category),
+                CategoriesService.createCategory(
+                    token,
+                    category,
+                    mainImg,
+                    iconImg,
+                ),
                 {
                     pending: 'Створення категорії...',
                     success: 'Категорія створена успішно!',
@@ -207,10 +216,22 @@ export default class Store {
         }
     }
 
-    async addSubcategory(id: string | undefined, subcategory: string) {
+    async addSubcategory(
+        id: string | undefined,
+        subcategory: string,
+        mainImg: File | null,
+        iconImg: File | null,
+    ) {
         try {
+            const token = localStorage.getItem('token');
             return toast.promise(
-                CategoriesService.addSubcategory(id, subcategory),
+                CategoriesService.addSubcategory(
+                    token,
+                    id,
+                    subcategory,
+                    mainImg,
+                    iconImg,
+                ),
                 {
                     pending: 'Створення підкатегорії...',
                     success: 'Підкатегорія створена успішно!',

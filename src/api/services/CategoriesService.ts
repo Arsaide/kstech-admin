@@ -21,20 +21,40 @@ export default class CategoriesService {
     static async createCategory(
         token: string | null,
         category: string,
+        mainImg: File | null,
+        iconImg: File | null,
     ): Promise<AxiosResponse<CategoryResponseModel>> {
-        return $api.post<CategoryResponseModel>(`/category/createcategory`, {
-            token,
-            category,
-        });
+        const formData = new FormData();
+
+        if (mainImg) formData.append('mainImg', mainImg);
+        if (iconImg) formData.append('iconimg', iconImg);
+        formData.append('category', category);
+        if (token) formData.append('token', token);
+
+        return $api.post<CategoryResponseModel>(
+            `/category/createcategory`,
+            formData,
+        );
     }
 
     static async addSubcategory(
+        token: string | null,
         id: string | undefined,
         subcategory: string,
+        mainImg: File | null,
+        iconImg: File | null,
     ): Promise<AxiosResponse<SubcategoryResponseModel>> {
-        return $api.post<SubcategoryResponseModel>(`/category/addsubcategory`, {
-            id,
-            subcategory,
-        });
+        const formData = new FormData();
+
+        if (id) formData.append('id', id);
+        if (mainImg) formData.append('mainImg', mainImg);
+        if (iconImg) formData.append('iconimg', iconImg);
+        if (token) formData.append('token', token);
+        formData.append('subcategory', subcategory);
+
+        return $api.post<SubcategoryResponseModel>(
+            `/category/addsubcategory`,
+            formData,
+        );
     }
 }
