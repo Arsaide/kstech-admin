@@ -18,11 +18,16 @@ import {
 import Typography from '@mui/material/Typography';
 import './CategoriesList.scss';
 import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
+import ModalWindow from '../../../../../layout/common/ui/modal/ModalWindow';
 
 const CategoriesList = () => {
     const [isOpenCategories, setIsOpenCategories] = useState<
         Record<string, boolean>
     >({});
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const handleOpenWindow = () => setIsModalOpen(true);
+    const handleCloseWindow = () => setIsModalOpen(false);
 
     const handleClickOpen = (id: string, isSubcategories: boolean) => {
         if (isSubcategories) {
@@ -153,6 +158,9 @@ const CategoriesList = () => {
                                                             className={
                                                                 'toolIcon'
                                                             }
+                                                            onClick={() =>
+                                                                handleClickOpen
+                                                            }
                                                         >
                                                             <Pencil />
                                                         </div>
@@ -165,6 +173,13 @@ const CategoriesList = () => {
                             )}
                         </>
                     ))}
+                <ModalWindow
+                    isOpen={isModalOpen}
+                    handleClose={handleCloseWindow}
+                    title={'Test'}
+                >
+                    qweqweqew rq
+                </ModalWindow>
             </List>
         </>
     );

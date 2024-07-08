@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import {
     Box,
     Button,
@@ -9,17 +9,21 @@ import {
     TextField,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { SubcategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
+import { CreateSubcategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
 import { Controller, useForm } from 'react-hook-form';
 import useGetAllCategories from '../../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
 import useCreateSubCategory from '../../../../../../hooks/queries/categories/use-create-subcategory/useCreateSubCategory';
+import { useResizeImages } from '../../../../../../hooks/use-resize-images/useResizeImages';
 
 const CreateSubcategoryForm = () => {
     const {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm<SubcategoryResponseModel>();
+    } = useForm<CreateSubcategoryResponseModel>();
+
+    const { originalImage, resizedImage, handleImageChange } =
+        useResizeImages();
 
     const {
         isCategoriesLoading,
@@ -33,9 +37,9 @@ const CreateSubcategoryForm = () => {
         isPendingCreateSubcategory,
         isCreateSubcategoryError,
         mutateSubcategoryError,
-    } = useCreateSubCategory();
+    } = useCreateSubCategory(originalImage, resizedImage);
 
-    const onSubmit = (subcategoriesData: SubcategoryResponseModel) => {
+    const onSubmit = (subcategoriesData: CreateSubcategoryResponseModel) => {
         createSubcategoryMutate(subcategoriesData);
     };
 
@@ -71,6 +75,40 @@ const CreateSubcategoryForm = () => {
                         </Typography>
                     )}
                 </FormControl>
+                <Controller
+                    name={'img'}
+                    control={control}
+                    rules={{ required: 'Required field' }}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label={'Картинка'}
+                            type="file"
+                            inputProps={{ accept: 'image/*' }}
+                            onChange={e =>
+                                handleImageChange(
+                                    e as ChangeEvent<HTMLInputElement>,
+                                    field.onChange,
+                                )
+                            }
+                            margin={'normal'}
+                            error={!!errors.img}
+                            helperText={errors.img ? errors.img.message : ''}
+                        />
+                    )}
+                />
+                {originalImage && (
+                    <img
+                        src={URL.createObjectURL(originalImage)}
+                        alt="Original"
+                    />
+                )}
+                {resizedImage && (
+                    <img
+                        src={URL.createObjectURL(resizedImage)}
+                        alt="Resized"
+                    />
+                )}
                 <Controller
                     name={'subcategory'}
                     control={control}

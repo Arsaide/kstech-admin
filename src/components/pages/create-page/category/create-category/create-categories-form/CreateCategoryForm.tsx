@@ -1,34 +1,41 @@
-import React, { useContext } from 'react';
+import React, { ChangeEvent, useContext } from 'react';
 import { Context } from '../../../../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { CategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
+import { CreateCategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
 import { toast } from 'react-toastify';
 import { Box, Button, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { CategoriesContext } from '../../../../../../providers/CategoriesProvider';
+import { useResizeImages } from '../../../../../../hooks/use-resize-images/useResizeImages';
 
 const CreateCategoryForm = () => {
     const { store } = useContext(Context);
     const { setIsVisibleSubcategories } = useContext(CategoriesContext);
+    const { originalImage, resizedImage, handleImageChange } =
+        useResizeImages();
 
     const {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm<CategoryResponseModel>();
+    } = useForm<CreateCategoryResponseModel>();
 
     const { mutate, isPending, isError, error } = useMutation({
         mutationKey: ['category'],
-        mutationFn: async (category: CategoryResponseModel) => {
-            await store.createCategory(category.category);
+        mutationFn: async (category: CreateCategoryResponseModel) => {
+            await store.createCategory(
+                category.category,
+                originalImage,
+                resizedImage,
+            );
         },
         onError: e =>
             toast.error(`Сталась помилка при створені категорії: ${e}`),
         onSuccess: () => setIsVisibleSubcategories(true),
     });
 
-    const onSubmit = (data: CategoryResponseModel) => {
+    const onSubmit = (data: CreateCategoryResponseModel) => {
         mutate(data);
     };
 
@@ -36,6 +43,40 @@ const CreateCategoryForm = () => {
         <Box>
             <Typography variant={'h4'}>Створення категорії</Typography>
             <Box component={'form'} onSubmit={handleSubmit(onSubmit)}>
+                <Controller
+                    name={'img'}
+                    control={control}
+                    rules={{ required: 'Required field' }}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label={'Картинка'}
+                            type="file"
+                            inputProps={{ accept: 'image/*' }}
+                            onChange={e =>
+                                handleImageChange(
+                                    e as ChangeEvent<HTMLInputElement>,
+                                    field.onChange,
+                                )
+                            }
+                            margin={'normal'}
+                            error={!!errors.img}
+                            helperText={errors.img ? errors.img.message : ''}
+                        />
+                    )}
+                />
+                {originalImage && (
+                    <img
+                        src={URL.createObjectURL(originalImage)}
+                        alt="Original"
+                    />
+                )}
+                {resizedImage && (
+                    <img
+                        src={URL.createObjectURL(resizedImage)}
+                        alt="Resized"
+                    />
+                )}
                 <Controller
                     name={'category'}
                     control={control}
