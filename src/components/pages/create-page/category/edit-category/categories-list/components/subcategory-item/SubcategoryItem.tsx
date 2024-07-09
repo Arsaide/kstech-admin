@@ -37,6 +37,7 @@ const SubcategoryItem: FC<SubcategoryItemProps> = ({
                             height: '40px',
                             borderRadius: '4px / 6.7px',
                         }}
+                        alt={subcategory.subcategory}
                     />
                     {categoryIndex + 1}.{subcategoryIndex + 1}.{' '}
                     {subcategory.subcategory}

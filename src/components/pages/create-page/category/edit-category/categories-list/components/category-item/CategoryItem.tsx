@@ -56,6 +56,7 @@ const CategoryItem: FC<CategoryItemProps> = ({
                                 height: '40px',
                                 borderRadius: '4px / 6.7px',
                             }}
+                            alt={category.category}
                         />
                         {categoryIndex + 1}. {category.category}
                     </Box>
