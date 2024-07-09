@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Context } from '../../../../api/context';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 export const useGetOneCategory = (categoryId: string | null) => {
     const { store } = useContext(Context);
@@ -15,6 +16,11 @@ export const useGetOneCategory = (categoryId: string | null) => {
         queryFn: async () => await store.getOneCategory(categoryId),
         enabled: !!categoryId,
     });
+
+    if (isGetCategoryError)
+        toast.error(
+            `Помилка при отримані категорії id: ${categoryId}. Помилка: ${getCategoryError}}`,
+        );
 
     return {
         categoryData,
