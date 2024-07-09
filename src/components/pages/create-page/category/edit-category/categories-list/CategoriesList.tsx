@@ -1,26 +1,17 @@
 import React, { useContext, useState } from 'react';
 import useGetAllCategories from '../../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
 import List from '@mui/material/List';
-import { Box, Collapse, ListItemIcon, ListSubheader } from '@mui/material';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import {
-    ChevronDown,
-    ChevronUp,
-    FileBox,
-    FileStack,
-    Folder,
-    FolderOpen,
-    Pencil,
-    Trash2,
-} from 'lucide-react';
-import Typography from '@mui/material/Typography';
+import { LinearProgress, ListSubheader } from '@mui/material';
 import './CategoriesList.scss';
 import { useGetOneCategory } from '../../../../../../hooks/queries/categories/use-get-one-category/useGetOneCategory';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import { CategoriesContext } from '../../../../../../providers/CategoriesProvider';
 import { GetOneCategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
-import { GetOneCategory } from '../../../../../../types/categories/GetOneCategory.types';
+import CategoryListHeader from './components/category-list-header/CategoryListHeader';
+import CategoryItem from './components/category-item/CategoryItem';
+import CategoriesItemsSkeleton from './categories-items-skeleton/CategoriesItemsSkeleton';
+import { toast } from 'react-toastify';
+import Typography from '@mui/material/Typography';
 import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
 
 const CategoriesList = () => {
@@ -38,31 +29,30 @@ const CategoriesList = () => {
         categoriesData,
     } = useGetAllCategories();
 
-    const {
-        categoryData,
-        isLoadingGetCategory,
-        isGetCategoryError,
-        getCategoryError,
-    } = useGetOneCategory(selectedCategoryId);
+    const { isLoadingGetCategory, isGetCategoryError, getCategoryError } =
+        useGetOneCategory(selectedCategoryId);
 
     const handleClickOpen = (id: string) => {
-        setIsOpenCategories(prevState => ({
-            ...prevState,
-            [id]: !prevState[id],
-        }));
-
-        const cachedCategoryData =
-            queryClient.getQueryData<GetOneCategoryResponseModel>([
-                'get-one-category',
-                id,
-            ]);
-
-        if (!cachedCategoryData) {
-            setSelectedCategoryId(id);
+        try {
+            setIsOpenCategories(prevState => ({
+                ...prevState,
+                [id]: !prevState[id],
+            }));
+            const cachedCategoryData =
+                queryClient.getQueryData<GetOneCategoryResponseModel>([
+                    'get-one-category',
+                    id,
+                ]);
+            if (!cachedCategoryData) {
+                setSelectedCategoryId(id);
+            }
+        } catch (e: any) {
+            toast.error(
+                'Сталась помилка при рендерінгу підкатегорій. Помилка: ',
+                e,
+            );
         }
     };
-
-    console.log(categoriesData);
 
     const handleDeleteClick = (event: React.MouseEvent) => {
         event.stopPropagation();
@@ -74,17 +64,11 @@ const CategoriesList = () => {
 
     return (
         <>
-            <Box mt={5}>
-                <Typography variant={'h5'}>Перегляд категорій</Typography>
-                <Typography
-                    sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-                >
-                    <FileStack width={20} /> Кількість категорій -{' '}
-                    <strong>
-                        {categoriesData?.length ? categoriesData.length : '0'}
-                    </strong>
-                </Typography>
-            </Box>
+            <CategoryListHeader
+                categoryCount={
+                    categoriesData?.length ? categoriesData.length : '0'
+                }
+            />
             <List
                 sx={{
                     width: '100%',
@@ -98,129 +82,47 @@ const CategoriesList = () => {
                     </ListSubheader>
                 }
             >
-                {categoriesData?.length &&
-                    categoriesData.map((category, categoryIndex) => (
-                        <React.Fragment key={category.id}>
-                            <ListItemButton
-                                onClick={() => handleClickOpen(category.id)}
-                            >
-                                <ListItemIcon>
-                                    {isOpenCategories[category.id] ? (
-                                        <FolderOpen />
-                                    ) : (
-                                        <Folder />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: 2,
-                                        }}
-                                    >
-                                        <img
-                                            src={category.iconimg}
-                                            style={{
-                                                width: '40px',
-                                                height: '40px',
-                                            }}
-                                        />
-                                        {categoryIndex + 1}. {category.category}
-                                    </Box>
-                                </ListItemText>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '10px',
-                                    }}
-                                >
-                                    <>
-                                        <div
-                                            className={'toolIcon'}
-                                            onClick={handleDeleteClick}
-                                        >
-                                            <Trash2
-                                                color={MainColorsEnum.RED}
-                                            />
-                                        </div>
-                                        <div
-                                            className={'toolIcon'}
-                                            onClick={handleEditClick}
-                                        >
-                                            <Pencil />
-                                        </div>
-                                    </>
-                                    {isOpenCategories[category.id] ? (
-                                        <ChevronUp />
-                                    ) : (
-                                        <ChevronDown />
-                                    )}
-                                </Box>
-                            </ListItemButton>
-                            <Collapse
-                                in={isOpenCategories[category.id]}
-                                timeout={'auto'}
-                                unmountOnExit
-                            >
-                                <List component={'div'} disablePadding>
-                                    {isOpenCategories[category.id] &&
-                                        queryClient
-                                            .getQueryData<GetOneCategory>([
-                                                'get-one-category',
-                                                category.id,
-                                            ])
-                                            ?.data.subcategory?.map(
-                                                (
-                                                    subcategory,
-                                                    subcategoryIndex,
-                                                ) => (
-                                                    <ListItemButton
-                                                        sx={{ pl: 4 }}
-                                                        key={subcategoryIndex}
-                                                    >
-                                                        <ListItemIcon>
-                                                            <FileBox
-                                                                width={20}
-                                                            />
-                                                        </ListItemIcon>
-                                                        <ListItemText
-                                                            primary={`${categoryIndex + 1}.${subcategoryIndex + 1}. ${subcategory.subcategory}`}
-                                                        />
-                                                        {subcategory && (
-                                                            <>
-                                                                <div
-                                                                    className={
-                                                                        'toolIcon'
-                                                                    }
-                                                                >
-                                                                    <Trash2
-                                                                        color={
-                                                                            MainColorsEnum.RED
-                                                                        }
-                                                                    />
-                                                                </div>
-                                                                <div
-                                                                    className={
-                                                                        'toolIcon'
-                                                                    }
-                                                                    onClick={() =>
-                                                                        handleClickOpen
-                                                                    }
-                                                                >
-                                                                    <Pencil />
-                                                                </div>
-                                                            </>
-                                                        )}
-                                                    </ListItemButton>
-                                                ),
-                                            )}
-                                </List>
-                            </Collapse>
-                        </React.Fragment>
-                    ))}
+                {isLoadingGetCategory && (
+                    <LinearProgress
+                        color="success"
+                        sx={{
+                            position: 'absolute',
+                            top: 45,
+                            left: 0,
+                            width: '100%',
+                            zIndex: 10,
+                        }}
+                    />
+                )}
+                {isCategoriesLoading
+                    ? Array.from({
+                          length: Math.floor(Math.random() * 6) + 5,
+                      }).map((_, index) => (
+                          <CategoriesItemsSkeleton key={index} />
+                      ))
+                    : categoriesData?.length &&
+                      categoriesData.map((category, categoryIndex) => (
+                          <CategoryItem
+                              key={category.id}
+                              category={category}
+                              isOpen={isOpenCategories[category.id]}
+                              onToggleOpen={handleClickOpen}
+                              onDeleteButtonClick={handleDeleteClick}
+                              onEditButtonClick={handleEditClick}
+                              categoryIndex={categoryIndex}
+                          />
+                      ))}
             </List>
+            {isGetCategoryError && (
+                <Typography color={MainColorsEnum.RED}>
+                    {`Сталась помилка під час отримання підкатегорій! Помилка: ${getCategoryError}`}
+                </Typography>
+            )}
+            {isCategoriesError && (
+                <Typography color={MainColorsEnum.RED}>
+                    {`Сталась помилка під час отримання списка категорій! Помилка: ${categoriesError}`}
+                </Typography>
+            )}
         </>
     );
 };
