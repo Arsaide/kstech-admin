@@ -1,7 +1,7 @@
 export interface CategoryResponseModel {
     id: string;
     category: string;
-    iconImg: string;
+    iconimg: string;
     mainImg: string;
     subcategory: [];
 }
@@ -28,7 +28,7 @@ export interface CreateSubcategoryResponseModel {
 export interface SubcategoryResponseModel {
     id: string;
     category: string;
-    iconImg: string;
+    iconimg: string;
     mainImg: string;
     subcategory: string;
 }

@@ -62,6 +62,16 @@ const CategoriesList = () => {
         }
     };
 
+    console.log(categoriesData);
+
+    const handleDeleteClick = (event: React.MouseEvent) => {
+        event.stopPropagation();
+    };
+
+    const handleEditClick = (event: React.MouseEvent) => {
+        event.stopPropagation();
+    };
+
     return (
         <>
             <Box mt={5}>
@@ -101,9 +111,24 @@ const CategoriesList = () => {
                                         <Folder />
                                     )}
                                 </ListItemIcon>
-                                <ListItemText
-                                    primary={`${categoryIndex + 1}. ${category.category}`}
-                                />
+                                <ListItemText>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 2,
+                                        }}
+                                    >
+                                        <img
+                                            src={category.iconimg}
+                                            style={{
+                                                width: '40px',
+                                                height: '40px',
+                                            }}
+                                        />
+                                        {categoryIndex + 1}. {category.category}
+                                    </Box>
+                                </ListItemText>
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -112,12 +137,18 @@ const CategoriesList = () => {
                                     }}
                                 >
                                     <>
-                                        <div className={'toolIcon'}>
+                                        <div
+                                            className={'toolIcon'}
+                                            onClick={handleDeleteClick}
+                                        >
                                             <Trash2
                                                 color={MainColorsEnum.RED}
                                             />
                                         </div>
-                                        <div className={'toolIcon'}>
+                                        <div
+                                            className={'toolIcon'}
+                                            onClick={handleEditClick}
+                                        >
                                             <Pencil />
                                         </div>
                                     </>
