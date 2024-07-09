@@ -11,6 +11,7 @@ import './ProductId.css';
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import ProductIdEdit from './components/product-id-edit/ProductIdEdit';
+import parse from 'html-react-parser';
 
 const ProductId = () => {
     const { store } = useContext(Context);
@@ -123,14 +124,15 @@ const ProductId = () => {
                         </div>
                         <div>Кольори: {data?.colors}</div>
                         <div>Опис товару:</div>
-                        <textarea
-                            disabled
-                            value={draftToHtml(
-                                convertToRaw(editorState.getCurrentContent()),
+                        <div>
+                            {parse(
+                                draftToHtml(
+                                    convertToRaw(
+                                        editorState.getCurrentContent(),
+                                    ),
+                                ),
                             )}
-                            rows={10}
-                            cols={50}
-                        />
+                        </div>
                         <div>
                             Категорія товару - {data?.category}. Підкатегорія
                             товару - {data?.subcategory}

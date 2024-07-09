@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useContext, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Context } from '../../../../../api/context';
 import { convertToRaw, EditorState } from 'draft-js';
 import { Controller, useForm } from 'react-hook-form';
 import { ProductDataTypes } from '../../../../../types/forms/ProductData.types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import {
     Box,
@@ -25,12 +25,19 @@ import {
     paymentMethodArr,
 } from '../../../product-list-page/product-id-page/components/product-id-edit';
 import ListItemText from '@mui/material/ListItemText';
+import { useGetOneCategory } from '../../../../../hooks/queries/categories/use-get-one-category/useGetOneCategory';
+import useGetAllCategories from '../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
+import { SubcategoryResponseModel } from '../../../../../api/models/CategoriesResponseModel';
 
 const CreateProductForm = () => {
     const { store } = useContext(Context);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
-    const [subcategories, setSubcategories] = useState<string[]>([]);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+        null,
+    );
+    const [subcategories, setSubcategories] = useState<
+        SubcategoryResponseModel[] | null
+    >(null);
 
     const {
         handleSubmit,
@@ -63,24 +70,28 @@ const CreateProductForm = () => {
     });
 
     const {
-        isLoading,
-        isError: isQueryError,
-        error: queryError,
-        data,
-    } = useQuery({
-        queryKey: ['get-categories'],
-        queryFn: async () => await store.getAllCategories(),
-        select: data => data.data,
-    });
+        isCategoriesLoading,
+        isCategoriesError,
+        categoriesError,
+        categoriesData,
+    } = useGetAllCategories();
+
+    const {
+        categoryData,
+        isLoadingGetCategory,
+        isGetCategoryError,
+        getCategoryError,
+    } = useGetOneCategory(selectedCategoryId);
+
+    useEffect(() => {
+        if (categoryData) {
+            setSubcategories(categoryData.data.subcategory);
+        }
+    }, [categoryData]);
 
     const handleCategorySelected = (event: SelectChangeEvent<string>) => {
-        const selectedCategoryId = event.target.value;
-        setSelectedCategory(selectedCategoryId);
-
-        const category = data?.find(
-            item => item.category === selectedCategoryId,
-        );
-        setSubcategories(category?.subcategory ?? []);
+        const id = event.target.value;
+        setSelectedCategoryId(id);
     };
 
     const onSubmit = (data: ProductDataTypes) => {
@@ -407,7 +418,7 @@ const CreateProductForm = () => {
                     fullWidth
                     margin="normal"
                     error={!!errors.category}
-                    disabled={isLoading}
+                    disabled={isCategoriesLoading}
                 >
                     <InputLabel>Категорія</InputLabel>
                     <Controller
@@ -423,12 +434,9 @@ const CreateProductForm = () => {
                                     field.onChange(event);
                                 }}
                             >
-                                {data &&
-                                    data.map((item, index) => (
-                                        <MenuItem
-                                            key={index}
-                                            value={item.category}
-                                        >
+                                {categoriesData &&
+                                    categoriesData.map((item, index) => (
+                                        <MenuItem key={index} value={item.id}>
                                             {item.category}
                                         </MenuItem>
                                     ))}
@@ -454,11 +462,13 @@ const CreateProductForm = () => {
                             <Select
                                 {...field}
                                 label={'Підкатегорія'}
-                                disabled={!selectedCategory}
+                                disabled={
+                                    !selectedCategoryId || isLoadingGetCategory
+                                }
                             >
-                                {subcategories.map((item, index) => (
-                                    <MenuItem key={index} value={item}>
-                                        {item}
+                                {subcategories?.map((item, index) => (
+                                    <MenuItem key={index} value={item.id}>
+                                        {item.subcategory}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -470,9 +480,9 @@ const CreateProductForm = () => {
                         </FormControl>
                     )}
                 />
-                {isQueryError && (
+                {isCategoriesError && (
                     <Typography color="error">
-                        Помилка: {queryError?.message}
+                        Помилка: {categoriesError?.message}
                     </Typography>
                 )}
                 <Typography variant={'h5'} sx={{ mt: 3 }}>

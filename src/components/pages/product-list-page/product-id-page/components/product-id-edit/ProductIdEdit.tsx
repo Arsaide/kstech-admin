@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, useContext, useEffect, useState } from 'react';
 import { Context } from '../../../../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
 import { ProductDataTypes } from '../../../../../../types/forms/ProductData.types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { OneProductTypes } from '../../../../../../api/models/ProductResponseModel';
 import Typography from '@mui/material/Typography';
@@ -28,6 +28,9 @@ import {
 } from './index';
 import TextEditorInput from '../../../../../layout/common/form-inputs/text-editor-input/TextEditorInput';
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
+import { useGetOneCategory } from '../../../../../../hooks/queries/categories/use-get-one-category/useGetOneCategory';
+import useGetAllCategories from '../../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
+import { SubcategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
 
 interface ProductIdEditProps {
     data: OneProductTypes;
@@ -36,8 +39,12 @@ interface ProductIdEditProps {
 const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
     const { store } = useContext(Context);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
-    const [subcategories, setSubcategories] = useState<string[]>([]);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+        null,
+    );
+    const [subcategories, setSubcategories] = useState<
+        SubcategoryResponseModel[] | null
+    >(null);
 
     const {
         handleSubmit,
@@ -90,41 +97,40 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
     });
 
     const {
-        isLoading,
-        isError: isQueryError,
-        error: queryError,
-        data: categoriesData,
-    } = useQuery({
-        queryKey: ['get-categories'],
-        queryFn: async () => await store.getAllCategories(),
-        select: data => data.data,
-    });
+        isCategoriesLoading,
+        isCategoriesError,
+        categoriesError,
+        categoriesData,
+    } = useGetAllCategories();
+
+    const {
+        categoryData,
+        isLoadingGetCategory,
+        isGetCategoryError,
+        getCategoryError,
+    } = useGetOneCategory(selectedCategoryId);
 
     useEffect(() => {
-        if (data.category) {
-            setSelectedCategory(data.category);
-
-            const category = categoriesData?.find(
-                item => item.category === data.category,
-            );
-
-            setSubcategories(category?.subcategory || []);
+        if (categoryData && data.id) {
+            setSubcategories(categoryData.data.subcategory);
 
             if (data.subcategory) {
                 setValue('subcategory', data.subcategory);
             }
         }
-    }, [data.category, data.subcategory, categoriesData, setValue]);
+    }, [categoryData, data.id, data.subcategory, categoriesData, setValue]);
 
     const handleCategorySelected = (event: SelectChangeEvent<string>) => {
-        const selectedCategoryId = event.target.value;
-        setSelectedCategory(selectedCategoryId);
-
-        const category = categoriesData?.find(
-            item => item.category === selectedCategoryId,
-        );
-        setSubcategories(category?.subcategory || []);
+        const id = event.target.value;
+        setSelectedCategoryId(id);
     };
+
+    useEffect(() => {
+        if (data.description) {
+            const contentState = convertFromRaw(JSON.parse(data.description));
+            setEditorState(EditorState.createWithContent(contentState));
+        }
+    }, [data.description]);
 
     const onSubmit = (data: ProductDataTypes) => {
         const formattedDescription = JSON.stringify(
@@ -295,19 +301,13 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                             editorState={editorState}
                             onEditorStateChange={newState => {
                                 setEditorState(newState);
-                                field.onChange(newState);
+                                const rawContentState = JSON.stringify(
+                                    convertToRaw(newState.getCurrentContent()),
+                                );
+                                field.onChange(rawContentState);
                             }}
                             placeholder={'Опис товару'}
                             error={!!errors.description}
-                            defaultValue={
-                                data.description
-                                    ? EditorState.createWithContent(
-                                          convertFromRaw(
-                                              JSON.parse(data.description),
-                                          ),
-                                      )
-                                    : EditorState.createEmpty()
-                            }
                         />
                     )}
                 />
@@ -540,7 +540,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                     fullWidth
                     margin="normal"
                     error={!!errors.category}
-                    disabled={isLoading}
+                    disabled={isLoadingGetCategory}
                 >
                     <InputLabel>Категорія</InputLabel>
                     <Controller
@@ -588,11 +588,13 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                             <Select
                                 {...field}
                                 label={'Підкатегорія'}
-                                disabled={!selectedCategory}
+                                disabled={
+                                    !selectedCategoryId || isLoadingGetCategory
+                                }
                             >
-                                {subcategories.map((item, index) => (
-                                    <MenuItem key={index} value={item}>
-                                        {item}
+                                {subcategories?.map((item, index) => (
+                                    <MenuItem key={index} value={item.id}>
+                                        {item.subcategory}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -604,9 +606,9 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         </FormControl>
                     )}
                 />
-                {isQueryError && (
+                {isGetCategoryError && (
                     <Typography color="error">
-                        Помилка: {queryError?.message}
+                        Помилка: {getCategoryError?.message}
                     </Typography>
                 )}
                 <Typography variant={'h5'} sx={{ mt: 3 }}>
