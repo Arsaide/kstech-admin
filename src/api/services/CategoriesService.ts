@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import $api from '../request';
 import {
     CategoryResponseModel,
+    GetOneCategoryResponseModel,
     SubcategoryResponseModel,
 } from '../models/CategoriesResponseModel';
 
@@ -13,8 +14,8 @@ export default class CategoriesService {
     }
 
     static async getOneCategory(
-        id: string,
-    ): Promise<AxiosResponse<CategoryResponseModel>> {
+        id: string | null,
+    ): Promise<AxiosResponse<GetOneCategoryResponseModel>> {
         return $api.get(`/category/getonecategory?id=${id}`);
     }
 

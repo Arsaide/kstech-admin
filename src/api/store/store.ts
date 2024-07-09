@@ -181,7 +181,7 @@ export default class Store {
         }
     }
 
-    async getOneCategory(id: string) {
+    async getOneCategory(id: string | null) {
         try {
             return toast.promise(CategoriesService.getOneCategory(id), {
                 pending: 'Отримання категорії...',

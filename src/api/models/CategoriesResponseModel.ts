@@ -3,7 +3,12 @@ export interface CategoryResponseModel {
     category: string;
     iconImg: string;
     mainImg: string;
-    subcategory: string[];
+    subcategory: [];
+}
+
+export interface GetOneCategoryResponseModel {
+    category: CategoryResponseModel;
+    subcategory: SubcategoryResponseModel[];
 }
 
 export interface CreateCategoryResponseModel {
