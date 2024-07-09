@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import useGetAllCategories from '../../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
 import List from '@mui/material/List';
 import { Box, Collapse, ListItemIcon, ListSubheader } from '@mui/material';
@@ -13,32 +13,23 @@ import {
     FolderOpen,
     Pencil,
     Trash2,
-    X,
 } from 'lucide-react';
 import Typography from '@mui/material/Typography';
 import './CategoriesList.scss';
+import { useGetOneCategory } from '../../../../../../hooks/queries/categories/use-get-one-category/useGetOneCategory';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { CategoriesContext } from '../../../../../../providers/CategoriesProvider';
+import { GetOneCategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
+import { GetOneCategory } from '../../../../../../types/categories/GetOneCategory.types';
 import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
-import ModalWindow from '../../../../../layout/common/ui/modal/ModalWindow';
 
 const CategoriesList = () => {
-    const [isOpenCategories, setIsOpenCategories] = useState<
-        Record<string, boolean>
-    >({});
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-    const handleOpenWindow = () => setIsModalOpen(true);
-    const handleCloseWindow = () => setIsModalOpen(false);
-
-    const handleClickOpen = (id: string, isSubcategories: boolean) => {
-        if (isSubcategories) {
-            setIsOpenCategories(prevState => ({
-                ...prevState,
-                [id]: !prevState[id],
-            }));
-        } else {
-            return;
-        }
-    };
+    const queryClient: QueryClient = useQueryClient();
+    const { isOpenCategories, setIsOpenCategories } =
+        useContext(CategoriesContext);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+        null,
+    );
 
     const {
         isCategoriesLoading,
@@ -46,6 +37,30 @@ const CategoriesList = () => {
         categoriesError,
         categoriesData,
     } = useGetAllCategories();
+
+    const {
+        categoryData,
+        isLoadingGetCategory,
+        isGetCategoryError,
+        getCategoryError,
+    } = useGetOneCategory(selectedCategoryId);
+
+    const handleClickOpen = (id: string) => {
+        setIsOpenCategories(prevState => ({
+            ...prevState,
+            [id]: !prevState[id],
+        }));
+
+        const cachedCategoryData =
+            queryClient.getQueryData<GetOneCategoryResponseModel>([
+                'get-one-category',
+                id,
+            ]);
+
+        if (!cachedCategoryData) {
+            setSelectedCategoryId(id);
+        }
+    };
 
     return (
         <>
@@ -75,15 +90,9 @@ const CategoriesList = () => {
             >
                 {categoriesData?.length &&
                     categoriesData.map((category, categoryIndex) => (
-                        <>
+                        <React.Fragment key={category.id}>
                             <ListItemButton
-                                key={category.id}
-                                onClick={() =>
-                                    handleClickOpen(
-                                        category.id,
-                                        !!category.subcategory.length,
-                                    )
-                                }
+                                onClick={() => handleClickOpen(category.id)}
                             >
                                 <ListItemIcon>
                                     {isOpenCategories[category.id] ? (
@@ -102,84 +111,84 @@ const CategoriesList = () => {
                                         gap: '10px',
                                     }}
                                 >
-                                    {category.subcategory.length > 0 ? (
-                                        <>
-                                            <div className={'toolIcon'}>
-                                                <Trash2
-                                                    color={MainColorsEnum.RED}
-                                                />
-                                            </div>
-                                            <div className={'toolIcon'}>
-                                                <Pencil />
-                                            </div>
-                                        </>
-                                    ) : null}
-                                    {category.subcategory.length > 0 ? (
-                                        isOpenCategories[category.id] ? (
-                                            <ChevronUp />
-                                        ) : (
-                                            <ChevronDown />
-                                        )
+                                    <>
+                                        <div className={'toolIcon'}>
+                                            <Trash2
+                                                color={MainColorsEnum.RED}
+                                            />
+                                        </div>
+                                        <div className={'toolIcon'}>
+                                            <Pencil />
+                                        </div>
+                                    </>
+                                    {isOpenCategories[category.id] ? (
+                                        <ChevronUp />
                                     ) : (
-                                        <X />
+                                        <ChevronDown />
                                     )}
                                 </Box>
                             </ListItemButton>
-                            {category.subcategory.map(
-                                (subcategory, subcategoryIndex) => (
-                                    <Collapse
-                                        in={isOpenCategories[category.id]}
-                                        timeout={'auto'}
-                                        unmountOnExit
-                                        key={subcategoryIndex + category.id}
-                                    >
-                                        <List component={'div'} disablePadding>
-                                            <ListItemButton sx={{ pl: 4 }}>
-                                                <ListItemIcon>
-                                                    <FileBox width={20} />
-                                                </ListItemIcon>
-                                                <ListItemText
-                                                    primary={`${categoryIndex + 1}.${subcategoryIndex + 1}. ${subcategory}`}
-                                                />
-                                                {subcategory && (
-                                                    <>
-                                                        <div
-                                                            className={
-                                                                'toolIcon'
-                                                            }
-                                                        >
-                                                            <Trash2
-                                                                color={
-                                                                    MainColorsEnum.RED
-                                                                }
+                            <Collapse
+                                in={isOpenCategories[category.id]}
+                                timeout={'auto'}
+                                unmountOnExit
+                            >
+                                <List component={'div'} disablePadding>
+                                    {isOpenCategories[category.id] &&
+                                        queryClient
+                                            .getQueryData<GetOneCategory>([
+                                                'get-one-category',
+                                                category.id,
+                                            ])
+                                            ?.data.subcategory?.map(
+                                                (
+                                                    subcategory,
+                                                    subcategoryIndex,
+                                                ) => (
+                                                    <ListItemButton
+                                                        sx={{ pl: 4 }}
+                                                        key={subcategoryIndex}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <FileBox
+                                                                width={20}
                                                             />
-                                                        </div>
-                                                        <div
-                                                            className={
-                                                                'toolIcon'
-                                                            }
-                                                            onClick={() =>
-                                                                handleClickOpen
-                                                            }
-                                                        >
-                                                            <Pencil />
-                                                        </div>
-                                                    </>
-                                                )}
-                                            </ListItemButton>
-                                        </List>
-                                    </Collapse>
-                                ),
-                            )}
-                        </>
+                                                        </ListItemIcon>
+                                                        <ListItemText
+                                                            primary={`${categoryIndex + 1}.${subcategoryIndex + 1}. ${subcategory.subcategory}`}
+                                                        />
+                                                        {subcategory && (
+                                                            <>
+                                                                <div
+                                                                    className={
+                                                                        'toolIcon'
+                                                                    }
+                                                                >
+                                                                    <Trash2
+                                                                        color={
+                                                                            MainColorsEnum.RED
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    className={
+                                                                        'toolIcon'
+                                                                    }
+                                                                    onClick={() =>
+                                                                        handleClickOpen
+                                                                    }
+                                                                >
+                                                                    <Pencil />
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    </ListItemButton>
+                                                ),
+                                            )}
+                                </List>
+                            </Collapse>
+                        </React.Fragment>
                     ))}
-                <ModalWindow
-                    isOpen={isModalOpen}
-                    handleClose={handleCloseWindow}
-                    title={'Test'}
-                >
-                    qweqweqew rq
-                </ModalWindow>
             </List>
         </>
     );
