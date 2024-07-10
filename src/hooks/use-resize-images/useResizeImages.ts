@@ -5,6 +5,11 @@ export const useResizeImages = () => {
     const [originalImage, setOriginalImage] = useState<File | null>(null);
     const [resizedImage, setResizedImage] = useState<File | null>(null);
 
+    const resetImages = () => {
+        setOriginalImage(null);
+        setResizedImage(null);
+    };
+
     const handleImageChange = (
         event: ChangeEvent<HTMLInputElement>,
         onChange: (event: ChangeEvent<HTMLInputElement>) => void,
@@ -61,5 +66,5 @@ export const useResizeImages = () => {
         }
         onChange(event);
     };
-    return { originalImage, resizedImage, handleImageChange };
+    return { originalImage, resizedImage, handleImageChange, resetImages };
 };
