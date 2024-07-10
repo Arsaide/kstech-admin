@@ -8,6 +8,11 @@ import { Box, Button, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { CategoriesContext } from '../../../../../../providers/CategoriesProvider';
 import { useResizeImages } from '../../../../../../hooks/use-resize-images/useResizeImages';
+import { styled } from '@mui/system';
+
+const Input = styled('input')({
+    display: 'none',
+});
 
 const CreateCategoryForm = () => {
     const { store } = useContext(Context);
@@ -48,21 +53,23 @@ const CreateCategoryForm = () => {
                     control={control}
                     rules={{ required: 'Required field' }}
                     render={({ field }) => (
-                        <TextField
-                            {...field}
-                            label={'Картинка'}
-                            type="file"
-                            inputProps={{ accept: 'image/*' }}
-                            onChange={e =>
-                                handleImageChange(
-                                    e as ChangeEvent<HTMLInputElement>,
-                                    field.onChange,
-                                )
-                            }
-                            margin={'normal'}
-                            error={!!errors.img}
-                            helperText={errors.img ? errors.img.message : ''}
-                        />
+                        <label htmlFor="file-input">
+                            <Input
+                                {...field}
+                                accept="image/*"
+                                id="file-input"
+                                type="file"
+                                onChange={e =>
+                                    handleImageChange(
+                                        e as ChangeEvent<HTMLInputElement>,
+                                        field.onChange,
+                                    )
+                                }
+                            />
+                            <Button variant="outlined" component="span">
+                                Завантажити файл
+                            </Button>
+                        </label>
                     )}
                 />
                 {originalImage && (

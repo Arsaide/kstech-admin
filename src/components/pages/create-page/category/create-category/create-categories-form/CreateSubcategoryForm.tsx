@@ -14,6 +14,11 @@ import { Controller, useForm } from 'react-hook-form';
 import useGetAllCategories from '../../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
 import useCreateSubCategory from '../../../../../../hooks/queries/categories/use-create-subcategory/useCreateSubCategory';
 import { useResizeImages } from '../../../../../../hooks/use-resize-images/useResizeImages';
+import { styled } from '@mui/system';
+
+const Input = styled('input')({
+    display: 'none',
+});
 
 const CreateSubcategoryForm = () => {
     const {
@@ -80,21 +85,23 @@ const CreateSubcategoryForm = () => {
                     control={control}
                     rules={{ required: 'Required field' }}
                     render={({ field }) => (
-                        <TextField
-                            {...field}
-                            label={'Картинка'}
-                            type="file"
-                            inputProps={{ accept: 'image/*' }}
-                            onChange={e =>
-                                handleImageChange(
-                                    e as ChangeEvent<HTMLInputElement>,
-                                    field.onChange,
-                                )
-                            }
-                            margin={'normal'}
-                            error={!!errors.img}
-                            helperText={errors.img ? errors.img.message : ''}
-                        />
+                        <label htmlFor="file-input">
+                            <Input
+                                {...field}
+                                accept="image/*"
+                                id="file-input"
+                                type="file"
+                                onChange={e =>
+                                    handleImageChange(
+                                        e as ChangeEvent<HTMLInputElement>,
+                                        field.onChange,
+                                    )
+                                }
+                            />
+                            <Button variant="outlined" component="span">
+                                Завантажити файл
+                            </Button>
+                        </label>
                     )}
                 />
                 {originalImage && (

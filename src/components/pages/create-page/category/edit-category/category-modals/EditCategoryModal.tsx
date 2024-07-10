@@ -21,6 +21,11 @@ import {
 import { toast } from 'react-toastify';
 import { Context } from '../../../../../../api/context';
 import { useResizeImages } from '../../../../../../hooks/use-resize-images/useResizeImages';
+import { styled } from '@mui/system';
+
+const Input = styled('input')({
+    display: 'none',
+});
 
 const EditCategoryModal = () => {
     const queryClient: QueryClient = useQueryClient();
@@ -154,22 +159,28 @@ const EditCategoryModal = () => {
                                 control={control}
                                 rules={{ required: 'Required field' }}
                                 render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label={'Зображення'}
-                                        type="file"
-                                        inputProps={{ accept: 'image/*' }}
-                                        onChange={e =>
-                                            handleImageChange(
-                                                e as ChangeEvent<HTMLInputElement>,
-                                                field.onChange,
-                                            )
-                                        }
-                                        error={!!errors.img}
-                                        helperText={
-                                            errors.img ? errors.img.message : ''
-                                        }
-                                    />
+                                    <label htmlFor="file-input">
+                                        <Input
+                                            accept="image/*"
+                                            id="file-input"
+                                            type="file"
+                                            onChange={e => {
+                                                handleImageChange(
+                                                    e as ChangeEvent<HTMLInputElement>,
+                                                    field.onChange,
+                                                );
+                                                field.onChange(
+                                                    e.target.files?.[0] ?? null,
+                                                );
+                                            }}
+                                        />
+                                        <Button
+                                            variant="outlined"
+                                            component="span"
+                                        >
+                                            Завантажити файл
+                                        </Button>
+                                    </label>
                                 )}
                             />
                             <Button

@@ -12,6 +12,11 @@ import { toast } from 'react-toastify';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
 import { Pencil } from 'lucide-react';
+import { styled } from '@mui/system';
+
+const Input = styled('input')({
+    display: 'none',
+});
 
 interface EditSubcategoryModalProps {
     id: string | null;
@@ -138,27 +143,33 @@ const EditSubcategoryModal: FC<EditSubcategoryModalProps> = ({
                                 control={control}
                                 rules={{ required: 'Required field' }}
                                 render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label={'Зображення'}
-                                        type="file"
-                                        inputProps={{ accept: 'image/*' }}
-                                        onChange={e =>
-                                            handleImageChange(
-                                                e as ChangeEvent<HTMLInputElement>,
-                                                field.onChange,
-                                            )
-                                        }
-                                        error={!!errors.img}
-                                        helperText={
-                                            errors.img ? errors.img.message : ''
-                                        }
-                                    />
+                                    <label htmlFor="file-input">
+                                        <Input
+                                            accept="image/*"
+                                            id="file-input"
+                                            type="file"
+                                            onChange={e => {
+                                                handleImageChange(
+                                                    e as ChangeEvent<HTMLInputElement>,
+                                                    field.onChange,
+                                                );
+                                                field.onChange(
+                                                    e.target.files?.[0] ?? null,
+                                                );
+                                            }}
+                                        />
+                                        <Button
+                                            variant="contained"
+                                            component="span"
+                                        >
+                                            Завантажити файл
+                                        </Button>
+                                    </label>
                                 )}
                             />
                             <Button
                                 type={'submit'}
-                                variant="contained"
+                                variant="outlined"
                                 disabled={isPending}
                             >
                                 {isPending ? 'Зміна...' : 'Змінити картинки'}

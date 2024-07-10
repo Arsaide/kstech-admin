@@ -104,6 +104,10 @@ select {
   padding: 0;
 }
 
+input[type="file"] {
+  display: none;
+}
+
 .wrapper {
   min-height: 100vh;
   display: flex;
