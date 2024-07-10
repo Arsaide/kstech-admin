@@ -96,12 +96,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
         onError: e => toast.error(`Сталась помилка ${e}`),
     });
 
-    const {
-        isCategoriesLoading,
-        isCategoriesError,
-        categoriesError,
-        categoriesData,
-    } = useGetAllCategories();
+    const { categoriesData } = useGetAllCategories();
 
     const {
         categoryData,
@@ -558,10 +553,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                             >
                                 {categoriesData &&
                                     categoriesData.map((item, index) => (
-                                        <MenuItem
-                                            key={index}
-                                            value={item.category}
-                                        >
+                                        <MenuItem key={index} value={item.id}>
                                             {item.category}
                                         </MenuItem>
                                     ))}
