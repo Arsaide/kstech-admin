@@ -50,7 +50,7 @@ const CategoryItem: FC<CategoryItemProps> = ({
                         }}
                     >
                         <img
-                            src={category.iconimg}
+                            src={category.iconImg}
                             style={{
                                 width: '40px',
                                 height: '40px',

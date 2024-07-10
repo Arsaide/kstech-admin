@@ -31,7 +31,7 @@ const SubcategoryItem: FC<SubcategoryItemProps> = ({
                     }}
                 >
                     <img
-                        src={subcategory.iconimg}
+                        src={subcategory.iconImg}
                         style={{
                             width: '40px',
                             height: '40px',
