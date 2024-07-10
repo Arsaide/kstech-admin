@@ -13,14 +13,19 @@ import CategoriesItemsSkeleton from './categories-items-skeleton/CategoriesItems
 import { toast } from 'react-toastify';
 import Typography from '@mui/material/Typography';
 import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
+import EditCategoryModal from '../category-modals/EditCategoryModal';
+import ModalWindow from '../../../../../layout/common/ui/modal/ModalWindow';
+import DeleteCategoryModal from '../category-modals/DeleteCategoryModal';
 
 const CategoriesList = () => {
     const queryClient: QueryClient = useQueryClient();
-    const { isOpenCategories, setIsOpenCategories } =
+    const { isOpenCategories, setIsOpenCategories, setCategoryId } =
         useContext(CategoriesContext);
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
         null,
     );
+    const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
+    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
 
     const {
         isCategoriesLoading,
@@ -56,10 +61,12 @@ const CategoriesList = () => {
 
     const handleDeleteClick = (event: React.MouseEvent) => {
         event.stopPropagation();
+        setIsOpenDeleteModal(true);
     };
 
     const handleEditClick = (event: React.MouseEvent) => {
         event.stopPropagation();
+        setIsOpenEditModal(true);
     };
 
     return (
@@ -123,6 +130,20 @@ const CategoriesList = () => {
                     {`Сталась помилка під час отримання списка категорій! Помилка: ${categoriesError}`}
                 </Typography>
             )}
+            <ModalWindow
+                isOpen={isOpenDeleteModal}
+                handleClose={() => setIsOpenDeleteModal(false)}
+                title={'Видалення Категорії'}
+            >
+                <DeleteCategoryModal />
+            </ModalWindow>
+            <ModalWindow
+                isOpen={isOpenEditModal}
+                handleClose={() => setIsOpenEditModal(false)}
+                title={'Редагування категорії'}
+            >
+                <EditCategoryModal />
+            </ModalWindow>
         </>
     );
 };
