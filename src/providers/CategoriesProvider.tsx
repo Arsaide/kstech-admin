@@ -16,6 +16,8 @@ interface CategoriesContextProps {
     setIsVisibleSubcategories: Dispatch<SetStateAction<boolean>>;
     isOpenCategories: Record<string, boolean>;
     setIsOpenCategories: Dispatch<SetStateAction<Record<string, boolean>>>;
+    categoryId: string | null;
+    setCategoryId: Dispatch<SetStateAction<string | null>>;
 }
 
 export const CategoriesContext = createContext<CategoriesContextProps>({
@@ -23,6 +25,8 @@ export const CategoriesContext = createContext<CategoriesContextProps>({
     setIsVisibleSubcategories: () => null,
     isOpenCategories: {},
     setIsOpenCategories: () => null,
+    categoryId: null,
+    setCategoryId: () => null,
 });
 
 export const CategoriesProvider: FC<CategoriesProviderProps> = ({
@@ -33,12 +37,15 @@ export const CategoriesProvider: FC<CategoriesProviderProps> = ({
     const [isOpenCategories, setIsOpenCategories] = useState<
         Record<string, boolean>
     >({});
+    const [categoryId, setCategoryId] = useState<string | null>(null);
 
     const value = {
         isVisibleSubcategories,
         setIsVisibleSubcategories,
         isOpenCategories,
         setIsOpenCategories,
+        categoryId,
+        setCategoryId,
     };
     return (
         <CategoriesContext.Provider value={value}>
