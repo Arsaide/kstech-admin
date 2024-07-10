@@ -3,7 +3,13 @@ export interface CategoryResponseModel {
     category: string;
     iconImg: string;
     mainImg: string;
-    subcategory: [];
+}
+
+export interface EditCategoryResponseModel {
+    id: string;
+    newName: string;
+    img: string | File | null;
+    token: string | undefined;
 }
 
 export interface GetOneCategoryResponseModel {
