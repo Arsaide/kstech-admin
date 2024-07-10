@@ -241,4 +241,83 @@ export default class Store {
             throw e;
         }
     }
+
+    async editCategory(
+        id: string | null,
+        mainImg: File | null,
+        iconImg: File | null,
+        newName: string | null,
+    ) {
+        try {
+            const token = localStorage.getItem('token');
+            return toast.promise(
+                CategoriesService.editCategory(
+                    token,
+                    id,
+                    mainImg,
+                    iconImg,
+                    newName,
+                ),
+                {
+                    pending: 'Редагування підкатегорії...',
+                    success: 'Підкатегорія створена успішно!',
+                },
+            );
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async editSubcategory(
+        id: string | null,
+        mainImg: File | null,
+        iconImg: File | null,
+        newName: string | null,
+    ) {
+        try {
+            const token = localStorage.getItem('token');
+            return toast.promise(
+                CategoriesService.editSubcategory(
+                    token,
+                    id,
+                    mainImg,
+                    iconImg,
+                    newName,
+                ),
+                {
+                    pending: 'Редагування підкатегорії...',
+                    success: 'Підкатегорія створена успішно!',
+                },
+            );
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async deleteCategory(id: string | null) {
+        try {
+            const token = localStorage.getItem('token');
+            return toast.promise(CategoriesService.deleteCategory(token, id), {
+                pending: 'Видалення категорії...',
+                success: 'Категорія видалена!',
+            });
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
+    async deleteSubcategory(name: string | null) {
+        try {
+            const token = localStorage.getItem('token');
+            return toast.promise(
+                CategoriesService.deleteSubcategory(token, name),
+                {
+                    pending: 'Видалення підкатегорії...',
+                    success: 'Підкатегорія видалена!',
+                },
+            );
+        } catch (e: any) {
+            throw e;
+        }
+    }
 }

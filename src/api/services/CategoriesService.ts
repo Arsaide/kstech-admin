@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import $api from '../request';
 import {
     CategoryResponseModel,
+    EditCategoryResponseModel,
     GetOneCategoryResponseModel,
     SubcategoryResponseModel,
 } from '../models/CategoriesResponseModel';
@@ -28,7 +29,7 @@ export default class CategoriesService {
         const formData = new FormData();
 
         if (mainImg) formData.append('mainImg', mainImg);
-        if (iconImg) formData.append('iconimg', iconImg);
+        if (iconImg) formData.append('iconImg', iconImg);
         formData.append('category', category);
         if (token) formData.append('token', token);
 
@@ -49,7 +50,7 @@ export default class CategoriesService {
 
         if (id) formData.append('id', id);
         if (mainImg) formData.append('mainImg', mainImg);
-        if (iconImg) formData.append('iconimg', iconImg);
+        if (iconImg) formData.append('iconImg', iconImg);
         if (token) formData.append('token', token);
         formData.append('subcategory', subcategory);
 
@@ -57,5 +58,58 @@ export default class CategoriesService {
             `/category/addsubcategory`,
             formData,
         );
+    }
+
+    static async editCategory(
+        token: string | null,
+        id: string | null,
+        mainImg: File | null,
+        iconImg: File | null,
+        newName: string | null,
+    ): Promise<AxiosResponse<EditCategoryResponseModel>> {
+        const formData = new FormData();
+
+        if (id) formData.append('id', id);
+        if (token) formData.append('token', token);
+        if (mainImg) formData.append('mainImg', mainImg);
+        if (iconImg) formData.append('iconImg', iconImg);
+        if (newName) formData.append('newName', newName);
+
+        return $api.post<EditCategoryResponseModel>(
+            `/category/changecategory`,
+            formData,
+        );
+    }
+
+    static async editSubcategory(
+        token: string | null,
+        id: string | null,
+        mainImg: File | null,
+        iconImg: File | null,
+        newName: string | null,
+    ): Promise<AxiosResponse<EditCategoryResponseModel>> {
+        const formData = new FormData();
+
+        if (id) formData.append('id', id);
+        if (token) formData.append('token', token);
+        if (mainImg) formData.append('mainImg', mainImg);
+        if (iconImg) formData.append('iconImg', iconImg);
+        if (newName) formData.append('newName', newName);
+
+        return $api.post<EditCategoryResponseModel>(
+            `/category/changesubcategory`,
+            formData,
+        );
+    }
+
+    static async deleteCategory(token: string | null, id: string | null) {
+        return $api.post('/category/deletecategory', { token, id });
+    }
+
+    static async deleteSubcategory(
+        token: string | null,
+        subcategory: string | null,
+    ) {
+        return $api.post('/category/deletesubcategory', { token, subcategory });
     }
 }
