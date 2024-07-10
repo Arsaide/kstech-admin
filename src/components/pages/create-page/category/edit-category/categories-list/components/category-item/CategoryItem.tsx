@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import { Box, Collapse, List, ListItemIcon } from '@mui/material';
 import {
@@ -15,6 +15,7 @@ import { CategoryResponseModel } from '../../../../../../../../api/models/Catego
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import SubcategoryItem from '../subcategory-item/SubcategoryItem';
 import { GetOneCategory } from '../../../../../../../../types/categories/GetOneCategory.types';
+import { CategoriesContext } from '../../../../../../../../providers/CategoriesProvider';
 
 interface CategoryItemProps {
     category: CategoryResponseModel;
@@ -34,6 +35,17 @@ const CategoryItem: FC<CategoryItemProps> = ({
     categoryIndex,
 }) => {
     const queryClient: QueryClient = useQueryClient();
+    const { setCategoryId } = useContext(CategoriesContext);
+
+    const handleDeleteClick = (event: React.MouseEvent) => {
+        onDeleteButtonClick(event);
+        setCategoryId(category.id);
+    };
+
+    const handleEditClick = (event: React.MouseEvent) => {
+        onEditButtonClick(event);
+        setCategoryId(category.id);
+    };
 
     return (
         <>
@@ -69,13 +81,10 @@ const CategoryItem: FC<CategoryItemProps> = ({
                     }}
                 >
                     <>
-                        <div
-                            className={'toolIcon'}
-                            onClick={onDeleteButtonClick}
-                        >
+                        <div className={'toolIcon'} onClick={handleDeleteClick}>
                             <Trash2 color={MainColorsEnum.RED} />
                         </div>
-                        <div className={'toolIcon'} onClick={onEditButtonClick}>
+                        <div className={'toolIcon'} onClick={handleEditClick}>
                             <Pencil />
                         </div>
                     </>
