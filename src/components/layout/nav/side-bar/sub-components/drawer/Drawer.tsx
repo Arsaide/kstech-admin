@@ -5,7 +5,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { NavLink } from 'react-router-dom';
-import { BadgeDollarSign, Home, LayoutList, Plus, Users } from 'lucide-react';
+import {
+    BadgeDollarSign,
+    Home,
+    LayoutList,
+    Plus,
+    Users,
+    Wrench,
+} from 'lucide-react';
 import { useState } from 'react';
 import { MainColorsEnum } from '../../../../../../utils/enums/colors-enum';
 
@@ -79,29 +86,33 @@ const DrawerElements = () => {
                     disablePadding
                     sx={{ '&:hover': { bgcolor: MainColorsEnum.BLACK02 } }}
                     onClick={handleClick}
+                    disabled
                 >
-                    <NavLink to={'/analytics'} style={{ width: '100%' }}>
-                        <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>
-                            <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
-                                <BadgeDollarSign />
-                            </ListItemIcon>
-                            <ListItemText primary={'Аналітика'} />
-                        </ListItemButton>
-                    </NavLink>
+                    {/*<NavLink to={'/analytics'} style={{ width: '100%' }}>*/}
+                    <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>
+                        <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
+                            <BadgeDollarSign />
+                        </ListItemIcon>
+                        <ListItemText primary={'Аналітика'} />
+                        <Wrench size={16} />
+                    </ListItemButton>
+                    {/*</NavLink>*/}
                 </ListItem>
                 <ListItem
                     disablePadding
                     sx={{ '&:hover': { bgcolor: MainColorsEnum.BLACK02 } }}
                     onClick={handleClick}
+                    disabled
                 >
-                    <NavLink to={'/clients'} style={{ width: '100%' }}>
-                        <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>
-                            <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
-                                <Users />
-                            </ListItemIcon>
-                            <ListItemText primary={'Клієнти'} />
-                        </ListItemButton>
-                    </NavLink>
+                    {/*<NavLink to={'/clients'} style={{ width: '100%' }}>*/}
+                    <ListItemButton sx={{ color: MainColorsEnum.BLACK }}>
+                        <ListItemIcon sx={{ color: MainColorsEnum.BLACK }}>
+                            <Users />
+                        </ListItemIcon>
+                        <ListItemText primary={'Клієнти'} />
+                        <Wrench size={16} />
+                    </ListItemButton>
+                    {/*</NavLink>*/}
                 </ListItem>
             </List>
         </div>

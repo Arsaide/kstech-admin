@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Box, Breadcrumbs, Button } from '@mui/material';
+import { Box, Breadcrumbs, Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 
@@ -18,10 +18,6 @@ const Create = () => {
             <Breadcrumbs separator="›" aria-label="breadcrumb" sx={{ mb: 2 }}>
                 {breadcrumbs}
             </Breadcrumbs>
-            <Alert severity="warning">In developing...</Alert>
-            <Alert variant="filled" severity="info">
-                Here you are can create a product
-            </Alert>
             <Box sx={{ maxWidth: '500px' }}>
                 <Typography variant={'h5'}>Створення товару</Typography>
                 <p className={'hint'} style={{ margin: '5px 0 20px' }}>
