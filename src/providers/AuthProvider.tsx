@@ -34,6 +34,10 @@ export const AuthProvider: FC<IAuthProvider> = observer(({ children }) => {
         'isLoggedIn',
         false,
     );
+    const [remainingTime, setRemainingTime] = useSetLocalStorage<number>(
+        'remainingTime',
+        3600,
+    );
 
     const token = localStorage.getItem('token');
 
@@ -53,6 +57,37 @@ export const AuthProvider: FC<IAuthProvider> = observer(({ children }) => {
     useEffect(() => {
         mutate();
     }, [token, isLoggedIn]);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout | undefined;
+
+        if (isLoggedIn) {
+            interval = setInterval(() => {
+                setRemainingTime(prev => {
+                    if (prev <= 1) {
+                        setIsLoggedIn(false);
+                        store.logout();
+                        if (interval) {
+                            clearInterval(interval);
+                        }
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        } else {
+            setRemainingTime(3600);
+            if (interval) {
+                clearInterval(interval);
+            }
+        }
+
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
+    }, [isLoggedIn]);
 
     const value = {
         isLoggedIn,
