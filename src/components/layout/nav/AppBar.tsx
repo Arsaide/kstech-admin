@@ -1,13 +1,8 @@
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import { AppBar } from '@mui/material';
+import { AppBar, Button } from '@mui/material';
 import { useContext } from 'react';
 import { Context } from '../../../api/context';
 import useAnchorElUser from '../../../hooks/use-anchor-el-user/useAnchorElUser';
@@ -55,44 +50,52 @@ const AppBarMenu = () => {
                                 flexGrow: 0,
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: 1,
+                                gap: 3,
                             }}
                         >
                             <Typography>{formatTime(remainingTime)}</Typography>
                             <Box>
-                                <Tooltip title="Open settings">
-                                    <IconButton
-                                        onClick={handleOpenUserMenu}
-                                        sx={{ p: 0 }}
-                                    >
-                                        <Avatar alt="Admin" src="/admin.jpg" />
-                                    </IconButton>
-                                </Tooltip>
-                                <Menu
-                                    sx={{ mt: '45px' }}
-                                    id="menu-appbar"
-                                    anchorEl={anchorElUser}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center',
-                                    }}
-                                    keepMounted
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center',
-                                    }}
-                                    open={Boolean(anchorElUser)}
-                                    onClose={handleCloseUserMenu}
+                                {/*<Tooltip title="Open settings">*/}
+                                {/*    <IconButton*/}
+                                {/*        onClick={handleOpenUserMenu}*/}
+                                {/*        sx={{ p: 0 }}*/}
+                                {/*    >*/}
+                                {/*        <Avatar alt="Admin" src="/admin.jpg" />*/}
+                                {/*    </IconButton>*/}
+                                {/*</Tooltip>*/}
+                                {/*<Menu*/}
+                                {/*    sx={{ mt: '45px' }}*/}
+                                {/*    id="menu-appbar"*/}
+                                {/*    anchorEl={anchorElUser}*/}
+                                {/*    anchorOrigin={{*/}
+                                {/*        vertical: 'top',*/}
+                                {/*        horizontal: 'center',*/}
+                                {/*    }}*/}
+                                {/*    keepMounted*/}
+                                {/*    transformOrigin={{*/}
+                                {/*        vertical: 'top',*/}
+                                {/*        horizontal: 'center',*/}
+                                {/*    }}*/}
+                                {/*    open={Boolean(anchorElUser)}*/}
+                                {/*    onClose={handleCloseUserMenu}*/}
+                                {/*>*/}
+                                {/*    <MenuItem onClick={handleCloseUserMenu}>*/}
+                                {/*        <Typography*/}
+                                {/*            textAlign={'center'}*/}
+                                {/*            onClick={handleLogout}*/}
+                                {/*        >*/}
+                                {/*            Log out*/}
+                                {/*        </Typography>*/}
+                                {/*    </MenuItem>*/}
+                                {/*</Menu>*/}
+                                <Button
+                                    // textAlign={'center'}
+                                    onClick={handleLogout}
+                                    variant="contained"
+                                    color="error"
                                 >
-                                    <MenuItem onClick={handleCloseUserMenu}>
-                                        <Typography
-                                            textAlign={'center'}
-                                            onClick={handleLogout}
-                                        >
-                                            Log out
-                                        </Typography>
-                                    </MenuItem>
-                                </Menu>
+                                    Вийти
+                                </Button>
                             </Box>
                         </Box>
                     )}
