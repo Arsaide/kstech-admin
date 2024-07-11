@@ -39,7 +39,6 @@ const ProductId = () => {
             setImages(imagesData);
         }
         if (data && data.description) {
-            // Преобразуйте описание из JSON строки в ContentState
             const contentState = convertFromRaw(JSON.parse(data.description));
             setEditorState(EditorState.createWithContent(contentState));
         }

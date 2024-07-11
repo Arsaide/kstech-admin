@@ -1,9 +1,12 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import './ProductCard.css';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Settings } from 'lucide-react';
 import { OneProductTypes } from '../../../../../api/models/ProductResponseModel';
+import { convertFromRaw, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import parse from 'html-react-parser';
 
 type ProductCardProps = Pick<
     OneProductTypes,
@@ -17,10 +20,41 @@ const ProductCard: FC<ProductCardProps> = ({
     price,
     imgArr,
 }) => {
-    const trimmedString =
-        description.length > 400
-            ? description.substring(0, 400) + '...'
-            : description;
+    const [htmlDescription, setHtmlDescription] = useState<string>('');
+
+    useEffect(() => {
+        if (description) {
+            try {
+                const contentState = convertFromRaw(JSON.parse(description));
+                const html = draftToHtml(convertToRaw(contentState));
+                setHtmlDescription(html);
+            } catch (e) {
+                console.error('Failed to parse description:', e);
+            }
+        }
+    }, [description]);
+
+    const trimHtmlDescription = (html: string, maxLength: number) => {
+        const textOnly = html.replace(/<[^>]+>/g, '');
+        if (textOnly.length <= maxLength) {
+            return html;
+        }
+        return textOnly.substring(0, maxLength) + '...';
+    };
+
+    const removeStylesFromHtmlString = (htmlString: string) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, 'text/html');
+        doc.querySelectorAll('*').forEach(node => {
+            node.removeAttribute('style');
+        });
+        return doc.body.innerHTML;
+    };
+
+    const sanitizedHtmlDescription = trimHtmlDescription(htmlDescription, 300);
+    const descriptionWithoutStyles = removeStylesFromHtmlString(
+        sanitizedHtmlDescription,
+    );
 
     return (
         <div className={'card'}>
@@ -35,7 +69,9 @@ const ProductCard: FC<ProductCardProps> = ({
                 <div className={'cardContent'}>
                     <div className={'cardTypography'}>
                         <div className={'cardName'}>{name}</div>
-                        <div className={'cardDesc'}>{trimmedString}</div>
+                        <div className={'cardDesc'}>
+                            {parse(descriptionWithoutStyles)}
+                        </div>
                         <div className={'cardPrice'}>{price} грн</div>
                     </div>
                     <Button variant="contained" sx={{ width: 'max-content' }}>
