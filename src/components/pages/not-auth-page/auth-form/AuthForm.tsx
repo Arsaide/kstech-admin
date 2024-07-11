@@ -94,7 +94,8 @@ const AuthForm: FC<AuthFormProps> = ({
                 )}
                 {isError && (
                     <Alert severity="error">
-                        Помилка авторизації: {error?.message}
+                        Помилка авторизації: {error?.message}{' '}
+                        {error?.response.data.message}
                     </Alert>
                 )}
                 <Button
