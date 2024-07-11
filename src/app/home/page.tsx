@@ -13,7 +13,7 @@ const HomePage = () => {
             <Alert variant="filled" severity="success">
                 Ви успішно авторизовані в адмін-панелі KS TECH!
             </Alert>
-            <Typography>
+            <Typography sx={{ mt: 2 }}>
                 Задля безпеки сесія діє {formatTime(remainingTime)} годину!
             </Typography>
         </>
