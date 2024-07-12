@@ -2,13 +2,17 @@ import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Context } from '../../../../../api/context';
 import { convertToRaw, EditorState } from 'draft-js';
 import { Controller, useForm } from 'react-hook-form';
-import { ProductDataTypes } from '../../../../../types/forms/ProductData.types';
+import {
+    ColorTypes,
+    ProductDataTypes,
+} from '../../../../../types/forms/ProductData.types';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import {
     Box,
     Button,
     Checkbox,
+    Chip,
     FormControl,
     InputLabel,
     MenuItem,
@@ -28,6 +32,9 @@ import ListItemText from '@mui/material/ListItemText';
 import { useGetOneCategory } from '../../../../../hooks/queries/categories/use-get-one-category/useGetOneCategory';
 import useGetAllCategories from '../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
 import { SubcategoryResponseModel } from '../../../../../api/models/CategoriesResponseModel';
+import { ChromePicker, ColorResult } from 'react-color';
+import { v4 as uuidv4 } from 'uuid';
+import { Palette } from 'lucide-react';
 
 const CreateProductForm = () => {
     const { store } = useContext(Context);
@@ -38,12 +45,19 @@ const CreateProductForm = () => {
     const [subcategories, setSubcategories] = useState<
         SubcategoryResponseModel[] | null
     >(null);
+    const [currentColor, setCurrentColor] = useState<string>('#fff');
 
     const {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm<ProductDataTypes>();
+        setValue,
+        getValues,
+    } = useForm<ProductDataTypes>({
+        defaultValues: {
+            colors: [] as ColorTypes[],
+        },
+    });
 
     const { mutate, isPending, isError, error } = useMutation({
         mutationKey: ['create-page'],
@@ -105,6 +119,18 @@ const CreateProductForm = () => {
         mutate(productData);
     };
 
+    const handleAddColor = () => {
+        const colors: ColorTypes[] = getValues('colors');
+        setValue('colors', [...colors, { id: uuidv4(), color: currentColor }]);
+    };
+
+    const handleRemoveColor = (id: string) => {
+        const colors: ColorTypes[] = getValues('colors').filter(
+            color => color.id !== id,
+        );
+        setValue('colors', colors);
+    };
+
     return (
         <Box>
             <Typography variant={'h4'}>Форма створення товару.</Typography>
@@ -158,30 +184,51 @@ const CreateProductForm = () => {
                         />
                     )}
                 />
-                <Controller
-                    name="colors"
-                    control={control}
-                    rules={{ required: 'Required field' }}
-                    render={({ field }) => (
-                        <>
-                            <TextField
-                                {...field}
-                                label="Можливий колір товару (Через кому)"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.colors}
-                                helperText={
-                                    errors.colors ? errors.colors.message : ''
-                                }
-                            />
-                            <p className={'hint'}>
-                                <i>
-                                    *Підказка: жовтий, красний, зелений, синій
-                                </i>
-                            </p>
-                        </>
-                    )}
-                />
+                <Box>
+                    <Typography sx={{ mt: 2 }}>
+                        <Palette size={18} />
+                        Додати колір
+                    </Typography>
+                    <Controller
+                        name={'colors'}
+                        control={control}
+                        render={({ field }) => (
+                            <Box>
+                                {field.value.map(
+                                    ({ id, color }: ColorTypes) => (
+                                        <Chip
+                                            key={id}
+                                            label={color}
+                                            onDelete={() =>
+                                                handleRemoveColor(id)
+                                            }
+                                            sx={{
+                                                backgroundColor: color,
+                                                color: '#fff',
+                                            }}
+                                        />
+                                    ),
+                                )}
+                            </Box>
+                        )}
+                    />
+                    <ChromePicker
+                        color={currentColor}
+                        disableAlpha={true}
+                        onChangeComplete={(color: ColorResult) =>
+                            setCurrentColor(color.hex)
+                        }
+                    />
+                    <Box sx={{ mt: 1, mb: 2 }}>
+                        <Button
+                            variant={'outlined'}
+                            color={'secondary'}
+                            onClick={handleAddColor}
+                        >
+                            Додати колір
+                        </Button>
+                    </Box>
+                </Box>
                 <Controller
                     name={'description'}
                     control={control}
