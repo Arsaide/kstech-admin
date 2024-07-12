@@ -1,8 +1,14 @@
-export interface ProductDataTypes {
+export interface ColorTypes {
+    id: string;
+    color: string;
+}
+
+export interface ProductDataTypes<T = ColorTypes[]> {
+    id: string;
     name: string;
     imgArr: File[];
     oldImgArr: string[];
-    colors: string;
+    colors: T;
     description: string;
     price: string;
     discount: string;
