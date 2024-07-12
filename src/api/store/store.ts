@@ -4,6 +4,7 @@ import AuthService from '../services/AuthService';
 import { IUser } from '../../types/IUser.types';
 import ProductsService from '../services/ProductsService';
 import CategoriesService from '../services/CategoriesService';
+import { ColorTypes } from '../../types/forms/ProductData.types';
 
 export default class Store {
     constructor() {
@@ -61,7 +62,7 @@ export default class Store {
 
     async getOneProduct(id: string | undefined) {
         try {
-            return await ProductsService.getOneProduct(id);
+            return await ProductsService.getOneProductForEdit(id);
         } catch (e: any) {
             throw e;
         }
@@ -70,7 +71,7 @@ export default class Store {
     async createProduct(
         name: string,
         images: File[],
-        color: string,
+        color: ColorTypes[],
         description: string,
         price: string,
         discount: string,
@@ -119,11 +120,11 @@ export default class Store {
     }
 
     async editProduct(
-        id: string,
+        id: string | undefined,
         name: string,
         images: File[],
         oldImgArr: string[],
-        color: string,
+        colors: string[],
         description: string,
         price: string,
         discount: string,
@@ -147,7 +148,7 @@ export default class Store {
                     name,
                     images,
                     oldImgArr,
-                    color,
+                    colors,
                     description,
                     price,
                     discount,

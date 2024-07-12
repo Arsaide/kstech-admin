@@ -4,6 +4,7 @@ import {
     AllProductResponseModel,
     OneProductResponseModel,
 } from '../models/ProductResponseModel';
+import { ColorTypes } from '../../types/forms/ProductData.types';
 
 export default class ProductsService {
     static async getProductsList(
@@ -12,7 +13,7 @@ export default class ProductsService {
         return $api.get<AllProductResponseModel>(`/products/get?page=${page}`);
     }
 
-    static async getOneProduct(
+    static async getOneProductForEdit(
         id: string | undefined,
     ): Promise<AxiosResponse<OneProductResponseModel>> {
         return $api.get(`/products/getone?id=${id}`);
@@ -21,7 +22,7 @@ export default class ProductsService {
     static async createProduct(
         name: string,
         images: File[],
-        color: string,
+        colors: ColorTypes[],
         description: string,
         price: string,
         discount: string,
@@ -44,7 +45,11 @@ export default class ProductsService {
             });
         }
         formData.append('name', name);
-        formData.append('colors', color);
+        if (colors && colors.length > 0) {
+            colors.forEach(color => {
+                formData.append('colors', color.color);
+            });
+        }
         formData.append('description', description);
         formData.append('price', price);
         formData.append('discount', discount);
@@ -73,11 +78,11 @@ export default class ProductsService {
     }
 
     static async editProduct(
-        id: string,
+        id: string | undefined,
         name: string,
         images: File[],
         oldImgArr: string[],
-        color: string,
+        colors: string[],
         description: string,
         price: string,
         discount: string,
@@ -94,7 +99,7 @@ export default class ProductsService {
         token: string | null,
     ) {
         const formData = new FormData();
-        formData.append('id', id);
+        if (id) formData.append('id', id);
         if (oldImgArr && oldImgArr.length > 0) {
             oldImgArr.forEach(img => {
                 formData.append('oldImg', img);
@@ -106,7 +111,11 @@ export default class ProductsService {
             });
         }
         formData.append('name', name);
-        formData.append('colors', color);
+        if (colors && colors.length > 0) {
+            colors.forEach(color => {
+                formData.append('colors', color);
+            });
+        }
         formData.append('description', description);
         formData.append('price', price);
         formData.append('discount', discount);
