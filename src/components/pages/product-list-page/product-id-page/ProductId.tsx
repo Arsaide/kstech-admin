@@ -2,16 +2,27 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../../../api/context';
-import { Alert, Box, CircularProgress } from '@mui/material';
+import { Alert, Box, Chip, CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { MainColorsEnum } from '../../../../utils/enums/colors-enum';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-import './ProductId.css';
+import './ProductId.scss';
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import ProductIdEdit from './components/product-id-edit/ProductIdEdit';
 import parse from 'html-react-parser';
+import {
+    Ban,
+    Check,
+    FileBox,
+    FolderOpen,
+    HandCoins,
+    History,
+    Package,
+    ReceiptText,
+} from 'lucide-react';
+import classNames from 'classnames';
 
 const ProductId = () => {
     const { store } = useContext(Context);
@@ -25,10 +36,17 @@ const ProductId = () => {
     );
 
     const { isLoading, isError, error, data } = useQuery({
-        queryKey: ['product-id', id],
+        queryKey: ['get-one-product', id],
         queryFn: async () => await store.getOneProduct(id),
         select: data => data.data.product,
     });
+
+    const discountCalc = (
+        parseFloat(data?.price as string) -
+        (parseFloat(data?.price as string) *
+            parseFloat(data?.discount as string)) /
+            100
+    ).toFixed(2);
 
     useEffect(() => {
         if (data && data.imgArr) {
@@ -114,40 +132,174 @@ const ProductId = () => {
                     </div>
 
                     <div className={'cntText'}>
-                        <div>
-                            Назва товару: {data?.name}. Артікул товару:{' '}
-                            {data?.article}
-                        </div>
-                        <div>
-                            Ціна: {data?.price}. Знижка: {data?.discount}
-                        </div>
-                        <div>Кольори: {data?.colors}</div>
-                        <div>Опис товару:</div>
-                        <div>
-                            {parse(
-                                draftToHtml(
-                                    convertToRaw(
-                                        editorState.getCurrentContent(),
-                                    ),
-                                ),
+                        <Typography variant={'h4'} sx={{ mb: 1 }}>
+                            {data?.name}
+                        </Typography>
+                        <p className={'productHint'}>
+                            Артікул товару: {data?.article}
+                        </p>
+                        <div
+                            className={classNames('availabilityCnt', {
+                                isAvailability:
+                                    data?.inAvailability === 'В наявності',
+                                isOrder:
+                                    data?.inAvailability === 'Під замовлення',
+                                isNotAvailability:
+                                    data?.inAvailability ===
+                                    'Немає в наявності',
+                                undefinedAvailability: ![
+                                    'В наявності',
+                                    'Під замовлення',
+                                    'Немає в наявності',
+                                ].includes(data?.inAvailability as string),
+                            })}
+                        >
+                            {data?.inAvailability === 'В наявності' ? (
+                                <>
+                                    <Check size={25} />В наявності
+                                </>
+                            ) : data?.inAvailability === 'Під замовлення' ? (
+                                <>
+                                    <History size={20} /> Під замовлення
+                                </>
+                            ) : data?.inAvailability === 'Немає в наявності' ? (
+                                <>
+                                    <Ban size={20} /> Немає в наявності
+                                </>
+                            ) : (
+                                <>
+                                    <Ban size={20} /> data?.inAvailability
+                                </>
                             )}
                         </div>
-                        <div>
-                            Категорія товару - {data?.category}. Підкатегорія
-                            товару - {data?.subcategory}
+                        <div className={'priceCnt'}>
+                            <div className={'price'}>
+                                Ціна:{' '}
+                                <span
+                                    className={
+                                        data?.discount == '0'
+                                            ? ''
+                                            : 'isDiscount'
+                                    }
+                                >
+                                    {data?.discount == '0' ? (
+                                        <>{data?.price} ₴</>
+                                    ) : (
+                                        <>
+                                            {discountCalc} ₴{' '}
+                                            <span className={'oldPrice'}>
+                                                {data?.price} ₴
+                                            </span>
+                                        </>
+                                    )}
+                                </span>
+                            </div>
+                            <div className={'discount'}>
+                                Знижка: {data?.discount}%
+                            </div>
                         </div>
-                        <div>Послуги:</div>
-                        <div>Наяність: {data?.inAvailability}</div>
-                        <div>Методи оплати: {data?.paymentMethod}</div>
-                        <div>Методи доставки: {data?.deliveryMethod}</div>
-                        <div>
-                            Сервісне обслуговування: {data?.turningMethod}
+                        <div className={'colors'}>
+                            Кольори:
+                            <div className={'colorsContainer'}>
+                                {data?.colors.map((color, index) => (
+                                    <div
+                                        key={index}
+                                        className={'colorCircle'}
+                                        style={{
+                                            backgroundColor: `${color}`,
+                                        }}
+                                    />
+                                ))}
+                            </div>
                         </div>
-                        <div>Характеристики товару</div>
-                        <div>Вага: {data?.weight}</div>
-                        <div>Довжина: {data?.long}</div>
-                        <div>Висота: {data?.height}</div>
-                        <div>Ширина: {data?.width}</div>
+                        <div className={'desc'}>
+                            <div className={'descTitle'}>Опис товару</div>
+                            <div className={'descText'}>
+                                {parse(
+                                    draftToHtml(
+                                        convertToRaw(
+                                            editorState.getCurrentContent(),
+                                        ),
+                                    ),
+                                )}
+                            </div>
+                        </div>
+                        <div className={'categories'}>
+                            <div className={'category'}>
+                                <FolderOpen size={20} /> Категорія -{' '}
+                                <span>{data?.categoryName}</span>
+                            </div>
+                            <div className={'subcategory'}>
+                                <FileBox size={20} /> Підкатегорія -{' '}
+                                <span>{data?.subcategoryName}</span>
+                            </div>
+                        </div>
+                        <div className={'services'}>
+                            <div className={'servicesTitle'}>Послуги</div>
+                            <div className={'servicesContent'}>
+                                <div className={'paymentMethod'}>
+                                    <div className={'paymentMethodTitle'}>
+                                        <HandCoins size={20} /> Методи оплати:
+                                    </div>
+                                    <div className={'paymentMethodCnt'}>
+                                        {data?.paymentMethod.map(
+                                            (item, index) => (
+                                                <Chip
+                                                    key={index}
+                                                    label={item}
+                                                    sx={{
+                                                        maxWidth: 'max-content',
+                                                    }}
+                                                />
+                                            ),
+                                        )}
+                                    </div>
+                                </div>
+                                <div className={'deliveryMethod'}>
+                                    <div className="deliveryMethodTitle">
+                                        <Package size={20} /> Методи доставки:
+                                    </div>
+                                    <div className={'deliveryMethodCnt'}>
+                                        {data?.deliveryMethod.map(
+                                            (item, index) => (
+                                                <Chip
+                                                    key={index}
+                                                    label={item}
+                                                    sx={{
+                                                        maxWidth: 'max-content',
+                                                    }}
+                                                />
+                                            ),
+                                        )}
+                                    </div>
+                                </div>
+                                <div className={'turningMethod'}>
+                                    <div className="turningMethodTitle">
+                                        <ReceiptText size={20} /> Сервісне
+                                        обслуговування:
+                                    </div>
+                                    <div className={'turningMethodCnt'}>
+                                        <Chip
+                                            label={data?.turningMethod}
+                                            sx={{
+                                                maxWidth: 'max-content',
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={'info'}>
+                            <div className="infoTitle">
+                                Характеристики товару
+                            </div>
+                            <div className={'infoCnt'}>
+                                <div>Вага: {data?.weight} кг.</div>
+                                <div>Довжина: {data?.long} м.</div>
+                                <div>Висота: {data?.height} м.</div>
+                                <div>Ширина: {data?.width} м.</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
