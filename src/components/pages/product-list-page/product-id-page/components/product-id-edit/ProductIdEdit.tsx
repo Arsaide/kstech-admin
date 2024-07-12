@@ -10,6 +10,7 @@ import {
     Box,
     Button,
     Checkbox,
+    Chip,
     FormControl,
     InputLabel,
     MenuItem,
@@ -31,6 +32,8 @@ import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import { useGetOneCategory } from '../../../../../../hooks/queries/categories/use-get-one-category/useGetOneCategory';
 import useGetAllCategories from '../../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
 import { SubcategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
+import { Palette } from 'lucide-react';
+import { ChromePicker, ColorResult } from 'react-color';
 
 interface ProductIdEditProps {
     data: OneProductTypes;
@@ -40,18 +43,20 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
     const { store } = useContext(Context);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
-        null,
+        data.category || null,
     );
     const [subcategories, setSubcategories] = useState<
         SubcategoryResponseModel[] | null
     >(null);
+    const [currentColor, setCurrentColor] = useState<string>('#fff');
 
     const {
         handleSubmit,
         control,
         setValue,
         formState: { errors },
-    } = useForm<ProductDataTypes>({
+        getValues,
+    } = useForm<ProductDataTypes<string[]>>({
         defaultValues: {
             name: data.name || '',
             colors: data.colors || '',
@@ -72,7 +77,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
 
     const { mutate, isPending, isError, error } = useMutation({
         mutationKey: ['create-page'],
-        mutationFn: async (product: ProductDataTypes) =>
+        mutationFn: async (product: ProductDataTypes<string[]>) =>
             store.editProduct(
                 data.id,
                 product.name,
@@ -113,7 +118,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                 setValue('subcategory', data.subcategory);
             }
         }
-    }, [categoryData, data.id, data.subcategory, categoriesData, setValue]);
+    }, [categoryData, data.subcategory, categoriesData, setValue]);
 
     const handleCategorySelected = (event: SelectChangeEvent<string>) => {
         const id = event.target.value;
@@ -127,7 +132,19 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
         }
     }, [data.description]);
 
-    const onSubmit = (data: ProductDataTypes) => {
+    const handleAddColor = () => {
+        const colors: string[] = getValues('colors');
+        setValue('colors', [...colors, currentColor]);
+    };
+
+    const handleRemoveColor = (id: string) => {
+        const colors: string[] = getValues('colors').filter(
+            (color, index) => index.toString() !== id,
+        );
+        setValue('colors', colors);
+    };
+
+    const onSubmit = (data: ProductDataTypes<string[]>) => {
         const formattedDescription = JSON.stringify(
             convertToRaw(editorState.getCurrentContent()),
         );
@@ -137,6 +154,12 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
         };
         mutate(productData);
     };
+
+    useEffect(() => {
+        if (selectedCategoryId) {
+            setSelectedCategoryId(selectedCategoryId);
+        }
+    }, [selectedCategoryId]);
 
     return (
         <Box>
@@ -262,31 +285,49 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         />
                     )}
                 />
-                <Controller
-                    name="colors"
-                    control={control}
-                    rules={{ required: 'Required field' }}
-                    render={({ field }) => (
-                        <>
-                            <TextField
-                                {...field}
-                                label="Можливий колір товару (Через кому)"
-                                fullWidth
-                                margin="normal"
-                                defaultValue={data?.colors}
-                                error={!!errors.colors}
-                                helperText={
-                                    errors.colors ? errors.colors.message : ''
-                                }
-                            />
-                            <p className={'hint'}>
-                                <i>
-                                    *Підказка: жовтий, красний, зелений, синій
-                                </i>
-                            </p>
-                        </>
-                    )}
-                />
+                <Box>
+                    <Typography sx={{ mt: 2 }}>
+                        <Palette size={18} />
+                        Додати колір
+                    </Typography>
+                    <Controller
+                        name={'colors'}
+                        control={control}
+                        render={({ field }) => (
+                            <Box>
+                                {field.value.map((color, id) => (
+                                    <Chip
+                                        key={id}
+                                        label={color}
+                                        onDelete={() =>
+                                            handleRemoveColor(`${id}`)
+                                        }
+                                        sx={{
+                                            backgroundColor: color,
+                                            color: '#fff',
+                                        }}
+                                    />
+                                ))}
+                            </Box>
+                        )}
+                    />
+                    <ChromePicker
+                        color={currentColor}
+                        disableAlpha={true}
+                        onChangeComplete={(color: ColorResult) =>
+                            setCurrentColor(color.hex)
+                        }
+                    />
+                    <Box sx={{ mt: 1, mb: 2 }}>
+                        <Button
+                            variant={'outlined'}
+                            color={'secondary'}
+                            onClick={handleAddColor}
+                        >
+                            Додати колір
+                        </Button>
+                    </Box>
+                </Box>
                 <Controller
                     name={'description'}
                     control={control}
@@ -541,7 +582,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                     <Controller
                         name={'category'}
                         control={control}
-                        defaultValue={''}
+                        defaultValue={data?.category}
                         render={({ field }) => (
                             <Select
                                 {...field}
