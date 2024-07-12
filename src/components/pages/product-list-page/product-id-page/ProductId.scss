@@ -1,0 +1,219 @@
+.cntImg {
+    max-width: 600px;
+    height: max-content;
+}
+
+.cntText {
+    max-width: 800px;
+}
+
+
+.swiper {
+    width: 600px;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.swiper-slide {
+    background-size: cover;
+    background-position: center;
+    width: 600px;
+    height: 400px;
+    cursor: move;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.mySwiper2 {
+}
+
+.mySwiper {
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+
+.mySwiper .swiper-slide {
+    width: 100px;
+    height: 100px;
+    opacity: 0.4;
+    object-fit: cover;
+}
+
+.mySwiper .swiper-slide-thumb-active {
+    opacity: 1;
+}
+
+.productHint {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.availabilityCnt {
+    max-width: max-content;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 15px;
+    padding: 7px 16px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 43px;
+}
+
+.isAvailability {
+    border: 2px solid var(--green);
+    color: var(--green);
+}
+
+.isOrder, .isNotAvailability, .undefinedAvailability {
+    border: 2px solid var(--red);
+    color: var(--red);
+}
+
+.priceCnt {
+    display: flex;
+    gap: 50px;
+    margin: 10px 0;
+}
+
+.price {
+    font-size: var(--fz-title20);
+}
+
+.discount {
+    font-size: var(--fz-title20);
+    color: var(--red);
+}
+
+.isDiscount {
+    color: var(--green);
+}
+
+.oldPrice {
+    color: var(--black-05);
+    font-size: 19px;
+    position: relative;
+    margin-left: 10px;
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: -10%;
+        width: 120%;
+        height: 1px;
+        transform: rotate(-10deg);
+        background-color: var(--black);
+    }
+    &:before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: -10%;
+        width: 120%;
+        height: 1px;
+        transform: rotate(10deg);
+        background-color: var(--black);
+    }
+}
+
+.colors {
+    margin: 20px 0;
+    font-size: 20px;
+}
+
+.colorsContainer {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.colorCircle {
+    border-radius: 100%;
+    border: 5px solid var(--black-05);
+    width: 50px;
+    height: 50px;
+}
+
+.desc {
+    margin-bottom: 20px;
+}
+
+.descTitle {
+    font-size: 20px;
+}
+
+.descText {
+    border: 1px solid var(--black-05);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.categories {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.category, .subcategory {
+    span {
+        font-style: italic;
+    }
+}
+
+.services {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.servicesTitle {
+    margin-bottom: 5px;
+}
+
+.servicesContent {
+    margin-left: 5px;
+}
+
+.paymentMethodTitle, .deliveryMethodTitle, .turningMethodTitle {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+// PAYMENT
+.paymentMethod {
+
+}
+
+.paymentMethodCnt, .deliveryMethodCnt, .turningMethodCnt {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 5px 0 10px 5px;
+}
+
+// DELIVERY
+
+.deliveryMethod {
+
+}
+
+// TURNING
+
+.turningMethod {
+
+}
+
+.infoTitle {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.infoCnt {
+    margin: 5px 0 10px 5px;
+}
