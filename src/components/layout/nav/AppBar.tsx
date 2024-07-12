@@ -5,23 +5,20 @@ import Container from '@mui/material/Container';
 import { AppBar, Button } from '@mui/material';
 import { useContext } from 'react';
 import { Context } from '../../../api/context';
-import useAnchorElUser from '../../../hooks/use-anchor-el-user/useAnchorElUser';
 import { AuthContext } from '../../../providers/AuthProvider';
-import { formatTime } from '../../../utils/formatTime';
 
 const AppBarMenu = () => {
     const { store } = useContext(Context);
-    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
-    const { anchorElUser, handleOpenUserMenu, handleCloseUserMenu } =
-        useAnchorElUser();
-
-    const remainingTime = parseInt(
-        localStorage.getItem('remainingTime') || '3600',
-        10,
-    );
+    const { isLoggedIn, setIsLoggedIn, remainingTime } =
+        useContext(AuthContext);
+    // const { anchorElUser, handleOpenUserMenu, handleCloseUserMenu } =
+    //     useAnchorElUser();
 
     const handleLogout = () => {
-        store.logout().then(() => setIsLoggedIn(false));
+        store
+            .logout()
+            .then(() => setIsLoggedIn(false))
+            .then(() => localStorage.removeItem('loginTime'));
     };
 
     return (
@@ -53,7 +50,11 @@ const AppBarMenu = () => {
                                 gap: 3,
                             }}
                         >
-                            <Typography>{formatTime(remainingTime)}</Typography>
+                            <Typography>
+                                {remainingTime
+                                    ? remainingTime
+                                    : 'Час вичерпано'}
+                            </Typography>
                             <Box>
                                 {/*<Tooltip title="Open settings">*/}
                                 {/*    <IconButton*/}

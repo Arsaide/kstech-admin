@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Alert, Typography } from '@mui/material';
-import { formatTime } from '../../utils/formatTime';
+import { AuthContext } from '../../providers/AuthProvider';
 
 const HomePage = () => {
-    const remainingTime = parseInt(
-        localStorage.getItem('remainingTime') || '3600',
-        10,
-    );
+    const { remainingTime } = useContext(AuthContext);
 
     return (
         <>
@@ -14,7 +11,8 @@ const HomePage = () => {
                 Ви успішно авторизовані в адмін-панелі KS TECH!
             </Alert>
             <Typography sx={{ mt: 2 }}>
-                Задля безпеки сесія діє {formatTime(remainingTime)} годину!
+                Задля безпеки сесія діє {remainingTime ? remainingTime : '0'}{' '}
+                годину!
             </Typography>
         </>
     );

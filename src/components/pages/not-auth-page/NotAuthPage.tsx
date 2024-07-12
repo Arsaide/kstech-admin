@@ -21,7 +21,11 @@ const NotAuth = () => {
         mutationKey: ['login'],
         mutationFn: async (user: LoginData) =>
             store.login(user.name, user.password),
-        onSuccess: () => setIsLoggedIn(true),
+        onSuccess: () => {
+            setIsLoggedIn(true);
+            const loginTime = new Date().getTime();
+            localStorage.setItem('loginTime', loginTime.toString());
+        },
     });
 
     const onSubmit = (data: LoginData) => {

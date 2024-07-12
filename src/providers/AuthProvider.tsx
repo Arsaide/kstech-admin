@@ -6,16 +6,19 @@ import {
     SetStateAction,
     useContext,
     useEffect,
+    useState,
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useMutation } from '@tanstack/react-query';
 import { Context } from '../api/context';
 import useSetLocalStorage from '../hooks/useSetLocalStorage/useSetLocalStorage';
+import { formatTime } from '../utils/formatTime';
 
 interface IAuthContext {
     isLoggedIn: boolean;
     isPending: boolean;
     setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+    remainingTime: string;
 }
 
 interface IAuthProvider {
@@ -26,6 +29,7 @@ export const AuthContext = createContext<IAuthContext>({
     isLoggedIn: false,
     isPending: false,
     setIsLoggedIn: () => null,
+    remainingTime: '',
 });
 
 export const AuthProvider: FC<IAuthProvider> = observer(({ children }) => {
@@ -34,10 +38,7 @@ export const AuthProvider: FC<IAuthProvider> = observer(({ children }) => {
         'isLoggedIn',
         false,
     );
-    const [remainingTime, setRemainingTime] = useSetLocalStorage<number>(
-        'remainingTime',
-        3600,
-    );
+    const [remainingTime, setRemainingTime] = useState<string>('');
 
     const token = localStorage.getItem('token');
 
@@ -59,40 +60,34 @@ export const AuthProvider: FC<IAuthProvider> = observer(({ children }) => {
     }, [token, isLoggedIn]);
 
     useEffect(() => {
-        let interval: NodeJS.Timeout | undefined;
+        const checkLoginTime = () => {
+            const loginTime = localStorage.getItem('loginTime');
+            if (loginTime && isLoggedIn) {
+                const currentTime = new Date().getTime();
+                const timeDifference = currentTime - parseInt(loginTime, 10);
+                const time = 60 * 60 * 1000;
 
-        if (isLoggedIn) {
-            interval = setInterval(() => {
-                setRemainingTime(prev => {
-                    if (prev <= 1) {
-                        setIsLoggedIn(false);
-                        store.logout();
-                        if (interval) {
-                            clearInterval(interval);
-                        }
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 1000);
-        } else {
-            setRemainingTime(3600);
-            if (interval) {
-                clearInterval(interval);
-            }
-        }
-
-        return () => {
-            if (interval) {
-                clearInterval(interval);
+                if (timeDifference >= time) {
+                    store.logout();
+                    setIsLoggedIn(false);
+                    localStorage.removeItem('loginTime');
+                } else {
+                    const remainingSeconds = (time - timeDifference) / 1000;
+                    setRemainingTime(formatTime(Math.floor(remainingSeconds)));
+                }
             }
         };
+
+        const interval = setInterval(checkLoginTime, 1000);
+
+        return () => clearInterval(interval);
     }, [isLoggedIn]);
 
     const value = {
         isLoggedIn,
         setIsLoggedIn,
         isPending,
+        remainingTime,
     };
 
     return (
