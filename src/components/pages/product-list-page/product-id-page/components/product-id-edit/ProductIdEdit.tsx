@@ -2,7 +2,11 @@ import React, { ChangeEvent, FC, useContext, useEffect, useState } from 'react';
 import { Context } from '../../../../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
 import { ProductDataTypes } from '../../../../../../types/forms/ProductData.types';
-import { useMutation } from '@tanstack/react-query';
+import {
+    QueryClient,
+    useMutation,
+    useQueryClient,
+} from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { OneProductTypes } from '../../../../../../api/models/ProductResponseModel';
 import Typography from '@mui/material/Typography';
@@ -42,6 +46,7 @@ interface ProductIdEditProps {
 }
 
 const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
+    const queryClient: QueryClient = useQueryClient();
     const { store } = useContext(Context);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
@@ -102,6 +107,9 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                 product.paymentMethod,
             ),
         onError: e => toast.error(`Сталась помилка ${e}`),
+        onSuccess: () => {
+            location.reload();
+        },
     });
 
     const { categoriesData } = useGetAllCategories();
