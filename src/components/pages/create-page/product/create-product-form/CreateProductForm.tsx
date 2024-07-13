@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import {
     ColorTypes,
     ProductDataTypes,
+    TurningTypes,
 } from '../../../../../types/forms/ProductData.types';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
@@ -14,6 +15,8 @@ import {
     Checkbox,
     Chip,
     FormControl,
+    IconButton,
+    InputAdornment,
     InputLabel,
     MenuItem,
     Select,
@@ -34,7 +37,7 @@ import useGetAllCategories from '../../../../../hooks/queries/categories/use-get
 import { SubcategoryResponseModel } from '../../../../../api/models/CategoriesResponseModel';
 import { ChromePicker, ColorResult } from 'react-color';
 import { v4 as uuidv4 } from 'uuid';
-import { Palette } from 'lucide-react';
+import { Palette, Plus } from 'lucide-react';
 
 const CreateProductForm = () => {
     const { store } = useContext(Context);
@@ -46,6 +49,7 @@ const CreateProductForm = () => {
         SubcategoryResponseModel[] | null
     >(null);
     const [currentColor, setCurrentColor] = useState<string>('#fff');
+    const [currentTurning, setCurrentTurning] = useState<string>('');
 
     const {
         handleSubmit,
@@ -56,6 +60,7 @@ const CreateProductForm = () => {
     } = useForm<ProductDataTypes>({
         defaultValues: {
             colors: [] as ColorTypes[],
+            turningMethod: [] as TurningTypes[],
         },
     });
 
@@ -129,6 +134,22 @@ const CreateProductForm = () => {
             color => color.id !== id,
         );
         setValue('colors', colors);
+    };
+
+    const handleAddTurning = () => {
+        const turning: TurningTypes[] = getValues('turningMethod');
+        setValue('turningMethod', [
+            ...turning,
+            { id: uuidv4(), turning: currentTurning },
+        ]);
+        setCurrentTurning('');
+    };
+
+    const handleRemoveTurning = (id: string) => {
+        const turning: TurningTypes[] = getValues('turningMethod').filter(
+            index => index.toString() !== id,
+        );
+        setValue('turningMethod', turning);
     };
 
     return (
@@ -391,33 +412,57 @@ const CreateProductForm = () => {
                         );
                     }}
                 />
-                <Controller
-                    name="turningMethod"
-                    control={control}
-                    rules={{ required: 'Required field' }}
-                    render={({ field }) => (
-                        <>
-                            <TextField
-                                {...field}
-                                label="Сервісне обслуговування, умови повернення (Через кому)"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.turningMethod}
-                                helperText={
-                                    errors.turningMethod
-                                        ? errors.turningMethod.message
-                                        : ''
-                                }
-                            />
-                            <p className={'hint'}>
-                                <i>
-                                    *Підказка: 3 роки гарантії, 60 днів на
-                                    повернення
-                                </i>
-                            </p>
-                        </>
-                    )}
-                />
+                <Box>
+                    <Controller
+                        name="turningMethod"
+                        control={control}
+                        rules={{ required: 'Required field' }}
+                        render={({ field }) => (
+                            <Box>
+                                {field.value.map(
+                                    ({ id, turning }: TurningTypes) => (
+                                        <Chip
+                                            key={id}
+                                            label={turning}
+                                            onDelete={() => {
+                                                handleRemoveTurning(`${id}}`);
+                                                console.log(id);
+                                                console.log(turning);
+                                            }}
+                                        />
+                                    ),
+                                )}
+                            </Box>
+                        )}
+                    />
+                    <TextField
+                        label="Сервісне обслуговування, умови повернення"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.turningMethod}
+                        helperText={
+                            errors.turningMethod
+                                ? errors.turningMethod.message
+                                : ''
+                        }
+                        value={currentTurning}
+                        onChange={e => {
+                            setCurrentTurning(e.target.value);
+                        }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        disabled={currentTurning == ''}
+                                        onClick={handleAddTurning}
+                                    >
+                                        <Plus size={30} />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </Box>
                 <Controller
                     name={'paymentMethod'}
                     control={control}

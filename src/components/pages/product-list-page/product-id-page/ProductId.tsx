@@ -279,12 +279,17 @@ const ProductId = () => {
                                         обслуговування:
                                     </div>
                                     <div className={'turningMethodCnt'}>
-                                        <Chip
-                                            label={data?.turningMethod}
-                                            sx={{
-                                                maxWidth: 'max-content',
-                                            }}
-                                        />
+                                        {data?.turningMethod.map(
+                                            (item, index) => (
+                                                <Chip
+                                                    key={index}
+                                                    label={item}
+                                                    sx={{
+                                                        maxWidth: 'max-content',
+                                                    }}
+                                                />
+                                            ),
+                                        )}
                                     </div>
                                 </div>
                             </div>

@@ -12,6 +12,8 @@ import {
     Checkbox,
     Chip,
     FormControl,
+    IconButton,
+    InputAdornment,
     InputLabel,
     MenuItem,
     Select,
@@ -32,7 +34,7 @@ import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import { useGetOneCategory } from '../../../../../../hooks/queries/categories/use-get-one-category/useGetOneCategory';
 import useGetAllCategories from '../../../../../../hooks/queries/categories/use-get-all-categories/useGetAllCategories';
 import { SubcategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
-import { Palette } from 'lucide-react';
+import { Palette, Plus, ReceiptText } from 'lucide-react';
 import { ChromePicker, ColorResult } from 'react-color';
 
 interface ProductIdEditProps {
@@ -49,6 +51,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
         SubcategoryResponseModel[] | null
     >(null);
     const [currentColor, setCurrentColor] = useState<string>('#fff');
+    const [currentTurning, setCurrentTurning] = useState<string>('');
 
     const {
         handleSubmit,
@@ -56,7 +59,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
         setValue,
         formState: { errors },
         getValues,
-    } = useForm<ProductDataTypes<string[]>>({
+    } = useForm<ProductDataTypes<string[], string[]>>({
         defaultValues: {
             name: data.name || '',
             colors: data.colors || '',
@@ -64,7 +67,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
             discount: data.discount || '0',
             inAvailability: data.inAvailability || '',
             deliveryMethod: data.deliveryMethod || [],
-            turningMethod: data.turningMethod || '',
+            turningMethod: data.turningMethod || [],
             paymentMethod: data.paymentMethod || [],
             category: data.category || '',
             subcategory: data.subcategory || '',
@@ -77,7 +80,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
 
     const { mutate, isPending, isError, error } = useMutation({
         mutationKey: ['create-page'],
-        mutationFn: async (product: ProductDataTypes<string[]>) =>
+        mutationFn: async (product: ProductDataTypes<string[], string[]>) =>
             store.editProduct(
                 data.id,
                 product.name,
@@ -139,12 +142,25 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
 
     const handleRemoveColor = (id: string) => {
         const colors: string[] = getValues('colors').filter(
-            (color, index) => index.toString() !== id,
+            index => index.toString() !== id,
         );
         setValue('colors', colors);
     };
 
-    const onSubmit = (data: ProductDataTypes<string[]>) => {
+    const handleAddTurning = () => {
+        const turning: string[] = getValues('turningMethod');
+        setValue('turningMethod', [...turning, currentTurning]);
+        setCurrentTurning('');
+    };
+
+    const handleRemoveTurning = (id: string) => {
+        const turning: string[] = getValues('turningMethod').filter(
+            index => index.toString() !== id,
+        );
+        setValue('turningMethod', turning);
+    };
+
+    const onSubmit = (data: ProductDataTypes<string[], string[]>) => {
         const formattedDescription = JSON.stringify(
             convertToRaw(editorState.getCurrentContent()),
         );
@@ -294,7 +310,15 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         name={'colors'}
                         control={control}
                         render={({ field }) => (
-                            <Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: 1,
+                                    mb: 1,
+                                    mt: 1,
+                                }}
+                            >
                                 {field.value.map((color, id) => (
                                     <Chip
                                         key={id}
@@ -502,34 +526,64 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         );
                     }}
                 />
-                <Controller
-                    name="turningMethod"
-                    control={control}
-                    rules={{ required: 'Required field' }}
-                    render={({ field }) => (
-                        <>
-                            <TextField
-                                {...field}
-                                label="Сервісне обслуговування, умови повернення (Через кому)"
-                                fullWidth
-                                margin="normal"
-                                defaultValue={data?.turningMethod}
-                                error={!!errors.turningMethod}
-                                helperText={
-                                    errors.turningMethod
-                                        ? errors.turningMethod.message
-                                        : ''
-                                }
-                            />
-                            <p className={'hint'}>
-                                <i>
-                                    *Підказка: 3 роки гарантії, 60 днів на
-                                    повернення
-                                </i>
-                            </p>
-                        </>
-                    )}
-                />
+                <Box sx={{ mb: 3, mt: 3 }}>
+                    <Typography sx={{ mt: 2 }}>
+                        <ReceiptText size={18} />
+                        Додати сервісні обслуговування і умови
+                    </Typography>
+                    <Controller
+                        name="turningMethod"
+                        control={control}
+                        rules={{ required: 'Required field' }}
+                        render={({ field }) => (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: 1,
+                                    mt: 1,
+                                }}
+                            >
+                                {field.value.map((turning, id) => (
+                                    <Chip
+                                        key={id}
+                                        label={turning}
+                                        onDelete={() => {
+                                            handleRemoveTurning(`${id}}`);
+                                        }}
+                                    />
+                                ))}
+                            </Box>
+                        )}
+                    />
+                    <TextField
+                        label="Сервісне обслуговування, умови повернення"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.turningMethod}
+                        helperText={
+                            errors.turningMethod
+                                ? errors.turningMethod.message
+                                : ''
+                        }
+                        value={currentTurning}
+                        onChange={e => {
+                            setCurrentTurning(e.target.value);
+                        }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        disabled={currentTurning == ''}
+                                        onClick={handleAddTurning}
+                                    >
+                                        <Plus size={30} />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </Box>
                 <Controller
                     name={'paymentMethod'}
                     control={control}
