@@ -60,6 +60,14 @@ export default class Store {
         }
     }
 
+    async searchProducts(page: number, search: string) {
+        try {
+            return await ProductsService.searchProducts(page, search);
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
     async getOneProduct(id: string | undefined) {
         try {
             return await ProductsService.getOneProductForEdit(id);

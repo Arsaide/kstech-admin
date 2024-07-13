@@ -13,6 +13,15 @@ export default class ProductsService {
         return $api.get<AllProductResponseModel>(`/products/get?page=${page}`);
     }
 
+    static async searchProducts(
+        page: number,
+        query: string,
+    ): Promise<AxiosResponse<AllProductResponseModel>> {
+        return $api.get<AllProductResponseModel>(
+            `/products/search?page=${page}&query=${query}`,
+        );
+    }
+
     static async getOneProductForEdit(
         id: string | undefined,
     ): Promise<AxiosResponse<OneProductResponseModel>> {
