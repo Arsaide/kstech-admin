@@ -11,7 +11,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import { useMutation } from '@tanstack/react-query';
 import { Context } from '../api/context';
-import useSetLocalStorage from '../hooks/useSetLocalStorage/useSetLocalStorage';
+import useSetLocalStorage from '../hooks/use-set-local-storage/useSetLocalStorage';
 import { formatTime } from '../utils/formatTime';
 
 interface IAuthContext {
