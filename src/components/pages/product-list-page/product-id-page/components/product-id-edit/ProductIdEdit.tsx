@@ -150,7 +150,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
 
     const handleRemoveColor = (id: string) => {
         const colors: string[] = getValues('colors').filter(
-            index => index.toString() !== id,
+            (_, i) => i.toString() !== id,
         );
         setValue('colors', colors);
     };
@@ -163,7 +163,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
 
     const handleRemoveTurning = (id: string) => {
         const turning: string[] = getValues('turningMethod').filter(
-            index => index.toString() !== id,
+            (_, i) => i.toString() !== id,
         );
         setValue('turningMethod', turning);
     };
@@ -557,7 +557,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                                         key={id}
                                         label={turning}
                                         onDelete={() => {
-                                            handleRemoveTurning(`${id}}`);
+                                            handleRemoveTurning(`${id}`);
                                         }}
                                     />
                                 ))}
