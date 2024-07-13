@@ -74,6 +74,8 @@ const ProductId = () => {
             <Box
                 sx={{
                     display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     flexDirection: 'column',
                     gap: 2,
                 }}
