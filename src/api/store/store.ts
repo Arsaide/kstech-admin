@@ -182,6 +182,16 @@ export default class Store {
         }
     }
 
+    async deleteProduct(id: string | undefined) {
+        try {
+            const token = localStorage.getItem('token');
+
+            return ProductsService.deleteProduct(id, token);
+        } catch (e: any) {
+            throw e;
+        }
+    }
+
     async getAllCategories() {
         try {
             return CategoriesService.getAllCategories();

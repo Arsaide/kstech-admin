@@ -159,4 +159,8 @@ export default class ProductsService {
         }
         return $api.post('/products/change', formData);
     }
+
+    static deleteProduct(id: string | undefined, token: string | null) {
+        return $api.get(`/products/delete?id=${id}&token=${token}`);
+    }
 }
