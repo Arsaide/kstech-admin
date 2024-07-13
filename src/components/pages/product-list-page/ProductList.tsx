@@ -3,6 +3,7 @@ import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import './ProductList.css';
 import {
     Alert,
+    CircularProgress,
     IconButton,
     InputAdornment,
     Pagination,
@@ -21,9 +22,10 @@ import {
 } from '../../../api/models/ProductResponseModel';
 import ProductCard from './subcomponents/product-card/ProductCard';
 import { Controller, useForm } from 'react-hook-form';
-import { Plus } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { SearchDataTypes } from '../../../types/Search.types';
 import { AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 
 const ProductList = () => {
     const { store } = useContext(Context);
@@ -60,13 +62,16 @@ const ProductList = () => {
 
     const {
         isPending,
-        isError: IsMutateError,
-        error: mutateError,
         mutate,
         data: mutateData,
     } = useMutation<AxiosResponse<AllProductResponseModel>>({
         mutationKey: ['search-products', currentPage, searchProductInput],
         mutationFn: () => store.searchProducts(currentPage, searchProductInput),
+        onError: error => {
+            toast.error(
+                `Сталась помилка під час пошуку товару: ${error.message}`,
+            );
+        },
     });
 
     const onSubmit = () => {
@@ -74,8 +79,6 @@ const ProductList = () => {
     };
 
     const displayedData = mutateData ? mutateData.data : data ? data : null;
-
-    console.log(displayedData);
 
     return (
         <div>
@@ -95,7 +98,6 @@ const ProductList = () => {
                                 <TextField
                                     {...field}
                                     label={'Пошук товарів'}
-                                    fullWidth
                                     margin={'normal'}
                                     value={searchProductInput}
                                     onChange={(
@@ -103,11 +105,21 @@ const ProductList = () => {
                                     ) => {
                                         setSearchProductInput(e.target.value);
                                     }}
+                                    sx={{ width: '650px' }}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <IconButton type={'submit'}>
-                                                    <Plus size={30} />
+                                                <IconButton
+                                                    disabled={isPending}
+                                                    type={'submit'}
+                                                >
+                                                    {isPending ? (
+                                                        <CircularProgress
+                                                            size={30}
+                                                        />
+                                                    ) : (
+                                                        <Search size={30} />
+                                                    )}
                                                 </IconButton>
                                             </InputAdornment>
                                         ),
