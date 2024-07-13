@@ -3,12 +3,17 @@ export interface ColorTypes {
     color: string;
 }
 
-export interface ProductDataTypes<T = ColorTypes[]> {
+export interface TurningTypes {
+    id: string;
+    turning: string;
+}
+
+export interface ProductDataTypes<C = ColorTypes[], T = TurningTypes[]> {
     id: string;
     name: string;
     imgArr: File[];
     oldImgArr: string[];
-    colors: T;
+    colors: C;
     description: string;
     price: string;
     discount: string;
@@ -20,6 +25,6 @@ export interface ProductDataTypes<T = ColorTypes[]> {
     width: string;
     long: string;
     deliveryMethod: string[];
-    turningMethod: string;
+    turningMethod: T;
     paymentMethod: string[];
 }

@@ -1,8 +1,3 @@
-import {
-    CategoryResponseModel,
-    SubcategoryResponseModel,
-} from './CategoriesResponseModel';
-
 export interface AllProductResponseModel {
     products: OneProductTypes[];
     totalPages: number;
@@ -10,8 +5,8 @@ export interface AllProductResponseModel {
 
 export interface OneProductResponseModel {
     product: OneProductTypes;
-    category: CategoryResponseModel;
-    subcategory: SubcategoryResponseModel;
+    // category: CategoryResponseModel;
+    // subcategory: SubcategoryResponseModel;
 }
 
 export interface OneProductResponseModelForRender {
@@ -37,7 +32,7 @@ export interface OneProductTypes {
     width: string;
     long: string;
     deliveryMethod: string[];
-    turningMethod: string;
+    turningMethod: string[];
     paymentMethod: string[];
     article: string;
 }
