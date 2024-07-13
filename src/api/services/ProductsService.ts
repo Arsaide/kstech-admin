@@ -4,7 +4,7 @@ import {
     AllProductResponseModel,
     OneProductResponseModel,
 } from '../models/ProductResponseModel';
-import { ColorTypes } from '../../types/forms/ProductData.types';
+import { ColorTypes, TurningTypes } from '../../types/forms/ProductData.types';
 
 export default class ProductsService {
     static async getProductsList(
@@ -34,7 +34,7 @@ export default class ProductsService {
         width: string,
         long: string,
         deliveryMethod: string[],
-        turningMethod: string,
+        turningMethod: TurningTypes[],
         paymentMethod: string[],
         token: string | null,
     ) {
@@ -70,7 +70,11 @@ export default class ProductsService {
                 formData.append('paymentMethod', item);
             });
         }
-        formData.append('turningMethod', turningMethod);
+        if (turningMethod && turningMethod.length > 0) {
+            turningMethod.forEach(item => {
+                formData.append('turningMethod', item.turning);
+            });
+        }
         if (token) {
             formData.append('token', token);
         }
@@ -94,7 +98,7 @@ export default class ProductsService {
         width: string,
         long: string,
         deliveryMethod: string[],
-        turningMethod: string,
+        turningMethod: string[],
         paymentMethod: string[],
         token: string | null,
     ) {
@@ -130,13 +134,17 @@ export default class ProductsService {
                 formData.append('paymentMethod', item);
             });
         }
+        if (turningMethod) {
+            turningMethod.forEach(item => {
+                formData.append('turningMethod', item);
+            });
+        }
         formData.append('category', category);
         formData.append('subcategory', subcategory);
         formData.append('weight', weight);
         formData.append('height', height);
         formData.append('width', width);
         formData.append('long', long);
-        formData.append('turningMethod', turningMethod);
         if (token) {
             formData.append('token', token);
         }

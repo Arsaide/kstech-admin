@@ -4,7 +4,7 @@ import AuthService from '../services/AuthService';
 import { IUser } from '../../types/IUser.types';
 import ProductsService from '../services/ProductsService';
 import CategoriesService from '../services/CategoriesService';
-import { ColorTypes } from '../../types/forms/ProductData.types';
+import { ColorTypes, TurningTypes } from '../../types/forms/ProductData.types';
 
 export default class Store {
     constructor() {
@@ -83,7 +83,7 @@ export default class Store {
         width: string,
         long: string,
         deliveryMethod: string[],
-        turningMethod: string,
+        turningMethod: TurningTypes[],
         paymentMethod: string[],
     ) {
         try {
@@ -136,7 +136,7 @@ export default class Store {
         width: string,
         long: string,
         deliveryMethod: string[],
-        turningMethod: string,
+        turningMethod: string[],
         paymentMethod: string[],
     ) {
         try {
