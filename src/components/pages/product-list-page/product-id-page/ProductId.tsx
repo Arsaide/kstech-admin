@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { Context } from '../../../../api/context';
-import { Alert, Box, Chip, CircularProgress } from '@mui/material';
+import { Alert, Box, Button, Chip, CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { MainColorsEnum } from '../../../../utils/enums/colors-enum';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -21,9 +21,12 @@ import {
     Package,
     Pencil,
     ReceiptText,
+    Trash2,
 } from 'lucide-react';
 import classNames from 'classnames';
 import ProductIdEdit from './components/product-id-edit/ProductIdEdit';
+import ModalWindow from '../../../layout/common/ui/modal/ModalWindow';
+import ProductDeleteModal from './components/product-delete-model/ProductDeleteModal';
 
 const ProductId = () => {
     const { store } = useContext(Context);
@@ -32,10 +35,11 @@ const ProductId = () => {
         { original: string; thumbnail: string }[]
     >([]);
     const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
-    const [thumbsSwiperReady, setThumbsSwiperReady] = useState<boolean>(false);
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty(),
     );
+    const [isVisibleDeleteModal, setIsVisibleDeleteModal] =
+        useState<boolean>(false);
 
     const { isLoading, isError, error, data } = useQuery({
         queryKey: ['get-one-product', id],
@@ -124,7 +128,6 @@ const ProductId = () => {
                         <Swiper
                             onSwiper={(swiper: any) => {
                                 setThumbsSwiper(swiper);
-                                setThumbsSwiperReady(true);
                             }}
                             loop={true}
                             spaceBetween={10}
@@ -140,6 +143,23 @@ const ProductId = () => {
                                 </SwiperSlide>
                             ))}
                         </Swiper>
+                        <Button
+                            onClick={() => setIsVisibleDeleteModal(true)}
+                            variant={'contained'}
+                            color={'error'}
+                        >
+                            <Trash2 size={20} /> Видалити товар
+                        </Button>
+                        <ModalWindow
+                            isOpen={isVisibleDeleteModal}
+                            handleClose={() => setIsVisibleDeleteModal(false)}
+                            title={'Видалення товару'}
+                        >
+                            <ProductDeleteModal
+                                id={data?.id}
+                                name={data?.name}
+                            />
+                        </ModalWindow>
                     </div>
                 )}
 
