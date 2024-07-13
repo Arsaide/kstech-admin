@@ -44,13 +44,17 @@
     font-size: var(--fz-text14);
     opacity: .6;
 
-    span {
+    button {
         opacity: 1;
         cursor: pointer;
-        transition: opacity .2s ease-out 0s;
+        transition: opacity .2s ease-out 0s, transform .1s ease-out 0s;
 
         &:hover {
             opacity: 0.8;
+        }
+
+        &:active {
+            transform: scale(.9);
         }
     }
 }

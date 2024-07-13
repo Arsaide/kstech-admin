@@ -80,13 +80,13 @@ const ProductCard: FC<ProductCardProps> = ({
                         <div className={'cardArticle'}>
                             Артікл: #
                             <Tooltip title={'Скопіювати артікл'}>
-                                <span
+                                <button
                                     onClick={() =>
                                         navigator.clipboard.writeText(article)
                                     }
                                 >
                                     {article}
-                                </span>
+                                </button>
                             </Tooltip>
                         </div>
                         <div className={'cardDesc'}>
