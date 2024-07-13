@@ -573,10 +573,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <IconButton
-                                        disabled={currentTurning == ''}
-                                        onClick={handleAddTurning}
-                                    >
+                                    <IconButton onClick={handleAddTurning}>
                                         <Plus size={30} />
                                     </IconButton>
                                 </InputAdornment>

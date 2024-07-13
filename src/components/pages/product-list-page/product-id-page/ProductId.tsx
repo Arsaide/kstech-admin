@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../../../api/context';
-import { Alert, Box, Chip, CircularProgress } from '@mui/material';
+import { Alert, Box, Chip, CircularProgress, IconButton } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { MainColorsEnum } from '../../../../utils/enums/colors-enum';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,7 +10,6 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import './ProductId.scss';
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import ProductIdEdit from './components/product-id-edit/ProductIdEdit';
 import parse from 'html-react-parser';
 import {
     Ban,
@@ -20,9 +19,12 @@ import {
     HandCoins,
     History,
     Package,
+    Pencil,
     ReceiptText,
+    X,
 } from 'lucide-react';
 import classNames from 'classnames';
+import ProductIdEdit from './components/product-id-edit/ProductIdEdit';
 
 const ProductId = () => {
     const { store } = useContext(Context);
@@ -30,10 +32,11 @@ const ProductId = () => {
     const [images, setImages] = useState<
         { original: string; thumbnail: string }[]
     >([]);
-    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty(),
     );
+    const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
 
     const { isLoading, isError, error, data } = useQuery({
         queryKey: ['get-one-product', id],
@@ -63,9 +66,21 @@ const ProductId = () => {
     }, [data]);
 
     return (
-        <div>
+        <div style={{ position: 'relative' }}>
+            <IconButton
+                onClick={() => setIsOpenForm(!isOpenForm)}
+                sx={{ position: 'fixed', bottom: '40px', right: '40px' }}
+            >
+                {isOpenForm ? <X size={50} /> : <Pencil size={50} />}
+            </IconButton>
             {isLoading ? (
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2,
+                    }}
+                >
                     <CircularProgress
                         size={300}
                         thickness={2}
@@ -85,22 +100,29 @@ const ProductId = () => {
                     Error: {error.message}
                 </Alert>
             ) : (
-                <div style={{ display: 'flex', gap: '20px' }}>
-                    <div className={'cntImg'}>
-                        <Swiper
-                            style={{
-                                '--swiper-navigation-color': '#fff',
-                                '--swiper-pagination-color': '#fff',
-                            }}
-                            loop={true}
-                            spaceBetween={10}
-                            navigation={true}
-                            thumbs={{ swiper: thumbsSwiper }}
-                            modules={[FreeMode, Navigation, Thumbs]}
-                            className="mySwiper2"
-                        >
-                            {data &&
-                                data.imgArr.map((img, index) => (
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '20px',
+                    }}
+                >
+                    {data && (
+                        <div className={'cntImg'}>
+                            <Swiper
+                                style={{
+                                    '--swiper-navigation-color': '#fff',
+                                    '--swiper-pagination-color': '#fff',
+                                }}
+                                loop={true}
+                                spaceBetween={10}
+                                navigation={true}
+                                thumbs={{
+                                    swiper: thumbsSwiper || undefined,
+                                }}
+                                modules={[FreeMode, Navigation, Thumbs]}
+                                className="mySwiper2"
+                            >
+                                {data.imgArr.map((img, index) => (
                                     <SwiperSlide key={index}>
                                         <img
                                             src={img}
@@ -108,19 +130,18 @@ const ProductId = () => {
                                         />
                                     </SwiperSlide>
                                 ))}
-                        </Swiper>
-                        <Swiper
-                            onSwiper={setThumbsSwiper}
-                            loop={true}
-                            spaceBetween={10}
-                            slidesPerView={4}
-                            freeMode={true}
-                            watchSlidesProgress={true}
-                            modules={[FreeMode, Navigation, Thumbs]}
-                            className="mySwiper"
-                        >
-                            {data &&
-                                data.imgArr.map((img, index) => (
+                            </Swiper>
+                            <Swiper
+                                onSwiper={setThumbsSwiper}
+                                loop={true}
+                                spaceBetween={10}
+                                slidesPerView={4}
+                                freeMode={true}
+                                watchSlidesProgress={true}
+                                modules={[FreeMode, Navigation, Thumbs]}
+                                className="mySwiper"
+                            >
+                                {data.imgArr.map((img, index) => (
                                     <SwiperSlide key={index}>
                                         <img
                                             src={img}
@@ -128,8 +149,9 @@ const ProductId = () => {
                                         />
                                     </SwiperSlide>
                                 ))}
-                        </Swiper>
-                    </div>
+                            </Swiper>
+                        </div>
+                    )}
 
                     <div className={'cntText'}>
                         <Typography variant={'h4'} sx={{ mb: 1 }}>
@@ -224,6 +246,17 @@ const ProductId = () => {
                                 )}
                             </div>
                         </div>
+                        <div className={'info'}>
+                            <div className="infoTitle">
+                                Характеристики товару
+                            </div>
+                            <div className={'infoCnt'}>
+                                <div>Вага: {data?.weight} кг.</div>
+                                <div>Довжина: {data?.long} м.</div>
+                                <div>Висота: {data?.height} м.</div>
+                                <div>Ширина: {data?.width} м.</div>
+                            </div>
+                        </div>
                         <div className={'categories'}>
                             <div className={'category'}>
                                 <FolderOpen size={20} /> Категорія -{' '}
@@ -294,21 +327,10 @@ const ProductId = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className={'info'}>
-                            <div className="infoTitle">
-                                Характеристики товару
-                            </div>
-                            <div className={'infoCnt'}>
-                                <div>Вага: {data?.weight} кг.</div>
-                                <div>Довжина: {data?.long} м.</div>
-                                <div>Висота: {data?.height} м.</div>
-                                <div>Ширина: {data?.width} м.</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             )}
-            {data && <ProductIdEdit data={data} />}
+            {isOpenForm && data && <ProductIdEdit data={data} />}
         </div>
     );
 };
