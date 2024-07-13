@@ -72,18 +72,26 @@ const CreateCategoryForm = () => {
                         </label>
                     )}
                 />
-                {originalImage && (
-                    <img
-                        src={URL.createObjectURL(originalImage)}
-                        alt="Original"
-                    />
-                )}
-                {resizedImage && (
-                    <img
-                        src={URL.createObjectURL(resizedImage)}
-                        alt="Resized"
-                    />
-                )}
+                <Box sx={{ display: 'flex', mt: 2 }}>
+                    {resizedImage && (
+                        <Box>
+                            <p className={'modalHintImgSize'}>126 x 126</p>
+                            <img
+                                src={URL.createObjectURL(resizedImage)}
+                                alt="Resized"
+                            />
+                        </Box>
+                    )}
+                    {originalImage && (
+                        <Box>
+                            <p className={'modalHintImgSize'}>726 x 726</p>
+                            <img
+                                src={URL.createObjectURL(originalImage)}
+                                alt="Original"
+                            />
+                        </Box>
+                    )}
+                </Box>
                 <Controller
                     name={'category'}
                     control={control}
