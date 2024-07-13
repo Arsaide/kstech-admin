@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from 'react';
-import './ProductCard.css';
+import React, { FC, useEffect, useState } from 'react';
+import './ProductCard.scss';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Settings } from 'lucide-react';
@@ -7,10 +7,11 @@ import { OneProductTypes } from '../../../../../api/models/ProductResponseModel'
 import { convertFromRaw, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import parse from 'html-react-parser';
+import Tooltip from '@mui/material/Tooltip';
 
 type ProductCardProps = Pick<
     OneProductTypes,
-    'id' | 'name' | 'description' | 'price' | 'imgArr'
+    'id' | 'name' | 'description' | 'price' | 'imgArr' | 'article' | 'discount'
 >;
 
 const ProductCard: FC<ProductCardProps> = ({
@@ -19,6 +20,8 @@ const ProductCard: FC<ProductCardProps> = ({
     description,
     price,
     imgArr,
+    article,
+    discount,
 }) => {
     const [htmlDescription, setHtmlDescription] = useState<string>('');
 
@@ -56,6 +59,11 @@ const ProductCard: FC<ProductCardProps> = ({
         sanitizedHtmlDescription,
     );
 
+    const discountCalc = (
+        parseFloat(price as string) -
+        (parseFloat(price as string) * parseFloat(discount as string)) / 100
+    ).toFixed(2);
+
     return (
         <div className={'card'}>
             <div className={'cardCnt'}>
@@ -69,10 +77,79 @@ const ProductCard: FC<ProductCardProps> = ({
                 <div className={'cardContent'}>
                     <div className={'cardTypography'}>
                         <div className={'cardName'}>{name}</div>
+                        <div className={'cardArticle'}>
+                            Артікл: #
+                            <Tooltip title={'Скопіювати артікл'}>
+                                <span
+                                    onClick={() =>
+                                        navigator.clipboard.writeText(article)
+                                    }
+                                >
+                                    {article}
+                                </span>
+                            </Tooltip>
+                        </div>
                         <div className={'cardDesc'}>
                             {parse(descriptionWithoutStyles)}
                         </div>
-                        <div className={'cardPrice'}>{price} грн</div>
+                        <div className={'cardPriceCnt'}>
+                            <div className={'cardPrice'}>
+                                Ціна:{' '}
+                                <span
+                                    className={
+                                        discount == '0' ? '' : 'isCardDiscount'
+                                    }
+                                >
+                                    {discount == '0' ? (
+                                        <>
+                                            {parseFloat(price as string)
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ' ',
+                                                )}{' '}
+                                            ₴
+                                        </>
+                                    ) : (
+                                        <>
+                                            {discountCalc
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ' ',
+                                                )}{' '}
+                                            ₴{' '}
+                                            <span className={'oldCardPrice'}>
+                                                {parseFloat(price as string)
+                                                    .toString()
+                                                    .replace(
+                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                        ' ',
+                                                    )}{' '}
+                                                ₴
+                                            </span>
+                                            <span className={'priceCardDiff'}>
+                                                -
+                                                {(
+                                                    parseFloat(
+                                                        price as string,
+                                                    ) - parseFloat(discountCalc)
+                                                )
+                                                    .toString()
+                                                    .replace(
+                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                        ' ',
+                                                    )}{' '}
+                                                ₴
+                                            </span>
+                                        </>
+                                    )}
+                                </span>
+                            </div>
+                            <div className={'cardDiscount'}>
+                                Знижка: {discount}%
+                            </div>
+                        </div>
                     </div>
                     <Button variant="contained" sx={{ width: 'max-content' }}>
                         <NavLink

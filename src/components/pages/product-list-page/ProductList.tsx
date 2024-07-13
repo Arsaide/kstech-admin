@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
-import './ProductList.css';
+import './ProductList.scss';
 import {
     Alert,
     CircularProgress,
@@ -137,8 +137,10 @@ const ProductList = () => {
                                         key={item.id}
                                         id={item.id}
                                         name={item.name}
+                                        article={item.article}
                                         description={item.description}
                                         price={item.price}
+                                        discount={item.discount}
                                         imgArr={item.imgArr}
                                     />
                                 ),

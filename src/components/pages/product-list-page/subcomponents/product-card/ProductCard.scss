@@ -1,0 +1,114 @@
+.card {
+    border: 1px solid var(--black-05);
+    border-radius: 5px;
+    flex: 1 0 608px;
+}
+
+.cardCnt {
+    display: flex;
+    gap: 8px;
+    height: 100%;
+}
+
+.cardImgCnt {
+    flex: 0 0 320px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--black-02);
+}
+
+.cardImg {
+    width: 320px;
+    height: 240px;
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 10px 10px 0;
+}
+
+.cardTypography {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cardName {
+    font-size: var(--fz-title20);
+}
+
+.cardArticle {
+    font-size: var(--fz-text14);
+    opacity: .6;
+
+    span {
+        opacity: 1;
+        cursor: pointer;
+        transition: opacity .2s ease-out 0s;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
+
+.cardDesc {
+    font-size: var(--fz-text14);
+}
+
+.cardPriceCnt {
+    font-size: var(--fz-text18);
+}
+
+.cardPrice {
+}
+
+.isCardDiscount {
+    color: var(--green);
+}
+
+.oldCardPrice {
+    color: var(--black-05);
+    position: relative;
+    margin: 0 20px 0 10px;
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: -10%;
+        width: 120%;
+        height: 1px;
+        transform: rotate(-10deg);
+        background-color: var(--black);
+    }
+    &:before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: -10%;
+        width: 120%;
+        height: 1px;
+        transform: rotate(10deg);
+        background-color: var(--black);
+    }
+}
+
+.priceCardDiff {
+    color: var(--black);
+    font-size: 16px;
+}
+
+.cardDiscount {
+    color: var(--red);
+}
+
+.cardBtn {
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
