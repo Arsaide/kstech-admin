@@ -1,7 +1,11 @@
 import React, { ChangeEvent, useContext } from 'react';
 import { Context } from '../../../../../../api/context';
 import { Controller, useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+import {
+    QueryClient,
+    useMutation,
+    useQueryClient,
+} from '@tanstack/react-query';
 import { CreateCategoryResponseModel } from '../../../../../../api/models/CategoriesResponseModel';
 import { toast } from 'react-toastify';
 import { Box, Button, TextField } from '@mui/material';
@@ -15,6 +19,7 @@ const Input = styled('input')({
 });
 
 const CreateCategoryForm = () => {
+    const queryClient: QueryClient = useQueryClient();
     const { store } = useContext(Context);
     const { setIsVisibleSubcategories } = useContext(CategoriesContext);
     const { originalImage, resizedImage, handleImageChange } =
@@ -24,7 +29,13 @@ const CreateCategoryForm = () => {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm<CreateCategoryResponseModel>();
+        reset,
+    } = useForm<CreateCategoryResponseModel>({
+        defaultValues: {
+            img: undefined,
+            category: '',
+        },
+    });
 
     const { mutate, isPending, isError, error } = useMutation({
         mutationKey: ['category'],
@@ -37,7 +48,15 @@ const CreateCategoryForm = () => {
         },
         onError: e =>
             toast.error(`Сталась помилка при створені категорії: ${e}`),
-        onSuccess: () => setIsVisibleSubcategories(true),
+        onSuccess: () => {
+            setIsVisibleSubcategories(true);
+            reset({
+                img: undefined,
+                category: '',
+            });
+            queryClient.resetQueries({ queryKey: ['get-categories'] });
+            queryClient.resetQueries({ queryKey: ['get-one-category'] });
+        },
     });
 
     const onSubmit = (data: CreateCategoryResponseModel) => {

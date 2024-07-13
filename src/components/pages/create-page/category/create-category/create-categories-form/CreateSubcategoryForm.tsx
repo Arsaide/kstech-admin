@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -25,9 +25,16 @@ const CreateSubcategoryForm = () => {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm<CreateSubcategoryResponseModel>();
+        reset,
+    } = useForm<CreateSubcategoryResponseModel>({
+        defaultValues: {
+            category: '',
+            img: undefined,
+            subcategory: '',
+        },
+    });
 
-    const { originalImage, resizedImage, handleImageChange } =
+    const { originalImage, resizedImage, handleImageChange, resetImages } =
         useResizeImages();
 
     const {
@@ -42,7 +49,17 @@ const CreateSubcategoryForm = () => {
         isPendingCreateSubcategory,
         isCreateSubcategoryError,
         mutateSubcategoryError,
+        isSubcategorySuccess,
     } = useCreateSubCategory(originalImage, resizedImage);
+
+    useEffect(() => {
+        reset({
+            category: '',
+            img: undefined,
+            subcategory: '',
+        });
+        resetImages();
+    }, [isSubcategorySuccess]);
 
     const onSubmit = (subcategoriesData: CreateSubcategoryResponseModel) => {
         createSubcategoryMutate(subcategoriesData);

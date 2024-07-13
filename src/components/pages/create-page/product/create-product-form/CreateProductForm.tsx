@@ -7,8 +7,7 @@ import {
     ProductDataTypes,
     TurningTypes,
 } from '../../../../../types/forms/ProductData.types';
-import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import {
     Box,
     Button,
@@ -37,9 +36,11 @@ import useGetAllCategories from '../../../../../hooks/queries/categories/use-get
 import { SubcategoryResponseModel } from '../../../../../api/models/CategoriesResponseModel';
 import { ChromePicker, ColorResult } from 'react-color';
 import { v4 as uuidv4 } from 'uuid';
-import { Palette, Plus } from 'lucide-react';
+import { Palette, Plus, ReceiptText } from 'lucide-react';
+import useCreateProduct from '../../../../../hooks/queries/products/use-create-product/useCreateProduct';
 
 const CreateProductForm = () => {
+    const queryClient: QueryClient = useQueryClient();
     const { store } = useContext(Context);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
@@ -64,29 +65,7 @@ const CreateProductForm = () => {
         },
     });
 
-    const { mutate, isPending, isError, error } = useMutation({
-        mutationKey: ['create-page'],
-        mutationFn: async (product: ProductDataTypes) =>
-            store.createProduct(
-                product.name,
-                product.imgArr,
-                product.colors,
-                product.description,
-                product.price,
-                product.discount,
-                product.inAvailability,
-                product.category,
-                product.subcategory,
-                product.weight,
-                product.height,
-                product.width,
-                product.long,
-                product.deliveryMethod,
-                product.turningMethod,
-                product.paymentMethod,
-            ),
-        onError: e => toast.error(`Сталась помилка ${e}`),
-    });
+    const { mutate, isPending, isError, error, isSuccess } = useCreateProduct();
 
     const {
         isCategoriesLoading,
@@ -95,18 +74,16 @@ const CreateProductForm = () => {
         categoriesData,
     } = useGetAllCategories();
 
-    const {
-        categoryData,
-        isLoadingGetCategory,
-        isGetCategoryError,
-        getCategoryError,
-    } = useGetOneCategory(selectedCategoryId);
+    const { categoryData, isLoadingGetCategory } =
+        useGetOneCategory(selectedCategoryId);
 
     useEffect(() => {
         if (categoryData) {
             setSubcategories(categoryData.data.subcategory);
         }
     }, [categoryData]);
+
+    useEffect(() => {}, [isSuccess]);
 
     const handleCategorySelected = (event: SelectChangeEvent<string>) => {
         const id = event.target.value;
@@ -214,7 +191,15 @@ const CreateProductForm = () => {
                         name={'colors'}
                         control={control}
                         render={({ field }) => (
-                            <Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: 1,
+                                    mb: 1,
+                                    mt: 1,
+                                }}
+                            >
                                 {field.value.map(
                                     ({ id, color }: ColorTypes) => (
                                         <Chip
@@ -412,13 +397,25 @@ const CreateProductForm = () => {
                         );
                     }}
                 />
-                <Box>
+                <Box sx={{ mb: 3, mt: 3 }}>
+                    <Typography sx={{ mt: 2 }}>
+                        <ReceiptText size={18} />
+                        Додати сервісні обслуговування і умови
+                    </Typography>
                     <Controller
                         name="turningMethod"
                         control={control}
                         rules={{ required: 'Required field' }}
                         render={({ field }) => (
-                            <Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: 1,
+                                    mb: 1,
+                                    mt: 1,
+                                }}
+                            >
                                 {field.value.map(
                                     ({ id, turning }: TurningTypes) => (
                                         <Chip

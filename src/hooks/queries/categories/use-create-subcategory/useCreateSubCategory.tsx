@@ -1,4 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import {
+    QueryClient,
+    useMutation,
+    useQueryClient,
+} from '@tanstack/react-query';
 import { useContext } from 'react';
 import { Context } from '../../../../api/context';
 import { toast } from 'react-toastify';
@@ -9,12 +13,15 @@ const useCreateSubCategory = (
     resizedImage: File | null,
 ) => {
     const { store } = useContext(Context);
+    const queryClient: QueryClient = useQueryClient();
 
     const {
         mutate: createSubcategoryMutate,
         isPending: isPendingCreateSubcategory,
         isError: isCreateSubcategoryError,
         error: mutateSubcategoryError,
+        isSuccess: isSubcategorySuccess,
+        data: subcategoriesData,
     } = useMutation({
         mutationKey: ['create-subcategory'],
         mutationFn: async (subcategory: CreateSubcategoryResponseModel) =>
@@ -29,6 +36,10 @@ const useCreateSubCategory = (
                 `Сталась помилка при створені підкатегорії: ${error.message}`,
             );
         },
+        onSuccess: () => {
+            queryClient.resetQueries({ queryKey: ['get-categories'] });
+            queryClient.resetQueries({ queryKey: ['get-one-category'] });
+        },
     });
 
     return {
@@ -36,6 +47,8 @@ const useCreateSubCategory = (
         isPendingCreateSubcategory,
         isCreateSubcategoryError,
         mutateSubcategoryError,
+        isSubcategorySuccess,
+        subcategoriesData,
     };
 };
 
