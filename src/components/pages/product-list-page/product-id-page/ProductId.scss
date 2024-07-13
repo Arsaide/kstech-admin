@@ -122,6 +122,12 @@
     }
 }
 
+.priceDiff {
+    color: var(--black);
+    margin-left: 20px;
+    font-size: 16px;
+}
+
 .colors {
     margin: 20px 0;
     font-size: 20px;
@@ -152,6 +158,10 @@
     border: 1px solid var(--black-05);
     padding: 5px;
     border-radius: 5px;
+
+    h1:empty, h2:empty, h3:empty, h4:empty, h5:empty, h6:empty ,p:empty {
+        height: 20px;
+    }
 }
 
 .categories {

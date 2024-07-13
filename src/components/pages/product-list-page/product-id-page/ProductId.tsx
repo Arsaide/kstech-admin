@@ -44,10 +44,11 @@ const ProductId = () => {
         select: data => data.data.product,
     });
 
+    const price = data?.price;
+
     const discountCalc = (
-        parseFloat(data?.price as string) -
-        (parseFloat(data?.price as string) *
-            parseFloat(data?.discount as string)) /
+        parseFloat(price as string) -
+        (parseFloat(price as string) * parseFloat(data?.discount as string)) /
             100
     ).toFixed(2);
 
@@ -205,12 +206,46 @@ const ProductId = () => {
                                     }
                                 >
                                     {data?.discount == '0' ? (
-                                        <>{data?.price} ₴</>
+                                        <>
+                                            {parseFloat(price as string)
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ' ',
+                                                )}{' '}
+                                            ₴
+                                        </>
                                     ) : (
                                         <>
-                                            {discountCalc} ₴{' '}
+                                            {discountCalc
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ' ',
+                                                )}{' '}
+                                            ₴{' '}
                                             <span className={'oldPrice'}>
-                                                {data?.price} ₴
+                                                {parseFloat(price as string)
+                                                    .toString()
+                                                    .replace(
+                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                        ' ',
+                                                    )}{' '}
+                                                ₴
+                                            </span>
+                                            <span className={'priceDiff'}>
+                                                -
+                                                {(
+                                                    parseFloat(
+                                                        data?.price as string,
+                                                    ) - parseFloat(discountCalc)
+                                                )
+                                                    .toString()
+                                                    .replace(
+                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                        ' ',
+                                                    )}{' '}
+                                                ₴
                                             </span>
                                         </>
                                     )}

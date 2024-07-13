@@ -188,7 +188,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
             <Box
                 component={'form'}
                 onSubmit={handleSubmit(onSubmit)}
-                sx={{ maxWidth: '600px', width: '100%' }}
+                sx={{ maxWidth: '800px', width: '100%' }}
             >
                 <Typography variant={'h5'} sx={{ mt: 2 }}>
                     Медіа товару:
