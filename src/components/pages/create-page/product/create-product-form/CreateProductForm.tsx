@@ -657,6 +657,24 @@ const CreateProductForm = () => {
                             />
                         )}
                     />
+                    <Controller
+                        name="country"
+                        control={control}
+                        rules={{ required: 'Required field' }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="Країна виробник"
+                                type="text"
+                                fullWidth
+                                margin="normal"
+                                error={!!errors.country}
+                                helperText={
+                                    errors.country ? errors.country.message : ''
+                                }
+                            />
+                        )}
+                    />
                 </Box>
                 <Button
                     type="submit"

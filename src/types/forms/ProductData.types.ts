@@ -24,6 +24,7 @@ export interface ProductDataTypes<C = ColorTypes[], T = TurningTypes[]> {
     height: string;
     width: string;
     long: string;
+    country: string;
     deliveryMethod: string[];
     turningMethod: T;
     paymentMethod: string[];

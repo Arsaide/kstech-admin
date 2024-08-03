@@ -80,11 +80,12 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
             height: data.height || '',
             width: data.width || '',
             long: data.long || '',
+            country: data.country || ''
         },
     });
 
     const { mutate, isPending, isError, error } = useMutation({
-        mutationKey: ['create-page'],
+        mutationKey: ['edit-product'],
         mutationFn: async (product: ProductDataTypes<string[], string[]>) =>
             store.editProduct(
                 data.id,
@@ -102,6 +103,7 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                 product.height,
                 product.width,
                 product.long,
+                product.country,
                 product.deliveryMethod,
                 product.turningMethod,
                 product.paymentMethod,
@@ -786,6 +788,24 @@ const ProductIdEdit: FC<ProductIdEditProps> = ({ data }) => {
                                 error={!!errors.long}
                                 helperText={
                                     errors.long ? errors.long.message : ''
+                                }
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="country"
+                        control={control}
+                        rules={{ required: 'Required field' }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="Країна виробник"
+                                type="text"
+                                fullWidth
+                                margin="normal"
+                                error={!!errors.country}
+                                helperText={
+                                    errors.country ? errors.country.message : ''
                                 }
                             />
                         )}

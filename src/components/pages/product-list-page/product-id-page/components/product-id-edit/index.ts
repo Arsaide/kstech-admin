@@ -8,6 +8,9 @@ export const deliveryMethodArr = [
     'Нова пошта',
     "Кур'єр Нова Пошта",
     'Укр пошта',
+    'Autolux',
+    'Delivery',
+    'KS TECH доставка',
     'Тільки самовивіз',
 ];
 

@@ -42,6 +42,7 @@ export default class ProductsService {
         height: string,
         width: string,
         long: string,
+        country: string,
         deliveryMethod: string[],
         turningMethod: TurningTypes[],
         paymentMethod: string[],
@@ -61,7 +62,11 @@ export default class ProductsService {
         }
         formData.append('description', description);
         formData.append('price', price);
-        formData.append('discount', discount);
+        if (parseInt(discount) < 0) {
+            formData.append('discount', '0');
+        } else {
+            formData.append('discount', discount);
+        }
         formData.append('inAvailability', inAvailability);
         formData.append('category', category);
         formData.append('subcategory', subcategory);
@@ -69,6 +74,7 @@ export default class ProductsService {
         formData.append('height', height);
         formData.append('width', width);
         formData.append('long', long);
+        formData.append('country', country);
         if (deliveryMethod && deliveryMethod.length > 0) {
             deliveryMethod.forEach(item => {
                 formData.append('deliveryMethod', item);
@@ -106,6 +112,7 @@ export default class ProductsService {
         height: string,
         width: string,
         long: string,
+        country: string,
         deliveryMethod: string[],
         turningMethod: string[],
         paymentMethod: string[],
@@ -131,7 +138,12 @@ export default class ProductsService {
         }
         formData.append('description', description);
         formData.append('price', price);
-        formData.append('discount', discount);
+        if (parseInt(discount) < 0) {
+            formData.append('discount', '0');
+        } else {
+            formData.append('discount', discount);
+        }
+        console.log(discount);
         formData.append('inAvailability', inAvailability);
         if (deliveryMethod && deliveryMethod.length > 0) {
             deliveryMethod.forEach(item => {
@@ -154,6 +166,7 @@ export default class ProductsService {
         formData.append('height', height);
         formData.append('width', width);
         formData.append('long', long);
+        formData.append('country', country);
         if (token) {
             formData.append('token', token);
         }

@@ -29,6 +29,7 @@ const useCreateProduct = () => {
                 product.height,
                 product.width,
                 product.long,
+                product.country,
                 product.deliveryMethod,
                 product.turningMethod,
                 product.paymentMethod,
