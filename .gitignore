@@ -40,3 +40,5 @@ yarn-error.log*
 /.idea/aws.xml
 /.idea/icon.svg
 /.idea/watcherTasks.xml
+/.idea/git_toolbox_blame.xml
+/.idea/material_theme_project_new.xml
