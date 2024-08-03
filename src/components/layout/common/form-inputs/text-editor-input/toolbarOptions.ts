@@ -1,5 +1,5 @@
 export const toolbarOptions = {
-    options: ['inline', 'fontSize', 'list', 'link', 'history'],
+    options: ['inline', 'fontSize', 'list', 'link', 'embedded', 'history',],
     // options: ['inline', 'history'],
     inline: {
         options: [
@@ -52,5 +52,22 @@ export const toolbarOptions = {
     },
     link: {
         popupClassName: 'your-popup-classname',
+    },
+    embedded: {
+        icon: '../icons/youtube.svg',
+        className: undefined,
+        component: undefined,
+        popupClassName: 'embedded-popup',
+        embedCallback: (link: string) => {
+            if (link.includes('youtube')) {
+                const videoId = link.split('v=')[1];
+                const ampersandPosition = videoId.indexOf('&');
+                const cleanVideoId = ampersandPosition !== -1
+                    ? videoId.substring(0, ampersandPosition)
+                    : videoId;
+                return `https://www.youtube.com/embed/${cleanVideoId}`;
+            }
+            return link;
+        },
     },
 };
