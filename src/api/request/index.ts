@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// export const API_URL = `http://ks-tech.com.ua/api/`;
-export const API_URL = `https://kstech-backend.onrender.com`;
+export const API_URL = `http://ks-tech.com.ua/api/`;
+// export const API_URL = `https://kstech-backend.onrender.com`;
 // export const API_URL = 'http://localhost:8000'
 
 const $api = axios.create({
